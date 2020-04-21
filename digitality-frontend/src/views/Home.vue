@@ -39,13 +39,13 @@
         </div>
 
         <div class="row">
-            <div class="col archive">
-                <SubArchive v-bind:key="card.id" v-bind:info="card" v-for="card in this.store.arhiveData" />
-                <div class="subArchive" >
-                    <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
-                    <div class="folderName">Dodaj podarhivu</div>
-                </div>
-            </div>
+          <div class="col archive">
+            <SubArchive v-bind:key="card.id" v-bind:info="card" v-for="card in store.arhiveData" />
+            <div class="subArchive" >
+              <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
+            <div class="folderName">Dodaj podarhivu</div>
+          </div>
+        </div>
 
         </div>
         <!-- footer
@@ -60,8 +60,7 @@
 <!-- popraviti :  header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer?-->
 <script>
 
-import SubArchive from '@/components/SubArchive.vue'
-import axios from 'axios';
+import SubArchive from '@/components/SubArchive.vue';
 import store from "@/store.js";
 
 export default {

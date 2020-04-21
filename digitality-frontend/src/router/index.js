@@ -26,7 +26,7 @@ const routes = [
     component: () => import('../views/Signup2.vue')
   },
   {
-    path: '/subarchive',
+    path: '/subarchive/:naziv_arhive',
     name: 'SubArchive',
     component: () => import('../views/SubArchive.vue')
   },

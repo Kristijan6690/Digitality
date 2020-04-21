@@ -58,6 +58,7 @@ def login():
 
 @app.route('/arhive',)
 def getarhive():
+
     lista_arhiva = mongo.db.Lista_arhiva
     arhive = {}
     i = 0
@@ -71,6 +72,23 @@ def getarhive():
 
     return jsonify(arhive)
 
+
+@app.route('/dokumenti', methods=['POST'])
+def getdocument():
+
+    naziv_arhive = request.get_json()['naziv']
+    lista_dokumenta = mongo.db["Arhiva." + naziv_arhive]
+    dokumenti = {}
+    i = 0
+
+    for x in lista_dokumenta.find():
+        dokumenti[i] = {
+            'ID' : str(x['_id']),
+            'tekst' : x['tekst']
+        }
+        i += 1
+
+    return jsonify(dokumenti)
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

@@ -1,18 +1,19 @@
 <template>
-    <div class="document" >
-        <div class="documentName">Lorem ipsum</div>
-        <div class="documentPicDiv">
-            <img src="align-justify.png" class="documentPic" />
+    <router-link v-bind:to="'/internet/' + 1">>
+        <div class="document" >
+            <div class="documentName">{{info.tekst}}</div>
+            <div class="documentPicDiv">
+                <img src="align-justify.png" class="documentPic" />
+            </div>
+            <div class="documentDate">01/01/2020 at 00:00</div>
         </div>
-        <div class="documentDate">01/01/2020 at 00:00</div>
-    </div>
+    </router-link>
 </template>
 
 <script>
 export default {
   name: 'Document',
-  props: {
-  }
+  props: ["info"]
 }
 </script>
 

@@ -41,6 +41,7 @@
 <script>
 import store from '@/store.js'
 import axios from 'axios'
+
 export default {
   data(){
     return{
@@ -51,7 +52,6 @@ export default {
   mounted() { 
      axios.get("http://127.0.0.1:5000/arhive").then((response) => {
        this.store.arhiveData = response.data
-       console.log(this.store.arhiveData)
      }).catch((err) => {
        console.log(err)
      })
