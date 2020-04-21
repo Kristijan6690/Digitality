@@ -1,5 +1,5 @@
 <template>
-    <router-link v-bind:to="'/internet/' + 1">>
+    <router-link v-bind:to="'/internet/' + 1">
         <div class="document" >
             <div class="documentName">{{info.tekst}}</div>
             <div class="documentPicDiv">

@@ -37,7 +37,7 @@
        
         <div class="row">
             <div class="col archive">
-               <Document v-bind:key="card.id" v-bind:info="card" v-for="card in documentData" /> 
+              <Document v-bind:key="card.id" v-bind:info="card" v-for="card in documentData" /> 
               <!-- sastav komponente
               <div class="document" >
                   <div class="documentName">Lorem ipsum</div>
@@ -63,12 +63,13 @@
 							
 <script>
 
-import Document from '@/components/Document.vue';
+import Document from '@/components/Document.vue'
+import DocumentInfo from '@/components/DocumentInfo.vue'
 import axios from 'axios';
 
 export default {
   data(){
-    return{
+    return {
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
       documentData: ""   // podaci za svaki dokument sa arhive
     }
@@ -87,8 +88,8 @@ export default {
       }).catch((err) =>{
         console.log(err)
       })
+      
   }
-
 }
 </script>
 

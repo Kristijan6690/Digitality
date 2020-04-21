@@ -28,13 +28,27 @@ const routes = [
   {
     path: '/subarchive/:naziv_arhive',
     name: 'SubArchive',
-    component: () => import('../views/SubArchive.vue')
+    component: () => import('../views/SubArchive.vue'),
+   /* children:
+    [
+      {
+        path: '/documentinfo',
+        name: 'DocumentInfo',
+        component: () => import('../components/DocumentInfo.vue')
+      }
+    ]*/
   },
   {
     path: '/manualscan',
     name: 'ManualScan',
     component: () => import('../views/ManualScan.vue')
+  },
+  {
+    path: '/documentinfo',
+    name: 'DocumentInfo',
+    component: () => import('../components/DocumentInfo.vue')
   }
+  
 ]
 
 const router = new VueRouter({

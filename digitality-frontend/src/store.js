@@ -4,7 +4,6 @@ export default {
   userData: '',   //Podaci ulogiranog korisnika
   arhiveData: '', //Podaci za arhive (voda,struja...)
 
-
   //Funkcije------------------------------------------------------
   current_date(){
       let today = new Date();

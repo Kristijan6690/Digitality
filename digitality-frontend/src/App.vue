@@ -21,9 +21,9 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                      <router-link v-bind:to="'/'" ><a class="nav-link" href="#"> Arhiva <span class="sr-only">(current)</span></a></router-link>  <!-- current?-->
+                      <router-link v-bind:to="'/'" class="nav-link" > Arhiva <span class="sr-only">(current)</span></router-link>  <!-- current?-->
                     </li>
-                    <li class="nav-item active"> <!-- obrisati active za dobivanje unactive? -->
+                    <li class="nav-item active"> 
                         <router-link v-bind:to="'/'" class="nav-link"> Skeniraj <span class="sr-only">(current)</span></router-link>    
                     </li>
 
@@ -39,24 +39,23 @@
 </template>
 
 <script>
-import store from '@/store.js'
-import axios from 'axios'
+import store from '@/store.js';
+import axios from 'axios';
 
 export default {
   data(){
-    return{
+    return {
       store
     }
   },
-  
-  mounted() { 
-     axios.get("http://127.0.0.1:5000/arhive").then((response) => {
+
+  mounted() {
+    axios.get("http://127.0.0.1:5000/arhive").then((response) => {
        this.store.arhiveData = response.data
      }).catch((err) => {
        console.log(err)
      })
   }
-
 }
 </script>
 
@@ -97,7 +96,11 @@ export default {
     background-color: white !important;
 }
 
-
+/*
+router-link:hover{
+   color: #00FF00; 
+} 
+*/
 
 @media screen and (min-width: 1024px){
  #navbarMob{
