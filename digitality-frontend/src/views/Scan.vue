@@ -1,5 +1,6 @@
 <template>
   <div class="scanDiv">
+      jioasjdioajsidjosa
       <croppa v-model="myCroppa"
         :width="500"
         :height="500"

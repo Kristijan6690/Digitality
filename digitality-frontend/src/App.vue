@@ -21,14 +21,14 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                      <router-link v-bind:to="'/'" class="nav-link" > Arhiva <span class="sr-only">(current)</span></router-link>  <!-- current?-->
+                      <router-link to="/" class="nav-link" > Arhiva <span class="sr-only">(current)</span></router-link>  <!-- current?-->
                     </li>
                     <li class="nav-item active"> 
-                        <router-link v-bind:to="'/scan'" class="nav-link"> Skeniraj <span class="sr-only">(current)</span></router-link>    
+                        <router-link to="/" class="nav-link"> Skeniraj <span class="sr-only">(current)</span></router-link>    
                     </li>
 
                     <li class="nav-item active">
-                        <router-link v-bind:to="'/manualscan'" class="nav-link"> Ručno dodavanje <span class="sr-only">(current)</span></router-link>    
+                        <router-link to="/manualscan" class="nav-link"> Ručno dodavanje <span class="sr-only">(current)</span></router-link>    
                     </li>
                   </ul>
                   <button class="btn btn-primary my-2 my-sm-0" type="submit" style="border-radius: 5px;">Odjavi se</button> <!-- maknuti da nije submit -->
