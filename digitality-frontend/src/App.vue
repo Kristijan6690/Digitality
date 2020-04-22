@@ -24,7 +24,7 @@
                       <router-link to="/" class="nav-link" > Arhiva <span class="sr-only">(current)</span></router-link>  <!-- current?-->
                     </li>
                     <li class="nav-item active"> 
-                        <router-link to="'/scan'" class="nav-link"> Skeniraj <span class="sr-only">(current)</span></router-link>    
+                        <router-link to="/scan" class="nav-link"> Skeniraj <span class="sr-only">(current)</span></router-link>    
                     </li>
 
                     <li class="nav-item active">
