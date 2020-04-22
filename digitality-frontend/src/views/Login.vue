@@ -138,7 +138,7 @@ input {
 
 .login{
   position: relative;
-  animation: drop 2s;
+  animation: drop 1s;
   animation-fill-mode: forwards;
   margin-top:-5%;
 }

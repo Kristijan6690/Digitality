@@ -21,12 +21,17 @@ const routes = [
     component: () => import('../views/Signup.vue')
   },
   {
+    path: '/scan',
+    name: 'Scan',
+    component: () => import('../views/Scan.vue')
+  },
+  {
     path: '/signup2',
     name: 'Signup2',
     component: () => import('../views/Signup2.vue')
   },
   {
-    path: '/subarchive/:naziv_arhive',
+    path: '/:naziv_arhive',
     name: 'SubArchive',
     component: () => import('../views/SubArchive.vue'),
    /* children:

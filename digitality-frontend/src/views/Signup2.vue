@@ -114,7 +114,7 @@ input {
 
 .signup{
   position: relative;
-  animation: mymove2 2s;
+  animation: mymove2 1s;
   animation-fill-mode: forwards;
   margin-top: -15%;
 }
