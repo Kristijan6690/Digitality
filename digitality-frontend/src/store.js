@@ -4,7 +4,6 @@ export default {
   userData: '',   //Podaci ulogiranog korisnika
   archiveData: '', //Podaci za arhive (voda,struja...)
   documentData: '', //Podaci za svaki dokument sa arhive
-  trenutna_arhiva: '', //Pokazuje u kojoj se arhivi nalazi trenutni dokument 
 
   //Funkcije------------------------------------------------------
   current_date(){
