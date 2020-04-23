@@ -88,7 +88,6 @@ export default {
 
   async mounted(){
     this.store.documentData = await app.getDocuments(this.naziv);
-    this.store.trenutna_arhiva = this.naziv;
   }
 }
 </script>
