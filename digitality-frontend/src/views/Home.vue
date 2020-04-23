@@ -81,7 +81,7 @@
 
         <div class="row">
           <div class="col archive">
-            <SubArchive v-bind:key="card.id" v-bind:info="card" v-for="card in store.arhiveData" />
+            <SubArchive v-bind:key="card.id" v-bind:info="card" v-for="card in store.archiveData" />
             <div class="subArchive" >
                 <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
                 <div class="folderName">Dodaj podarhivu</div>

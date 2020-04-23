@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import store from '@/store.js';
+import { app } from "@/services";
 
 export default {
   data(){
@@ -51,21 +51,13 @@ export default {
       }
     },
   methods: {
-    
-      async login() { 
-        let response = await axios.post("http://127.0.0.1:5000/login", {
-          email: this.email,
-          password: this.password
-        });
-        let vrijednost = await response.data;
-        if(vrijednost) {
-          this.store.userData = vrijednost;
-          console.log(this.store.userData)
-          this.$router.push({ name: 'Home'})
-        }
-        else{
-          console.log("Invalid username or password")
-        }
+      async login() {
+        let result = await app.login(this.email, this.password);
+        if(result){
+          this.store.userData = result;
+          this.$router.push({ name: 'Home' })
+        } 
+        else console.log("Invalid username or password")
       },
       
       show_password() {

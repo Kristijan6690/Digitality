@@ -40,7 +40,7 @@
 
 <script>
 import store from '@/store.js';
-import axios from 'axios';
+import { app } from "@/services";
 
 export default {
   data(){
@@ -49,12 +49,8 @@ export default {
     }
   },
 
-  mounted() {
-    axios.get("http://127.0.0.1:5000/arhive").then((response) => {
-       this.store.arhiveData = response.data
-     }).catch((err) => {
-       console.log(err)
-     })
+  async mounted() {
+    this.store.archiveData = await app.getArchives()
   }
 }
 </script>

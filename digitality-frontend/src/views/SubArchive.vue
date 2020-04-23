@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col heading">
                   <!-- maknuti submit iz buttona? -->
-                  <button type="submit" class="btn btn-pr imary my-2 my-sm-0" id="backButton">Natrag</button>             
+                  <button type="submit" v-on:click="go_back" class="btn btn-pr imary my-2 my-sm-0" id="backButton">Natrag</button>             
                   <div style="width: 100%;" id="headlineDiv"><h1 id="headline">Internet</h1></div>
                   <button type="submit" class="btn btn-primary my-2 my-sm-0" id="deleteButton">Izbriši</button>
             </div>         
@@ -65,7 +65,7 @@
 
 import Document from '@/components/Document.vue'
 import DocumentInfo from '@/components/DocumentInfo.vue'
-import axios from 'axios';
+import { app } from "@/services";
 
 export default {
   data(){
@@ -80,15 +80,14 @@ export default {
     Document
   },
 
-  mounted(){
-    axios.post("http://127.0.0.1:5000/dokumenti", {
-      naziv: this.naziv
-      }).then((response) =>{
-        this.documentData = response.data
-      }).catch((err) =>{
-        console.log(err)
-      })
-      
+  methods : {
+    go_back(){
+      return this.$router.go(-1);
+    }
+  },
+
+  async mounted(){
+    this.documentData = await app.getDocuments(this.naziv);
   }
 }
 </script>
