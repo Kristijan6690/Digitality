@@ -9,12 +9,7 @@
         :disabled="false"
         :prevent-white-space="false"
         :show-remove-button="true"
-        @file-choose="handleCroppaFileChoose"
-        @file-size-exceed="handleCroppaFileSizeExceed"
-        @file-type-mismatch="handleCroppaFileTypeMismatch"
-        @image-remove="handleImageRemove"
-        @move="handleCroppaMove"
-        @zoom="handleCroppaZoom">  
+       >                                          
     </croppa > 
   </div>
 </template>
@@ -22,12 +17,15 @@
 <script>
 import axios from "axios";
 import store from '@/store.js';
-import 'vue-croppa/dist/vue-croppa.css'
+  import 'vue-croppa/dist/vue-croppa.css'
+
 
 
 export default {
   data(){
-      myCroppa: {}
+    return {
+      myCroppa:{}
+    }
   },
 
   methods: {
