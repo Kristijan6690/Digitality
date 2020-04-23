@@ -1,5 +1,5 @@
 <template>
-  <router-link v-bind:to="'/' + info.naziv">
+  <router-link v-bind:to="'SubArchive/' + info.naziv">
     <div class="subArchive" >
         <div class="folder"><i class="fas fa-folder fa-7x" ></i></div>
         <div class="folderName">{{info.naziv}}</div>
