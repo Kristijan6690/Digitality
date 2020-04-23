@@ -36,9 +36,9 @@ const routes = [
     component: () => import('../views/SubArchive.vue'),
   },
   {
-    path: '/documentinfo/:id',
-    name: 'DocumentInfo',
-    component: () => import('../views/DocumentInfo.vue')
+    path: '/subarchive.documentinfo/:id',
+    name: 'SubArchive.DocumentInfo',
+    component: () => import('../views/SubArchive.DocumentInfo.vue')
   },
   {
     path: '/manualscan',

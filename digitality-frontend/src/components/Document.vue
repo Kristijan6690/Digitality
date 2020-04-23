@@ -1,5 +1,5 @@
 <template>
-  <router-link v-bind:to="'/DocumentInfo/' + info.ID">
+  <router-link v-bind:to="'/SubArchive.DocumentInfo/' + info.ID">
     <div class="document">
       <div class="documentName">{{info.tekst}}</div>
       <div class="documentPicDiv">
@@ -19,7 +19,6 @@ export default {
       store
     };
   },
-  name: "Document",
   props: ["info"]
 };
 </script>
