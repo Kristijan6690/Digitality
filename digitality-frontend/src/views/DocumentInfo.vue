@@ -93,9 +93,13 @@
 </template>
 
 <script>
+import store from "@/store.js";
+
 export default {
-  name: 'DocumentInfo',
-  props: {
+  data(){
+      return {
+          store
+      }
   }
 }
 </script>
