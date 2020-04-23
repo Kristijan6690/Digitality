@@ -250,7 +250,7 @@ a{
 .fa-info-circle{
   color:#00A2FF; 
   float: right;
-  padding: 7.5px;
+  padding: 7.5px 7.5px 7.5px 10px;
 }
 
 .fa-picture-o{

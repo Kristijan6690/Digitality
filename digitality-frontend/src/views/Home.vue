@@ -4,9 +4,38 @@
         <div class="row">
 
             <div class="col archive-options">
-                  <div class="settings">
-                      <i class="fas fa-cog fa-lg"></i>
-                  </div>
+                <!-- filter i filter dropdown -->
+                      <div class="btn-group" >
+                        <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                          <div id="filterIcon" ><i class="fas fa-cog fa-lg"></i></div>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-left" @click.stop=''>
+                          <div class="dropdownHeader" > 
+                              <h2> Postavke </h2> 
+                          </div>
+                          <div id="archiveSelection">
+                            <i class="far fa-edit"></i>
+                            <h2> Moja_arhiva </h2> 
+                          </div>
+                          <div class="dropdownBody">                       
+                            <div id="pristupNaslov">
+                              Osobe sa pristupom
+                            </div>
+                              <div id="pristupPopis">
+                                  <div class="mailOsobe">adasdasdasda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
+                                  <div class="mailOsobe">adassda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
+                                  <div class="mailOsobe">adasddasda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
+                              </div>
+                            
+                          </div>
+                          <div class="dropdownFooter addButtonDiv">
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="padding-right: 5px;"> Traži</button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="padding-left: 5px;"> Poništi</button>
+                          </div>
+                      </div>
+                    </div>
+
                   <div class="chooseArchive">
                       <i class="far fa-file fa-lg" ></i>
                       <select id="archiveSelector">
@@ -210,6 +239,17 @@ a{
   border: 2px solid  #00A2FF;
   padding-top:3px;
   
+}
+
+#archiveSelection > h2 {
+  text-align:center; 
+  color: #00A2FF; 
+  position:relative;
+}
+
+#archiveSelection {
+  height: 50px; 
+  position: relative;
 }
 
 .search{

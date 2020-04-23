@@ -23,10 +23,7 @@
 import axios from "axios";
 import store from '@/store.js';
 import 'vue-croppa/dist/vue-croppa.css'
-import Vue from 'vue'
-import Croppa from 'vue-croppa'
 
- Vue.use(Croppa)  
 
 export default {
   data(){
