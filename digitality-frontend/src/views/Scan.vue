@@ -1,23 +1,23 @@
 <template>
-  <div class="scanDiv">
-      jioasjdioajsidjosa
+    <div class="container">
       <croppa v-model="myCroppa"
-        :width="500"
+         
+        :width="700"
         :height="500"
-        placeholder="Drag and drop your file here"
-        :placeholder-font-size="33"
+         placeholder="Drag and drop your file here"
+        :placeholder-font-size="40"
         :disabled="false"
         :prevent-white-space="false"
         :show-remove-button="true"
        >                                          
     </croppa > 
-  </div>
+    </div>
 </template>
 
 <script>
 import axios from "axios";
 import store from '@/store.js';
-  import 'vue-croppa/dist/vue-croppa.css'
+import 'vue-croppa/dist/vue-croppa.css'
 
 
 
@@ -41,6 +41,18 @@ export default {
 
 <style scoped>
 
+.container {
+  display: -webkit-box;
+  justify-content: center;
+  align-items: center;
+  height: 700px;
+}
 
+
+.croppa-container{
+  /* https://kovart.github.io/dashed-border-generator/ */
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2300A2FFFF' stroke-width='6' stroke-dasharray='23' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")
+  
+}
 
 </style>
