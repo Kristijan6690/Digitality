@@ -58,7 +58,7 @@
       </div>
   </div>
 </template>
-<!-- popraviti :  da dugi nazivi neidu izvan mobile responsive, footer? back i delete buttoni na mobitelu -> back btn netreba na mobu, delete u settings?-->
+<!-- popraviti :  clear custom filters ikona ,da dugi nazivi neidu izvan mobile responsive, footer? back i delete buttoni na mobitelu -> back btn netreba na mobu, delete u settings?-->
 <!-- waves effect <div class="form-group waves-light waves-effect waves-light" style="width:100%;">  -->
 							
 <script>
