@@ -17,7 +17,7 @@
 <script>
 import axios from "axios";
 import store from '@/store.js';
-  import 'vue-croppa/dist/vue-croppa.css'
+import 'vue-croppa/dist/vue-croppa.css'
 
 
 
