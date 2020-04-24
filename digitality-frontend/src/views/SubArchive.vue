@@ -87,7 +87,7 @@ export default {
   },
 
   async mounted(){
-    this.store.documentData = await app.getDocuments(this.naziv);
+    this.store.documentData = await app.getDocuments(this.naziv);  // Još nadograditi da vuce doc za određenog usera
   }
 }
 </script>

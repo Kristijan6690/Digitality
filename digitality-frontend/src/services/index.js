@@ -24,16 +24,16 @@ let app = {
     },
 
     async getArchives() {
-        let response = await Service.get('/arhive');
+        let response = await Service.get('/arhives');
         return response.data;
     },
 
     async getDocuments(naziv_arhive){
-        let response = await Service.post('/dokumenti',{
+        let response = await Service.post('/documents',{
             naziv: naziv_arhive
         });
         return response.data;
-    }
+    },
 };
 
 export { app, Service };

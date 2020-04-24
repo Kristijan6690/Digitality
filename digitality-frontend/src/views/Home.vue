@@ -110,7 +110,7 @@
 
         <div class="row">
           <div class="col archive">
-            <SubArchive v-bind:key="card.id" v-bind:info="card" v-for="card in store.archiveData" />
+            <ArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.archiveData" />
             <div class="subArchive" >
                 <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
                 <div class="folderName">Dodaj podarhivu</div>
@@ -130,7 +130,7 @@
 <!-- popraviti :  search bottom padding elip, effecti elips, header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer? active navbar, bolji način za pozicioniranje filter ikone-->
 <script>
 
-import SubArchive from '@/components/SubArchive.vue'
+import ArchiveCard from '@/components/ArchiveCard.vue'
 import store from "@/store.js";
 
 export default {
@@ -142,7 +142,7 @@ export default {
 
   name: 'Home',
   components: {
-    SubArchive
+    ArchiveCard
   },
   
   methods:{

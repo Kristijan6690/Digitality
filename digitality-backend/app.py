@@ -56,7 +56,7 @@ def login():
     return jsonify(access)
 
 
-@app.route('/arhive',)
+@app.route('/arhives',)
 def getarhive():
 
     lista_arhiva = mongo.db.Lista_arhiva
@@ -73,22 +73,37 @@ def getarhive():
     return jsonify(arhive)
 
 
-@app.route('/dokumenti', methods=['POST'])
+@app.route('/documents', methods=['POST'])
 def getdocument():
 
     naziv_arhive = request.get_json()['naziv']
-    lista_dokumenta = mongo.db["Arhiva." + naziv_arhive]
+    lista_dokumenta = mongo.db.Lista_arhiva
     dokumenti = {}
     i = 0
 
     for x in lista_dokumenta.find():
-        dokumenti[i] = {
-            'ID' : str(x['_id']),
-            'tekst' : x['tekst']
-        }
-        i += 1
+        if(naziv_arhive == x['naziv']):
+            for y in x['documents']:    
+                # staviti if da se nađe id korisnika
+                dokumenti[i] = {
+                    'id' : str(y['id']),
+                    'tekst' : y['tekst']
+                }
+                i += 1
 
     return jsonify(dokumenti)
+
+
+@app.route('/send_document', methods=['POST'])
+def sendDocument():
+    docfile = request.get_json()['docfile']
+    docname = request.get_json()['docname']
+    mongo.db.test_loadImage.insert({
+        'docfile' : docfile,
+        'docname' : docname
+    })
+
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
