@@ -18,7 +18,7 @@
         :reverse-scroll-to-zoom="false"
         :show-remove-button="false"
         :initial-image="'path/to/initial-image.png'"
-        @file-choose="onLoad()"
+        @new-image-drawn="onLoad()"
       ></croppa>
   </div>
 </template>
@@ -26,11 +26,12 @@
 <script>
 import store from "@/store.js";
 import "vue-croppa/dist/vue-croppa.css";
+import { app } from "@/services";
 
 export default {
   data() {
     return {
-      myCroppa: {}
+      myCroppa: null
     };
   },
 
@@ -50,6 +51,9 @@ export default {
 
     async onLoad() {
       let blobData = await this.getImageBlob()
+      let url_dokumenta = "nesto" + '.png'   // osmislit od kud cemo vuci url
+      console.log(blobData,url_dokumenta)
+      await app.sendDocument(blobData,url_dokumenta)
     },
 
   }

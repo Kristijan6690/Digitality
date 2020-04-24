@@ -103,6 +103,7 @@ def sendDocument():
         'docname' : docname
     })
 
+    return "Poslano u bazu"
 
 
 if __name__ == "__main__":

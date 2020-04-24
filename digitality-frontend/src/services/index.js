@@ -34,6 +34,13 @@ let app = {
         });
         return response.data;
     },
+
+    async sendDocument(blob,Docname){
+        await Service.post('send_document',{
+            docfile : blob,
+            docname : Docname
+        })
+    }
 };
 
 export { app, Service };
