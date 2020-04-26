@@ -51,7 +51,7 @@ export default {
 
     async onLoad() {
       let blobData = await this.getImageBlob()
-      let url_dokumenta = "nesto" + '.png'   // osmislit od kud cemo vuci url
+      let url_dokumenta = "nesto"   // osmislit od kud cemo vuci url
       console.log(blobData,url_dokumenta)
       await app.sendDocument(blobData,url_dokumenta)
     },

@@ -3,7 +3,7 @@
     <div class="document">
       <div class="documentName">{{info.tekst}}</div>
       <div class="documentPicDiv">
-        <img src="/align-justify.png" class="documentPic" />
+        <img src="/align-justify.png"/>
       </div>
       <div class="documentDate">01/01/2020 at 00:00</div>
     </div>
