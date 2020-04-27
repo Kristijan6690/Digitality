@@ -4,27 +4,27 @@
         <div class="row">
 
             <div class="col archive-options">
-                <!-- filter i filter dropdown -->
+                <!-- settings dropdown -->
                       <div class="btn-group" >
                         <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                          <div id="filterIcon" ><i class="fas fa-cog fa-lg"></i></div>
+                          <div id="settingsIcon" ><i class="fas fa-cog fa-lg"></i></div>
                         </button>
 
-                        <div class="dropdown-menu dropdown-menu-left menu-settings" id="dMenu" @click.stop=''>
+                        <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
                           <div class="dropdownHeader" > 
-                              <h2 style="height:45px;"> Postavke </h2> 
+                              <h2 id="dropdownHeaderHeadline"> Postavke </h2> 
                           </div>
-                          <div id="archiveSelection" style="text-align: center; padding-top: 5px; padding-bottom: 5px;">
-                              <div class="editIcon" style="background-color: #00A2FF; display:inline-block; border-radius:3px; margin: 2.5px;">
-                                <i class="far fa-edit" style="color:white; padding: 2.5px; "></i>
+                          <div id="archiveName" >
+                              <div class="editIcon">
+                                <i class="far fa-edit"></i>
                               </div>
-                              <div class="changeName" style="display:inline-block; color:#888888; ">
-                                <h5 style="border-bottom: 2px solid #BEBEBE;"> Moja_arhiva </h5> 
+                              <div class="changeName" >
+                                <h5 id="changeNameHeader"> Moja_arhiva </h5> 
                               </div>
                           </div>
-                          <div class="dropdownBody body-settings" style="padding-right:50px; padding-left:50px;">                       
-                              <div id="pristupNaslov" style="text-align: center;">
-                                <h6 style="line-height:30px;"><b>Osobe sa pristupom</b></h6>
+                          <div class="dropdownBody body-settings" >                       
+                              <div id="pristupNaslov">
+                                <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
                               </div>
                               <div id="pristupPopis">  
                                
@@ -79,38 +79,38 @@
                           </div>
 
                           <div class="dropdownBody">                       
-                              <div class="filterOptions custom-control custom-checkbox " >
-                                <input type="checkbox" class="custom-control-input" id="datDodavanja" name="datDodavanja" value="datDodavanja">
+                              <div class="settingsOptions custom-control custom-checkbox " >
+                                <input type="checkbox" class="custom-control-input" id="datDodavanjaCheckbox" name="datDodavanjaCheckbox" value="datDodavanjaCheckbox">
                                 <label for="datDodavanja" class="custom-control-label">Datum dodavanja:</label>
                                 <input type="text" id="datDodavanja" name="datDodavanja"><br>
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="nazDobavljaca" name="nazDobavljaca" value="nazDobavljaca">
+                              <div class="settingsOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="nazDobavljacaCheckbox" name="nazDobavljacaCheckbox" value="nazDobavljacaCheckbox">
                                 <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
                                 <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="datIzdavanja" name="datIzdavanja" value="datIzdavanja">
+                              <div class="settingsOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="datIzdavanjaCheckbox" name="datIzdavanjaCheckbox" value="datIzdavanjaCheckbox">
                                 <label for="datIzdavanja" class="custom-control-label">Datum izdavanja:</label>
                                 <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="datDospijeca" name="datDospijeca" value="datDospijeca">
+                              <div class="settingsOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="datDospijecaCheckbox" name="datDospijecaCheckbox" value="datDospijecaCheckbox">
                                 <label for="datDospijeca" class="custom-control-label">Datum dospijeća:</label>
                                 <input type="text" id="datDospijeca" name="datDospijeca"><br>
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="vrstaUsluge" name="vrstaUsluge" value="vrstaUsluge">
+                              <div class="settingsOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="vrstaUslugeCheckbox" name="vrstaUslugeCheckbox" value="vrstaUslugeCheckbox">
                                 <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
                                 <input type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="kolicina" name="kolicina" value="kolicina">
+                              <div class="settingsOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="kolicinaCheckbox" name="kolicinaCheckbox" value="kolicinaCheckbox">
                                 <label for="kolicina" class="custom-control-label">Kolicina:</label>
                                 <input type="text" id="kolicina" name="kolicina"><br>
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="iznos" name="iznos" value="iznos">
+                              <div class="settingsOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="iznosCheckbox" name="iznosCheckbox" value="iznosCheckbox">
                                 <label for="iznos" class="custom-control-label">Iznos:</label>
                                 <input type="text" id="iznos" name="iznos"><br>
                               </div>
@@ -263,15 +263,18 @@ a{
   
 }
 
-#archiveSelection > h2 {
+#archiveName > h2 {
   text-align:center; 
   color: #00A2FF; 
   position:relative;
 }
 
-#archiveSelection {
+#archiveName {
   height: 50px; 
   position: relative;
+  text-align: center; 
+  padding-top: 5px; 
+  padding-bottom: 5px;
 }
 
 .search{
@@ -284,6 +287,56 @@ a{
   border-radius: 5px;
   border: 2px solid  #00A2FF;
 }
+
+/* settings filter */
+
+.userData{
+  display: flex;
+}
+
+.changeName{
+  display:inline-block; 
+  color:#888888; 
+}
+
+.editIcon{
+  background-color: #00A2FF; 
+  display:inline-block; 
+  border-radius:3px; 
+  margin: 2.5px;
+}
+
+.fa-edit{
+  color:white; 
+  padding: 2.5px;
+}
+
+#changeNameHeader{
+  border-bottom: 2px solid #BEBEBE;
+} 
+
+.body-settings{
+  padding-right:50px; 
+  padding-left:50px;
+}
+
+#pristupNaslov {
+  text-align: center;
+}
+
+#pristupNaslovHeader{
+  line-height:30px;
+}
+
+.settingsOptions{
+  margin: 0 5px 5px 5px;
+  width: 410px;
+}
+
+#dropdownHeaderHeadline{
+  height:45px;
+}
+
 
 /* dropdown filter*/
 .filter{
@@ -302,7 +355,6 @@ a{
 .filterOptions{
   margin: 0 5px 5px 5px;
   width: 410px;
-  
 }
 
 .filterOptions > label{
@@ -369,6 +421,13 @@ h2::before, h5::before{
 
 
 #filterIcon{
+  display:inline-block; 
+  position: absolute; 
+  left: 3px; 
+  top: 4px;
+}
+
+#settingsIcon{
   display:inline-block; 
   position: absolute; 
   left: 3px; 
@@ -496,14 +555,13 @@ height: 60px;
   width:60%;
 }
 
+/* settings dropdown */
+
 .body-settings{
   padding-left: 25px !important;
   padding-right: 25px !important;
 }
 
-.userData{
-  display: flex;
-}
 
 }
 </style>
