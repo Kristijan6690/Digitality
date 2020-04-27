@@ -29,31 +29,31 @@
                               <div id="pristupPopis">  
                                
                                 <div class="userData" >
-                                    <div class="personIcon" style="display:inline-block;"><i class="far fa-user"></i></div>
-                                    <div class="mailOsobe" style="display:inline-block; width:200px;   text-align: center; overflow: hidden;text-overflow: ellipsis;">example@email.com</div> 
-                                    <div class="opcijaPopis" style="display:inline-block; color:#FF0000; width: 75px;text-align: center;">ukloni</div>  
+                                    <div class="personIcon"><i class="far fa-user"></i></div>
+                                    <div class="mailOsobe">example@email.com</div> 
+                                    <div class="opcijaPopis">ukloni</div>  
                                 </div>
                                 <div class="userData">
-                                    <div class="personIcon" style="display:inline-block; "><i class="far fa-user"></i> </div>
-                                    <div class="mailOsobe" style="display:inline-block; width:200px;   text-align: center; overflow: hidden;text-overflow: ellipsis;">example@email.com</div> 
-                                    <div class="opcijaPopis" style="display:inline-block; color:#FF0000; width: 75px;text-align: center;">ukloni</div>  
+                                    <div class="personIcon"><i class="far fa-user"></i> </div>
+                                    <div class="mailOsobe">example@email.com</div> 
+                                    <div class="opcijaPopis">ukloni</div>  
                                 </div>
                                 <div class="userData" >
-                                     <div class="personIcon" style="display:inline-block; "><i class="far fa-user"></i> </div>
-                                     <div class="mailOsobe" style="display:inline-block; width:200px; text-align: center; overflow: hidden;text-overflow: ellipsis;">example@email.com</div> 
-                                     <div class="opcijaPopis" style="display:inline-block; color:#FF0000; width: 75px;text-align: center;">ukloni</div>  
+                                     <div class="personIcon"><i class="far fa-user"></i> </div>
+                                     <div class="mailOsobe">example@email.com</div> 
+                                     <div class="opcijaPopis">ukloni</div>  
                                 </div>
                                 <div class="userData" >
-                                     <div class="personIcon" style="display:inline-block;   "><i class="far fa-user"></i> </div>
-                                     <div class="mailOsobe" style="display:inline-block; width:200px;  text-align: center; overflow: hidden;text-overflow: ellipsis;">example@email.com</div> 
-                                     <div class="opcijaPopis" style="display:inline-block; color:#23CA00; width: 75px;text-align: center;">dodaj</div>  
+                                     <div class="personIcon"><i class="far fa-user"></i> </div>
+                                     <div class="mailOsobe">example@email.com</div> 
+                                     <div class="opcijaPopis">dodaj</div>  
                                 </div>
                               
                               </div>
                             </div>
                           <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin: 5px; border-radius:5px; border:0" > Spremi </button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" style="margin: 5px; border-radius:5px; border:0" > Spremi </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
                           </div>
                       </div>
                     </div>
@@ -288,7 +288,7 @@ a{
   border: 2px solid  #00A2FF;
 }
 
-/* settings filter */
+/* settings dropdown */
 
 .userData{
   display: flex;
@@ -335,6 +335,38 @@ a{
 
 #dropdownHeaderHeadline{
   height:45px;
+}
+
+.personIcon{
+  display:inline-block;
+}
+
+.mailOsobe {
+  display:inline-block; 
+  width:200px;   
+  text-align: center; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.opcijaPopis{
+  display:inline-block; 
+  color:#FF0000; 
+  width: 75px;
+  text-align: center;
+}
+
+#addButtonSettings{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+}
+
+#removeButtonSettings{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+  background-color: #888888;
 }
 
 
