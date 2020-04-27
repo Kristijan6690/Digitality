@@ -10,28 +10,50 @@
                           <div id="filterIcon" ><i class="fas fa-cog fa-lg"></i></div>
                         </button>
 
-                        <div class="dropdown-menu dropdown-menu-left" @click.stop=''>
+                        <div class="dropdown-menu dropdown-menu-left menu-settings" id="dMenu" @click.stop=''>
                           <div class="dropdownHeader" > 
-                              <h2> Postavke </h2> 
+                              <h2 style="height:45px;"> Postavke </h2> 
                           </div>
-                          <div id="archiveSelection">
-                            <i class="far fa-edit"></i>
-                            <h2> Moja_arhiva </h2> 
-                          </div>
-                          <div class="dropdownBody">                       
-                            <div id="pristupNaslov">
-                              Osobe sa pristupom
-                            </div>
-                              <div id="pristupPopis">
-                                  <div class="mailOsobe">adasdasdasda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
-                                  <div class="mailOsobe">adassda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
-                                  <div class="mailOsobe">adasddasda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
+                          <div id="archiveSelection" style="text-align: center; padding-top: 5px; padding-bottom: 5px;">
+                              <div class="editIcon" style="background-color: #00A2FF; display:inline-block; border-radius:3px; margin: 2.5px;">
+                                <i class="far fa-edit" style="color:white; padding: 2.5px; "></i>
                               </div>
-                            
+                              <div class="changeName" style="display:inline-block; color:#888888; ">
+                                <h5 style="border-bottom: 2px solid #BEBEBE;"> Moja_arhiva </h5> 
+                              </div>
                           </div>
+                          <div class="dropdownBody body-settings" style="padding-right:50px; padding-left:50px;">                       
+                              <div id="pristupNaslov" style="text-align: center;">
+                                <h6 style="line-height:30px;"><b>Osobe sa pristupom</b></h6>
+                              </div>
+                              <div id="pristupPopis">  
+                               
+                                <div class="userData" >
+                                    <div class="personIcon" style="display:inline-block;"><i class="far fa-user"></i></div>
+                                    <div class="mailOsobe" style="display:inline-block; width:200px;   text-align: center; overflow: hidden;text-overflow: ellipsis;">example@email.com</div> 
+                                    <div class="opcijaPopis" style="display:inline-block; color:#FF0000; width: 75px;text-align: center;">ukloni</div>  
+                                </div>
+                                <div class="userData">
+                                    <div class="personIcon" style="display:inline-block; "><i class="far fa-user"></i> </div>
+                                    <div class="mailOsobe" style="display:inline-block; width:200px;   text-align: center; overflow: hidden;text-overflow: ellipsis;">example@email.com</div> 
+                                    <div class="opcijaPopis" style="display:inline-block; color:#FF0000; width: 75px;text-align: center;">ukloni</div>  
+                                </div>
+                                <div class="userData" >
+                                     <div class="personIcon" style="display:inline-block; "><i class="far fa-user"></i> </div>
+                                     <div class="mailOsobe" style="display:inline-block; width:200px; text-align: center; overflow: hidden;text-overflow: ellipsis;">example@email.com</div> 
+                                     <div class="opcijaPopis" style="display:inline-block; color:#FF0000; width: 75px;text-align: center;">ukloni</div>  
+                                </div>
+                                <div class="userData" >
+                                     <div class="personIcon" style="display:inline-block;   "><i class="far fa-user"></i> </div>
+                                     <div class="mailOsobe" style="display:inline-block; width:200px;  text-align: center; overflow: hidden;text-overflow: ellipsis;">example@email.com</div> 
+                                     <div class="opcijaPopis" style="display:inline-block; color:#23CA00; width: 75px;text-align: center;">dodaj</div>  
+                                </div>
+                              
+                              </div>
+                            </div>
                           <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="padding-right: 5px;"> Traži</button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="padding-left: 5px;"> Poništi</button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin: 5px; border-radius:5px; border:0" > Spremi </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
                           </div>
                       </div>
                     </div>
@@ -127,7 +149,7 @@
     <router-link to="/login">Login</router-link>
   </div>
 </template>
-<!-- popraviti :  search bottom padding elip, effecti elips, header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer? active navbar, bolji način za pozicioniranje filter ikone-->
+<!-- popraviti :  settings email overflow, search bottom padding elip, effecti elips, header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer? active navbar, bolji način za pozicioniranje filter ikone-->
 <script>
 
 import ArchiveCard from '@/components/ArchiveCard.vue'
@@ -317,7 +339,7 @@ a{
   border-radius: 5px;
 }
 
-h2::before{
+h2::before, h5::before{
   content: '';
   display: block;
   position: absolute;
@@ -326,8 +348,8 @@ h2::before{
   left: 15%;
   border-top: 2px solid #707070;
   /* order-bottom: 2px solid  #707070; i bez before-a za full bottom border */
-
 }
+
 
 .dropdown-menu{
   border: 2px solid  #00A2FF;
@@ -472,6 +494,15 @@ height: 60px;
 
 .filterOptions > input{
   width:60%;
+}
+
+.body-settings{
+  padding-left: 25px !important;
+  padding-right: 25px !important;
+}
+
+.userData{
+  display: flex;
 }
 
 }

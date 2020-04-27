@@ -1,7 +1,7 @@
 <template>
   <div class="login">
-  <h1 class="logo">Digitality</h1>
-  <h3 style="color: #00a2ff;"> Prijava </h3>
+    <h1 class="logo">Digitality</h1>
+    <h3 style="color: #00a2ff;"> Prijava </h3>
       <div class="container">
         <div class="row">
           <div class="col-sm"></div>
@@ -77,7 +77,7 @@ export default {
     },
     
 }
-//popraviti: na mobitelu i kompu drugaciji prikaz, dodati forgot password, popraviti za neke ekrane small tag se ne ponasa kako treba, staviti ikonu za brisanje maila?
+//popraviti: tri stupca na mobitelu i kompu drugaciji prikaz, dodati forgot password, popraviti za neke ekrane small tag se ne ponasa kako treba, staviti ikonu za brisanje maila?
 </script>
 
 <style scoped>
@@ -132,7 +132,7 @@ input {
   position: relative;
   animation: drop 1s;
   animation-fill-mode: forwards;
-  margin-top:-5%;
+  margin-top: 0% !important;
 }
 
 @keyframes drop {
@@ -179,4 +179,23 @@ span{
 }
 
 
+@media screen and (min-width: 1024px){
+  .login{
+    margin-top: 0% !important;
+  }
+}
+
+/*###Tablet(medium)###*/
+@media screen and (min-width : 768px) and (max-width : 1023px){
+  .login{
+    margin-top: 0px;
+  }
+}
+
+/*### Smartphones (portrait and landscape)(small)### */
+@media screen and (min-width : 0px) and (max-width : 767px){
+  .login{
+    margin-top:0%;
+  }
+}
 </style>
