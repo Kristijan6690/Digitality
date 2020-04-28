@@ -38,10 +38,9 @@ def login():
 
     email = request.get_json()['email']
     password = request.get_json()['password']
-    korisnici = mongo.db.Korisnik
     access = ""
 
-    for x in korisnici.find():
+    for x in mongo.db.Korisnik.find():
         if (x['email'] == email):
             if bcrypt.check_password_hash(x['password'],password):
                 access = {
@@ -56,17 +55,16 @@ def login():
     return jsonify(access)
 
 
-@app.route('/arhives',)
+@app.route('/arhives')
 def getarhive():
 
-    lista_arhiva = mongo.db.Lista_arhiva
     arhive = {}
     i = 0
     
-    for x in lista_arhiva.find():
+    for x in mongo.db.Lista_arhiva.find():
         arhive[i] = {
             'ID' : str(x['_id']),
-            'naziv' : x['naziv']
+            'naziv' : x['naziv'].capitalize()
         }
         i += 1
 
@@ -76,12 +74,11 @@ def getarhive():
 @app.route('/documents', methods=['POST'])
 def getdocument():
 
-    naziv_arhive = request.get_json()['naziv']
-    lista_dokumenta = mongo.db.Lista_arhiva
+    naziv_arhive = request.get_json()['naziv'].lower()
     dokumenti = {}
     i = 0
 
-    for x in lista_dokumenta.find():
+    for x in mongo.db.Lista_arhiva.find():
         if(naziv_arhive == x['naziv']):
             for y in x['documents']:    
                 # staviti if da se nađe id korisnika
@@ -104,6 +101,35 @@ def sendDocument():
     })
 
     return "Poslano u bazu"
+
+
+@app.route('/search', methods=['POST'])
+def searchDocument():
+
+    searchTerm = str(request.get_json()['searchTerm'])
+    searchTerm = searchTerm.lower()
+
+    if(searchTerm):
+        documents = {}
+        i = 0
+
+        cursor = mongo.db.Lista_arhiva.find({'naziv':{'$regex':'^(%s)' % searchTerm}})
+        result = list(cursor)
+        
+        for x in result:
+            documents[i] = {
+                'ID' : str(x['_id']),
+                'naziv' : x['naziv']
+            }
+            i += 1
+            
+        return jsonify(documents)
+
+    else:
+        return "Prazan search"
+        
+
+    
 
 
 if __name__ == "__main__":

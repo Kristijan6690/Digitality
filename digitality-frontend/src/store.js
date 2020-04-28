@@ -4,6 +4,7 @@ export default {
   userData: '',   //Podaci ulogiranog korisnika
   archiveData: '', //Podaci za arhive (voda,struja...)
   documentData: '', //Podaci za svaki dokument sa arhive
+  searchTerm: '', //Search 
 
   //Funkcije------------------------------------------------------
   current_date(){

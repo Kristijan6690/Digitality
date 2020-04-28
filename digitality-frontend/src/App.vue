@@ -4,7 +4,7 @@
         <nav v-if="this.$route.name !== 'Login' && this.$route.name !== 'Signup' " class="navbar navbar-expand-lg navbar-light bg-light border " >
               <a class="navbar-brand" id="navbarDesktop" href="/">
                 <div class="logo-brand ">
-                   <img src="Images/logo.png"/>
+                   <img src="/Images/logo.png"/>
                 </div>
               </a> 
               <!-- logo na mobitelu (kvalitetniji prikaz nego png) -->
@@ -50,7 +50,7 @@ export default {
   },
 
   async mounted() {
-    this.store.archiveData = await app.getArchives()
+    this.store.archiveData = await app.getArchives() // jos nadogradit da vuce za određenog usera
   }
 }
 </script>

@@ -52,7 +52,7 @@ export default {
     },
   methods: {
       async login() {
-        let result = await app.login(this.email, this.password);
+        let result = await app.login(this.email, this.password); // jos nadograditi da vrati finalni access token
         if(result){
           this.store.userData = result;
           this.$router.push({ name: 'Home' })

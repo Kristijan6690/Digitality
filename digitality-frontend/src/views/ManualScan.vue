@@ -93,7 +93,7 @@
 <!-- popraviti :  label value,mobile responsive, footer?, hovere na sve-->
 <script>
 
-import ArchiveCard from '@/components/ArchiveCard.vue'
+import ArchiveCard from '@/components/ArchiveCard.vue';
 
 export default {
   name: 'Home',

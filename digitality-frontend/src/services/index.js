@@ -35,11 +35,18 @@ let app = {
         return response.data;
     },
 
-    async sendDocument(blob,Docname){
-        await Service.post('send_document',{
+    async sendDocument(blob,nazivDokumenta){
+        await Service.post('/send_document',{
             docfile : blob,
-            docname : Docname
+            docname : nazivDokumenta
         })
+    },
+
+    async getSearchDocument(pretraga){
+        let response = await Service.post('/search',{
+            searchTerm : pretraga
+        })
+        return response.data;
     }
 };
 

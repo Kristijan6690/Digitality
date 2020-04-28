@@ -122,10 +122,10 @@
                       </div>
                     </div>
 
-                  <div class="search">
-                      <input id="searchBar" type="text" placeholder="Traži..."/>
+                  <form class="search">
+                      <input v-model = "store.searchTerm" id="searchBar" type="search" placeholder="Traži..."/>
                       <i class="fas fa-search fa-lg" id="searchIcon"></i>
-                  </div>
+                  </form>
                   
             </div>         
         </div>
@@ -152,8 +152,10 @@
 <!-- popraviti :  settings email overflow, search bottom padding elip, effecti elips, header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer? active navbar, bolji način za pozicioniranje filter ikone-->
 <script>
 
-import ArchiveCard from '@/components/ArchiveCard.vue'
+import ArchiveCard from '@/components/ArchiveCard.vue';
+import { app } from "@/services";
 import store from "@/store.js";
+import _ from "lodash";
 
 export default {
   data(){
@@ -166,9 +168,19 @@ export default {
   components: {
     ArchiveCard
   },
+
+  watch: {
+    "store.searchTerm": _.debounce(function(val) {
+      this.searchDocuments(val);
+    }, 500)
+  },
   
   methods:{
-    
+    async searchDocuments(pretraga){
+      pretraga = this.store.searchTerm
+      let response = await app.getSearchDocument(pretraga) // jos dodatno nadogradit search
+      console.log(response)
+    },
   }
 }
 </script>
