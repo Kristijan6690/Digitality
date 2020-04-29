@@ -82,7 +82,7 @@
                               <div class="settingsOptions custom-control custom-checkbox " >
                                 <input type="checkbox" class="custom-control-input" id="datDodavanjaCheckbox" name="datDodavanjaCheckbox" value="datDodavanjaCheckbox">
                                 <label for="datDodavanja" class="custom-control-label">Datum dodavanja:</label>
-                                <input type="text" id="datDodavanja" name="datDodavanja"><br>
+                                <input type="text" id="datDodavanja" name="datDodavanja" style="border:2px solid #888888;"><br>
                               </div>
                               <div class="settingsOptions custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="nazDobavljacaCheckbox" name="nazDobavljacaCheckbox" value="nazDobavljacaCheckbox">
