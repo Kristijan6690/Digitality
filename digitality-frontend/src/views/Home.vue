@@ -79,37 +79,37 @@
                           </div>
 
                           <div class="dropdownBody">                       
-                              <div class="settingsOptions custom-control custom-checkbox " >
+                              <div class="filterOptions custom-control custom-checkbox " >
                                 <input type="checkbox" class="custom-control-input" id="datDodavanjaCheckbox" name="datDodavanjaCheckbox" value="datDodavanjaCheckbox">
                                 <label for="datDodavanja" class="custom-control-label">Datum dodavanja:</label>
-                                <input type="text" id="datDodavanja" name="datDodavanja" style="border:2px solid #888888;"><br>
+                                <input type="text" id="datDodavanja" name="datDodavanja"><br>
                               </div>
-                              <div class="settingsOptions custom-control custom-checkbox ">
+                              <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="nazDobavljacaCheckbox" name="nazDobavljacaCheckbox" value="nazDobavljacaCheckbox">
                                 <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
                                 <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
                               </div>
-                              <div class="settingsOptions custom-control custom-checkbox ">
+                              <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="datIzdavanjaCheckbox" name="datIzdavanjaCheckbox" value="datIzdavanjaCheckbox">
                                 <label for="datIzdavanja" class="custom-control-label">Datum izdavanja:</label>
                                 <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
                               </div>
-                              <div class="settingsOptions custom-control custom-checkbox ">
+                              <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="datDospijecaCheckbox" name="datDospijecaCheckbox" value="datDospijecaCheckbox">
                                 <label for="datDospijeca" class="custom-control-label">Datum dospijeća:</label>
                                 <input type="text" id="datDospijeca" name="datDospijeca"><br>
                               </div>
-                              <div class="settingsOptions custom-control custom-checkbox ">
+                              <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="vrstaUslugeCheckbox" name="vrstaUslugeCheckbox" value="vrstaUslugeCheckbox">
                                 <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
                                 <input type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
                               </div>
-                              <div class="settingsOptions custom-control custom-checkbox ">
+                              <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="kolicinaCheckbox" name="kolicinaCheckbox" value="kolicinaCheckbox">
                                 <label for="kolicina" class="custom-control-label">Kolicina:</label>
                                 <input type="text" id="kolicina" name="kolicina"><br>
                               </div>
-                              <div class="settingsOptions custom-control custom-checkbox ">
+                              <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="iznosCheckbox" name="iznosCheckbox" value="iznosCheckbox">
                                 <label for="iznos" class="custom-control-label">Iznos:</label>
                                 <input type="text" id="iznos" name="iznos"><br>
@@ -337,11 +337,6 @@ a{
 
 #pristupNaslovHeader{
   line-height:30px;
-}
-
-.settingsOptions{
-  margin: 0 5px 5px 5px;
-  width: 410px;
 }
 
 #dropdownHeaderHeadline{
