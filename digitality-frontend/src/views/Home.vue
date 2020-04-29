@@ -43,10 +43,10 @@
                                      <div class="mailOsobe">example@email.com</div> 
                                      <div class="opcijaPopis">ukloni</div>  
                                 </div>
-                                <div class="userData" >
+                                <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
-                                     <div class="mailOsobe">example@email.com</div> 
-                                     <div class="opcijaPopis">dodaj</div>  
+                                     <div class="mailOsobe addUserName">example@email.com</div> 
+                                     <div class="opcijaPopis addUserButton">dodaj</div>  
                                 </div>
                               
                               </div>
@@ -380,6 +380,15 @@ a{
   background-color: #888888;
 }
 
+.addUserButton{
+  color: #23CA00;
+}
+
+.addUserName{
+  color: #888888;
+  
+  text-decoration: underline;
+}
 
 /* dropdown filter*/
 .filter{
