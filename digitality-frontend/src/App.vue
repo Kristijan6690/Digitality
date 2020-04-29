@@ -50,7 +50,9 @@ export default {
   },
 
   async mounted() {
-    this.store.archiveData = await app.getArchives() // jos nadogradit da vuce za određenog usera
+    let result = await app.getArchives() // jos nadogradit da vuce za određenog usera
+    if (result) this.store.archiveData = result
+    else console.log("Prazan collection")
   }
 }
 </script>

@@ -86,8 +86,13 @@ export default {
     }
   },
 
-  async mounted(){
-    this.store.documentData = await app.getDocuments(this.naziv);  // Još nadograditi da vuce doc za određenog usera
+  async mounted() {
+    let result = await app.getDocuments(this.naziv);  // Još nadograditi da vuce doc za određenog usera
+    if (result) this.store.documentData = result
+    else {
+      this.store.documentData = ''
+      console.log("Korisnik nema dokumenta")
+    }
   }
 }
 </script>

@@ -178,8 +178,7 @@ export default {
   methods:{
     async searchDocuments(pretraga){
       pretraga = this.store.searchTerm
-      let response = await app.getSearchDocument(pretraga) // jos dodatno nadogradit search
-      console.log(response)
+      this.store.archiveData = await app.getSearchDocument(pretraga) // jos dodatno nadogradit search
     },
   }
 }

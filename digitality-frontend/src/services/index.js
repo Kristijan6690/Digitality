@@ -43,7 +43,7 @@ let app = {
     },
 
     async getSearchDocument(pretraga){
-        let response = await Service.post('/search',{
+        let response = await Service.post('/search/lista_arhiva',{
             searchTerm : pretraga
         })
         return response.data;
