@@ -123,7 +123,7 @@
                       </div>
                     </div>
                   <form class="search">
-                      <input id="searchBar" type="text" placeholder="Traži..."/>
+                      <input v-model = "searchTerm" id="searchBar" type="text" placeholder="Traži..."/>
                       <i class="fas fa-search fa-lg" id="searchIcon"></i>
                   </form>
                   
@@ -169,11 +169,14 @@
 import Document from '@/components/Document.vue';
 import store from '@/store.js';
 import { app } from "@/services";
+import _ from "lodash";
 
 export default {
   data(){
     return {
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
+      searchTerm: '',
+      tempDoc: '',
       store
     }
   },
@@ -183,15 +186,40 @@ export default {
     Document
   },
 
+  watch: {
+    "searchTerm": _.debounce(function(val) {
+      this.searchDocuments(val);
+    }, 500)
+  },
+
   methods : {
     go_back(){
       return this.$router.go(-1);
-    }
+    },
+
+    async searchDocuments(pretraga){
+      if(this.searchTerm) {
+        pretraga = this.searchTerm
+        let regex = new RegExp (`^(${pretraga})`)
+        this.store.documentData = {}
+
+        for(let i = 0; i < Object.keys(this.tempDoc).length; i++){
+          if(this.tempDoc[i].naziv.match(regex)){
+            this.store.documentData[i] = this.tempDoc[i] 
+          }
+        }
+      } else {
+        this.store.documentData = this.tempDoc
+      }
+    },
   },
 
   async mounted() {
     let result = await app.getDocuments(this.naziv);  // Još nadograditi da vuce doc za određenog usera
-    if (result) this.store.documentData = result
+    if (result) {
+      this.store.documentData = result
+      this.tempDoc = result
+    }
     else {
       this.store.documentData = ''
       console.log("Korisnik nema dokumenta")

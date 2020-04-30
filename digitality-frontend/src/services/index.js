@@ -42,12 +42,12 @@ let app = {
         })
     },
 
-    async getSearchDocument(pretraga){
+    async getSearchArchives(pretraga){
         let response = await Service.post('/search/lista_arhiva',{
             searchTerm : pretraga
         })
         return response.data;
-    }
+    },
 };
 
 export { app, Service };

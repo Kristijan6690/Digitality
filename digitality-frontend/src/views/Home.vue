@@ -124,7 +124,7 @@
                     </div>
 
                   <form class="search">
-                      <input v-model = "store.searchTerm" id="searchBar" type="search" placeholder="Traži..."/>
+                      <input v-model = "searchTerm" id="searchBar" type="search" placeholder="Traži..."/>
                       <i class="fas fa-search fa-lg" id="searchIcon"></i>
                   </form>
                   
@@ -161,6 +161,7 @@ import _ from "lodash";
 export default {
   data(){
     return {
+      searchTerm: '',
       store
     }
   },
@@ -171,15 +172,15 @@ export default {
   },
 
   watch: {
-    "store.searchTerm": _.debounce(function(val) {
-      this.searchDocuments(val);
+    "searchTerm": _.debounce(function(val) {
+      this.searchArchives(val);
     }, 500)
   },
   
   methods:{
-    async searchDocuments(pretraga){
-      pretraga = this.store.searchTerm
-      this.store.archiveData = await app.getSearchDocument(pretraga) // jos dodatno nadogradit search
+    async searchArchives(pretraga){
+      pretraga = this.searchTerm
+      this.store.archiveData = await app.getSearchArchives(pretraga)
     },
   }
 }

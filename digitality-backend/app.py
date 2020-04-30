@@ -103,7 +103,7 @@ def getdocument():
                     # staviti if da se nađe id korisnika
                     dokumenti[i] = {
                         'id' : str(y['id']),
-                        'naziv' : y['naziv_doc']
+                        'naziv' : y['naziv_doc'].capitalize()
                     }
                     i += 1
 
@@ -123,9 +123,8 @@ def sendDocument():
     return "Poslano u bazu"
 
 
-# Nadograditi search 
 @app.route('/search/lista_arhiva', methods=['POST'])
-def searchDocument():
+def searchArchives():
 
     searchTerm = str(request.get_json()['searchTerm'])
     searchTerm = searchTerm.lower()
@@ -155,6 +154,8 @@ def searchDocument():
             i += 1  
             
         return jsonify(rezultat)  
-        
+
+
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
