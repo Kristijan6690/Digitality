@@ -505,6 +505,14 @@ h2::before{
   background-color: #888888;
 }
 
+.addButtonDiv{
+display: flex; 
+align-items: center; 
+justify-content: center; 
+height: 60px; 
+}
+
+
 /*     */
 
 #searchBar{
@@ -547,12 +555,6 @@ h2::before{
   color:#00a2ff;
 }
 
-.addButtonDiv{
-display: flex; 
-align-items: center; 
-justify-content: center; 
-height: 60px; 
-}
 
 #addButton{
   font-size:17.5px; 
