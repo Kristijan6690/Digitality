@@ -67,7 +67,7 @@
                           <option value="Archive_4">Arhiva_4</option>
                         </select>
                   </div>
-                      <!-- filter i filter dropdown -->
+                       <!-- filter i filter dropdown -->
                       <div class="btn-group" >
                         <button type="button" class="btn btn-secondary filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                           <div id="filterIcon" ><i class="fa fa-filter  fa-lg"  aria-hidden="true" ></i></div>
@@ -80,44 +80,45 @@
 
                           <div class="dropdownBody">                       
                               <div class="filterOptions custom-control custom-checkbox " >
-                                <input type="checkbox" class="custom-control-input" id="datDodavanjaCheckbox" name="datDodavanjaCheckbox" value="datDodavanjaCheckbox">
+                                <input type="checkbox" class="custom-control-input" id="datDodavanja" name="datDodavanja" value="datDodavanja">
                                 <label for="datDodavanja" class="custom-control-label">Datum dodavanja:</label>
                                 <input type="text" id="datDodavanja" name="datDodavanja"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="nazDobavljacaCheckbox" name="nazDobavljacaCheckbox" value="nazDobavljacaCheckbox">
+                                <input type="checkbox" class="custom-control-input" id="nazDobavljaca" name="nazDobavljaca" value="nazDobavljaca">
                                 <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
                                 <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="datIzdavanjaCheckbox" name="datIzdavanjaCheckbox" value="datIzdavanjaCheckbox">
+                                <input type="checkbox" class="custom-control-input" id="datIzdavanja" name="datIzdavanja" value="datIzdavanja">
                                 <label for="datIzdavanja" class="custom-control-label">Datum izdavanja:</label>
                                 <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="datDospijecaCheckbox" name="datDospijecaCheckbox" value="datDospijecaCheckbox">
+                                <input type="checkbox" class="custom-control-input" id="datDospijeca" name="datDospijeca" value="datDospijeca">
                                 <label for="datDospijeca" class="custom-control-label">Datum dospijeća:</label>
                                 <input type="text" id="datDospijeca" name="datDospijeca"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="vrstaUslugeCheckbox" name="vrstaUslugeCheckbox" value="vrstaUslugeCheckbox">
+                                <input type="checkbox" class="custom-control-input" id="vrstaUsluge" name="vrstaUsluge" value="vrstaUsluge">
                                 <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
                                 <input type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="kolicinaCheckbox" name="kolicinaCheckbox" value="kolicinaCheckbox">
+                                <input type="checkbox" class="custom-control-input" id="kolicina" name="kolicina" value="kolicina">
                                 <label for="kolicina" class="custom-control-label">Kolicina:</label>
                                 <input type="text" id="kolicina" name="kolicina"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="iznosCheckbox" name="iznosCheckbox" value="iznosCheckbox">
+                                <input type="checkbox" class="custom-control-input" id="iznos" name="iznos" value="iznos">
                                 <label for="iznos" class="custom-control-label">Iznos:</label>
                                 <input type="text" id="iznos" name="iznos"><br>
                               </div>
                             
                           </div>
-                          <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" > Traži</button>
+                          <div class="addButtonDiv">
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
                           </div>
                       </div>
                     </div>
@@ -185,6 +186,7 @@ export default {
 </script>
 
 <style scoped>
+
 
 
 .archive-options{
@@ -274,18 +276,15 @@ a{
   
 }
 
-#archiveName > h2 {
+#archiveSelection > h2 {
   text-align:center; 
   color: #00A2FF; 
   position:relative;
 }
 
-#archiveName {
+#archiveSelection {
   height: 50px; 
   position: relative;
-  text-align: center; 
-  padding-top: 5px; 
-  padding-bottom: 5px;
 }
 
 .search{
@@ -299,7 +298,29 @@ a{
   border: 2px solid  #00A2FF;
 }
 
+
 /* settings dropdown */
+
+#settingsIcon{
+  display:inline-block; 
+  position: absolute; 
+  left: 3px; 
+  top: 4px;
+}
+
+#archiveName > h2 {
+  text-align:center; 
+  color: #00A2FF; 
+  position:relative;
+}
+
+#archiveName {
+  height: 50px; 
+  position: relative;
+  text-align: center; 
+  padding-top: 5px; 
+  padding-bottom: 5px;
+}
 
 .userData{
   display: flex;
@@ -353,6 +374,7 @@ a{
   text-align: center; 
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 30px;
 }
 
 .opcijaPopis{
@@ -385,6 +407,12 @@ a{
   text-decoration: underline;
 }
 
+/*
+.dropdownFooter{
+  height: 70px !important;
+}
+*/
+
 /* dropdown filter*/
 .filter{
   width: 30px;
@@ -402,6 +430,7 @@ a{
 .filterOptions{
   margin: 0 5px 5px 5px;
   width: 410px;
+  
 }
 
 .filterOptions > label{
@@ -438,7 +467,7 @@ a{
   border-radius: 5px;
 }
 
-h2::before, h5::before{
+h2::before{
   content: '';
   display: block;
   position: absolute;
@@ -447,8 +476,8 @@ h2::before, h5::before{
   left: 15%;
   border-top: 2px solid #707070;
   /* order-bottom: 2px solid  #707070; i bez before-a za full bottom border */
-}
 
+}
 
 .dropdown-menu{
   border: 2px solid  #00A2FF;
@@ -474,12 +503,26 @@ h2::before, h5::before{
   top: 4px;
 }
 
-#settingsIcon{
-  display:inline-block; 
-  position: absolute; 
-  left: 3px; 
-  top: 4px;
+#addButtonFilter{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
 }
+
+#removeButtonFilter{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+  background-color: #888888;
+}
+
+.addButtonDiv{
+display: flex; 
+align-items: center; 
+justify-content: center; 
+height: 60px; 
+}
+
 
 /*     */
 
@@ -523,12 +566,6 @@ h2::before, h5::before{
   color:#00a2ff;
 }
 
-.addButtonDiv{
-display: flex; 
-align-items: center; 
-justify-content: center; 
-height: 60px; 
-}
 
 #addButton{
   font-size:17.5px; 
@@ -600,13 +637,6 @@ height: 60px;
 
 .filterOptions > input{
   width:60%;
-}
-
-/* settings dropdown */
-
-.body-settings{
-  padding-left: 25px !important;
-  padding-right: 25px !important;
 }
 
 

@@ -4,9 +4,60 @@
         <div class="row">
             <div class="col archive-options">
 
-                  <div class="settings">
-                      <i class="fas fa-cog fa-lg"></i>
-                  </div>
+                   <!-- settings dropdown -->
+                      <div class="btn-group" >
+                        <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                          <div id="settingsIcon" ><i class="fas fa-cog fa-lg"></i></div>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
+                          <div class="dropdownHeader" > 
+                              <h2 id="dropdownHeaderHeadline"> Postavke </h2> 
+                          </div>
+                          <div id="archiveName" >
+                              <div class="editIcon">
+                                <i class="far fa-edit"></i>
+                              </div>
+                              <div class="changeName" >
+                                <h5 id="changeNameHeader"> Moja_arhiva </h5> 
+                              </div>
+                          </div>
+                          <div class="dropdownBody body-settings" >                       
+                              <div id="pristupNaslov">
+                                <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
+                              </div>
+                              <div id="pristupPopis">  
+                               
+                                <div class="userData" >
+                                    <div class="personIcon"><i class="far fa-user"></i></div>
+                                    <div class="mailOsobe">example@email.com</div> 
+                                    <div class="opcijaPopis">ukloni</div>  
+                                </div>
+                                <div class="userData">
+                                    <div class="personIcon"><i class="far fa-user"></i> </div>
+                                    <div class="mailOsobe">example@email.com</div> 
+                                    <div class="opcijaPopis">ukloni</div>  
+                                </div>
+                                <div class="userData" >
+                                     <div class="personIcon"><i class="far fa-user"></i> </div>
+                                     <div class="mailOsobe">example@email.com</div> 
+                                     <div class="opcijaPopis">ukloni</div>  
+                                </div>
+                                <div class="userData "  >
+                                     <div class="personIcon"><i class="far fa-user"></i> </div>
+                                     <div class="mailOsobe addUserName">example@email.com</div> 
+                                     <div class="opcijaPopis addUserButton">dodaj</div>  
+                                </div>
+                              
+                              </div>
+                            </div>
+                          <div class="dropdownFooter addButtonDiv">
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" style="margin: 5px; border-radius:5px; border:0" > Spremi </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
+                          </div>
+                      </div>
+                    </div>
+                    
                   <div class="chooseArchive">
                       <i class="far fa-file fa-lg" ></i>
                       <select id="archiveSelector">
@@ -16,13 +67,65 @@
                           <option value="Archive_4">Ostalo</option>
                         </select>
                   </div>
-                  <div class="filter">
-                      <i class="fa fa-filter  fa-lg"  aria-hidden="true" ></i>
-                  </div>
-                  <div class="search">
+                   <!-- filter i filter dropdown -->
+                      <div class="btn-group" >
+                        <button type="button" class="btn btn-secondary filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                          <div id="filterIcon" ><i class="fa fa-filter  fa-lg"  aria-hidden="true" ></i></div>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-right" @click.stop=''>
+                          <div class="dropdownHeader" > 
+                              <h2 >Filter</h2> 
+                          </div>
+
+                          <div class="dropdownBody">                       
+                              <div class="filterOptions custom-control custom-checkbox " >
+                                <input type="checkbox" class="custom-control-input" id="datDodavanja" name="datDodavanja" value="datDodavanja">
+                                <label for="datDodavanja" class="custom-control-label">Datum dodavanja:</label>
+                                <input type="text" id="datDodavanja" name="datDodavanja"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="nazDobavljaca" name="nazDobavljaca" value="nazDobavljaca">
+                                <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
+                                <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="datIzdavanja" name="datIzdavanja" value="datIzdavanja">
+                                <label for="datIzdavanja" class="custom-control-label">Datum izdavanja:</label>
+                                <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="datDospijeca" name="datDospijeca" value="datDospijeca">
+                                <label for="datDospijeca" class="custom-control-label">Datum dospijeća:</label>
+                                <input type="text" id="datDospijeca" name="datDospijeca"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="vrstaUsluge" name="vrstaUsluge" value="vrstaUsluge">
+                                <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
+                                <input type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="kolicina" name="kolicina" value="kolicina">
+                                <label for="kolicina" class="custom-control-label">Kolicina:</label>
+                                <input type="text" id="kolicina" name="kolicina"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="iznos" name="iznos" value="iznos">
+                                <label for="iznos" class="custom-control-label">Iznos:</label>
+                                <input type="text" id="iznos" name="iznos"><br>
+                              </div>
+                            
+                          </div>
+                          <div class="addButtonDiv">
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
+                          </div>
+                      </div>
+                    </div>
+                  <form class="search">
                       <input id="searchBar" type="text" placeholder="Traži..."/>
                       <i class="fas fa-search fa-lg" id="searchIcon"></i>
-                  </div>
+                  </form>
                   
             </div>         
         </div>
@@ -289,6 +392,232 @@ export default {
    background-color:#FF0000; 
    border:0px;
 }
+
+
+/* settings dropdown */
+
+#settingsIcon{
+  display:inline-block; 
+  position: absolute; 
+  left: 3px; 
+  top: 4px;
+}
+
+#archiveName > h2 {
+  text-align:center; 
+  color: #00A2FF; 
+  position:relative;
+}
+
+#archiveName {
+  height: 50px; 
+  position: relative;
+  text-align: center; 
+  padding-top: 5px; 
+  padding-bottom: 5px;
+}
+
+.userData{
+  display: flex;
+}
+
+.changeName{
+  display:inline-block; 
+  color:#888888; 
+}
+
+.editIcon{
+  background-color: #00A2FF; 
+  display:inline-block; 
+  border-radius:3px; 
+  margin: 2.5px;
+}
+
+.fa-edit{
+  color:white; 
+  padding: 2.5px;
+}
+
+#changeNameHeader{
+  border-bottom: 2px solid #BEBEBE;
+} 
+
+.body-settings{
+  padding-right:50px; 
+  padding-left:50px;
+}
+
+#pristupNaslov {
+  text-align: center;
+}
+
+#pristupNaslovHeader{
+  line-height:30px;
+}
+
+#dropdownHeaderHeadline{
+  height:45px;
+}
+
+.personIcon{
+  display:inline-block;
+}
+
+.mailOsobe {
+  display:inline-block; 
+  width:200px;   
+  text-align: center; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 30px;
+}
+
+.opcijaPopis{
+  display:inline-block; 
+  color:#FF0000; 
+  width: 75px;
+  text-align: center;
+}
+
+#addButtonSettings{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+}
+
+#removeButtonSettings{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+  background-color: #888888;
+}
+
+.addUserButton{
+  color: #23CA00;
+}
+
+.addUserName{
+  color: #888888;
+  
+  text-decoration: underline;
+}
+
+/*
+.dropdownFooter{
+  height: 70px !important;
+}
+*/
+
+/* dropdown filter*/
+.filter{
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  margin : 10px 5px  10px 5px; 
+  float: right;
+  border-radius: 5px;
+  border: 2px solid  #00A2FF;
+  padding-top: 4px;
+  color:#00A2FF;
+  
+}
+
+.filterOptions{
+  margin: 0 5px 5px 5px;
+  width: 410px;
+  
+}
+
+.filterOptions > label{
+  width:40%;
+}
+
+.filterOptions > input > text{
+  width:40%;
+}
+
+
+.filterOptions > input{
+  color: black;
+  border-radius: 5px;
+  border: 2px solid #888888;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.filterOptions > input > checkbox {
+  width:40%;
+  color:blue;
+  background-color: pink;
+}
+
+
+.btn-group{
+  display:block;
+}
+
+
+.btn-group>.btn:first-child {
+  margin-left: 5px;
+  border-radius: 5px;
+}
+
+h2::before{
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 70%;
+  left: 15%;
+  border-top: 2px solid #707070;
+  /* order-bottom: 2px solid  #707070; i bez before-a za full bottom border */
+
+}
+
+.dropdown-menu{
+  border: 2px solid  #00A2FF;
+}
+
+.dropdownHeader > h2 {
+  text-align:center; 
+  color: #00A2FF; 
+  position:relative;
+}
+
+.dropdownHeader {
+  height: 50px; 
+  position: relative;
+}
+
+
+
+#filterIcon{
+  display:inline-block; 
+  position: absolute; 
+  left: 3px; 
+  top: 4px;
+}
+
+#addButtonFilter{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+}
+
+#removeButtonFilter{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+  background-color: #888888;
+}
+
+.addButtonDiv{
+display: flex; 
+align-items: center; 
+justify-content: center; 
+height: 60px; 
+}
+
 
 @media screen and (min-width: 1024px){
  .archive-options{
