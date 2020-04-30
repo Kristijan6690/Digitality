@@ -4,37 +4,60 @@
         <div class="row">
 
             <div class="col archive-options">
-                <!-- filter i filter dropdown -->
+                <!-- settings dropdown -->
                       <div class="btn-group" >
                         <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                          <div id="filterIcon" ><i class="fas fa-cog fa-lg"></i></div>
+                          <div id="settingsIcon" ><i class="fas fa-cog fa-lg"></i></div>
                         </button>
 
-                        <div class="dropdown-menu dropdown-menu-left" @click.stop=''>
+                        <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
                           <div class="dropdownHeader" > 
-                              <h2> Postavke </h2> 
+                              <h2 id="dropdownHeaderHeadline"> Postavke </h2> 
                           </div>
-                          <div id="archiveSelection">
-                            <i class="far fa-edit"></i>
-                            <h2> Moja_arhiva </h2> 
-                          </div>
-                          <div class="dropdownBody">                       
-                            <div id="pristupNaslov">
-                              Osobe sa pristupom
-                            </div>
-                              <div id="pristupPopis">
-                                  <div class="mailOsobe">adasdasdasda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
-                                  <div class="mailOsobe">adassda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
-                                  <div class="mailOsobe">adasddasda@adasdasd.com</div> <div class="opcijaPopis">ukloni</div>  
+                          <div id="archiveName" >
+                              <div class="editIcon">
+                                <i class="far fa-edit"></i>
                               </div>
-                            
+                              <div class="changeName" >
+                                <h5 id="changeNameHeader"> Moja_arhiva </h5> 
+                              </div>
                           </div>
-                          <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="padding-right: 5px;"> Traži</button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="padding-left: 5px;"> Poništi</button>
+                          <div class="dropdownBody body-settings" >                       
+                              <div id="pristupNaslov">
+                                <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
+                              </div>
+                              <div id="pristupPopis">  
+                               
+                                <div class="userData" >
+                                    <div class="personIcon"><i class="far fa-user"></i></div>
+                                    <div class="mailOsobe">example@email.com</div> 
+                                    <div class="opcijaPopis">ukloni</div>  
+                                </div>
+                                <div class="userData">
+                                    <div class="personIcon"><i class="far fa-user"></i> </div>
+                                    <div class="mailOsobe">example@email.com</div> 
+                                    <div class="opcijaPopis">ukloni</div>  
+                                </div>
+                                <div class="userData" >
+                                     <div class="personIcon"><i class="far fa-user"></i> </div>
+                                     <div class="mailOsobe">example@email.com</div> 
+                                     <div class="opcijaPopis">ukloni</div>  
+                                </div>
+                                <div class="userData "  >
+                                     <div class="personIcon"><i class="far fa-user"></i> </div>
+                                     <div class="mailOsobe addUserName">example@email.com</div> 
+                                     <div class="opcijaPopis addUserButton">dodaj</div>  
+                                </div>
+                              
+                              </div>
+                            </div>
+                          <div class="addButtonDiv dropdownFooter">
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings"> Spremi </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings"> Poništi</button>
                           </div>
                       </div>
                     </div>
+
 
                   <div class="chooseArchive">
                       <i class="far fa-file fa-lg" ></i>
@@ -94,8 +117,9 @@
                               </div>
                             
                           </div>
-                          <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" > Traži</button>
+                          <div class="addButtonDiv">
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
                           </div>
                       </div>
                     </div>
@@ -263,6 +287,121 @@ a{
   border: 2px solid  #00A2FF;
 }
 
+
+/* settings dropdown */
+
+#settingsIcon{
+  display:inline-block; 
+  position: absolute; 
+  left: 3px; 
+  top: 4px;
+}
+
+#archiveName > h2 {
+  text-align:center; 
+  color: #00A2FF; 
+  position:relative;
+}
+
+#archiveName {
+  height: 50px; 
+  position: relative;
+  text-align: center; 
+  padding-top: 5px; 
+  padding-bottom: 5px;
+}
+
+.userData{
+  display: flex;
+}
+
+.changeName{
+  display:inline-block; 
+  color:#888888; 
+}
+
+.editIcon{
+  background-color: #00A2FF; 
+  display:inline-block; 
+  border-radius:3px; 
+  margin: 2.5px;
+}
+
+.fa-edit{
+  color:white; 
+  padding: 2.5px;
+}
+
+#changeNameHeader{
+  border-bottom: 2px solid #BEBEBE;
+} 
+
+.body-settings{
+  padding-right:50px; 
+  padding-left:50px;
+}
+
+#pristupNaslov {
+  text-align: center;
+}
+
+#pristupNaslovHeader{
+  line-height:30px;
+}
+
+#dropdownHeaderHeadline{
+  height:45px;
+}
+
+.personIcon{
+  display:inline-block;
+}
+
+.mailOsobe {
+  display:inline-block; 
+  width:200px;   
+  text-align: center; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 30px;
+}
+
+.opcijaPopis{
+  display:inline-block; 
+  color:#FF0000; 
+  width: 75px;
+  text-align: center;
+}
+
+#addButtonSettings{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+}
+
+#removeButtonSettings{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+  background-color: #888888;
+}
+
+.addUserButton{
+  color: #23CA00;
+}
+
+.addUserName{
+  color: #888888;
+  
+  text-decoration: underline;
+}
+
+/*
+.dropdownFooter{
+  height: 70px !important;
+}
+*/
+
 /* dropdown filter*/
 .filter{
   width: 30px;
@@ -351,6 +490,19 @@ h2::before{
   position: absolute; 
   left: 3px; 
   top: 4px;
+}
+
+#addButtonFilter{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+}
+
+#removeButtonFilter{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0;
+  background-color: #888888;
 }
 
 /*     */
