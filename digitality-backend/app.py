@@ -103,7 +103,7 @@ def getdocument():
                     # staviti if da se nađe id korisnika
                     dokumenti[i] = {
                         'id' : str(y['id']),
-                        'tekst' : y['tekst']
+                        'naziv' : y['naziv_doc']
                     }
                     i += 1
 
