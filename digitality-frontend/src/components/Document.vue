@@ -1,7 +1,7 @@
 <template>
   <router-link v-bind:to="'/SubArchive.DocumentInfo/' + info.id">
     <div class="document">
-      <div class="documentName">{{info.tekst}}</div>
+      <div class="documentName">{{info.naziv}}</div>
       <div class="documentPicDiv">
         <img src='/Images/align-justify.png'/>
       </div>
