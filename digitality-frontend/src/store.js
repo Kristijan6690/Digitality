@@ -4,6 +4,24 @@ export default {
   userData: '',   //Podaci ulogiranog korisnika
   archiveData: '', //Podaci za arhive (voda,struja...)
   documentData: '', //Podaci za svaki dokument sa arhive
+  filter: {
+    datum_dodavanja: '',
+    naziv_dobavljača: '',
+    datum_izdavanja: '',
+    datum_dospijeća: '',
+    vrsta_usluge: '',
+    kolicina: '',
+    iznos: '',
+  },
+  filter_checks: {
+    datum_dodavanja_check: false,
+    naziv_dobavljača_check: false,
+    datum_izdavanja_check: false,
+    datum_dospijeća_check: false,
+    vrsta_usluge_check: false,
+    kolicina_check: false,
+    iznos_check: false,
+  },
 
   //Funkcije------------------------------------------------------
   current_date(){

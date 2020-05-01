@@ -80,45 +80,45 @@
 
                           <div class="dropdownBody">                       
                               <div class="filterOptions custom-control custom-checkbox " >
-                                <input type="checkbox" class="custom-control-input" id="datDodavanja" name="datDodavanja" value="datDodavanja">
+                                <input v-model ="store.filter_checks.datum_dodavanja_check" type="checkbox" class="custom-control-input" id="datDodavanja" name="datDodavanja" value="datDodavanja">
                                 <label for="datDodavanja" class="custom-control-label">Datum dodavanja:</label>
-                                <input type="text" id="datDodavanja" name="datDodavanja"><br>
+                                <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanja" name="datDodavanja"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="nazDobavljaca" name="nazDobavljaca" value="nazDobavljaca">
+                                <input v-model ="store.filter_checks.naziv_dobavljača_check" type="checkbox" class="custom-control-input" id="nazDobavljaca" name="nazDobavljaca" value="nazDobavljaca">
                                 <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
-                                <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
+                                <input v-model ="store.filter.naziv_dobavljača" type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="datIzdavanja" name="datIzdavanja" value="datIzdavanja">
+                                <input v-model ="store.filter_checks.datum_izdavanja_check" type="checkbox" class="custom-control-input" id="datIzdavanja" name="datIzdavanja" value="datIzdavanja">
                                 <label for="datIzdavanja" class="custom-control-label">Datum izdavanja:</label>
-                                <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
+                                <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanja" name="datIzdavanja"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="datDospijeca" name="datDospijeca" value="datDospijeca">
+                                <input v-model ="store.filter_checks.datum_dospijeća_check" type="checkbox" class="custom-control-input" id="datDospijeca" name="datDospijeca" value="datDospijeca">
                                 <label for="datDospijeca" class="custom-control-label">Datum dospijeća:</label>
-                                <input type="text" id="datDospijeca" name="datDospijeca"><br>
+                                <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijeca" name="datDospijeca"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="vrstaUsluge" name="vrstaUsluge" value="vrstaUsluge">
+                                <input v-model ="store.filter_checks.vrsta_usluge_check" type="checkbox" class="custom-control-input" id="vrstaUsluge" name="vrstaUsluge" value="vrstaUsluge">
                                 <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
-                                <input type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
+                                <input v-model ="store.filter.vrsta_usluge" type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="kolicina" name="kolicina" value="kolicina">
+                                <input v-model ="store.filter_checks.kolicina_check" type="checkbox" class="custom-control-input" id="kolicina" name="kolicina" value="kolicina">
                                 <label for="kolicina" class="custom-control-label">Kolicina:</label>
-                                <input type="text" id="kolicina" name="kolicina"><br>
+                                <input v-model ="store.filter.kolicina" type="text" id="kolicina" name="kolicina"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="iznos" name="iznos" value="iznos">
+                                <input v-model ="store.filter_checks.iznos_check" type="checkbox" class="custom-control-input" id="iznos" name="iznos" value="iznos">
                                 <label for="iznos" class="custom-control-label">Iznos:</label>
-                                <input type="text" id="iznos" name="iznos"><br>
+                                <input v-model ="store.filter.iznos" type="text" id="iznos" name="iznos"><br>
                               </div>
                             
                           </div>
                           <div class="addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
+                                <button v-on:click = "filter_trazi()" type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
+                                <button v-on:click = "filter_obrisi()" type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
                           </div>
                       </div>
                     </div>
@@ -197,14 +197,48 @@ export default {
       return this.$router.go(-1);
     },
 
+    filter_obrisi(){
+      let varijable_filtera = Object.keys(this.store.filter)
+
+      for(let i = 0; i < varijable_filtera.length; i++) {
+        if(this.store.filter[varijable_filtera[i]] != '') {
+          this.store.filter[varijable_filtera[i]] = ''
+        }
+      }
+    },
+
+    filter_trazi() {
+      let filter_podaci = {}
+      let varijable_filtera = Object.keys(this.store.filter)
+      let varijable_filtera_checks = Object.keys(this.store.filter_checks)
+
+      for(let i = 0; i < varijable_filtera.length; i++) {
+        if(this.store.filter_checks[varijable_filtera_checks[i]]) {
+          filter_podaci[varijable_filtera[i]] = this.store.filter[varijable_filtera[i]]
+        }
+      }
+      //samo primjer filtriranja za sada:
+      if(Object.keys(filter_podaci).length > 0) {
+        let regex = new RegExp (`^(${filter_podaci.naziv_dobavljača.toLowerCase()})`)
+        this.store.documentData = {}
+        console.log(this.store.documentData)
+
+        for(let j = 0; j < Object.keys(this.tempDoc).length; j++){
+          if(this.tempDoc[j].naziv.toLowerCase().match(regex)){
+            this.store.documentData[j] = this.tempDoc[j] 
+          }
+        }
+      }
+    },
+
     async searchDocuments(pretraga){
       if(this.searchTerm) {
-        pretraga = this.searchTerm
+        pretraga = this.searchTerm.toLowerCase()
         let regex = new RegExp (`^(${pretraga})`)
         this.store.documentData = {}
 
         for(let i = 0; i < Object.keys(this.tempDoc).length; i++){
-          if(this.tempDoc[i].naziv.match(regex)){
+          if(this.tempDoc[i].naziv.toLowerCase().match(regex)){
             this.store.documentData[i] = this.tempDoc[i] 
           }
         }
@@ -212,6 +246,7 @@ export default {
         this.store.documentData = this.tempDoc
       }
     },
+
   },
 
   async mounted() {
