@@ -20,6 +20,37 @@
         :initial-image="'path/to/initial-image.png'"
         @new-image-drawn="onLoad()"
       ></croppa>
+
+    <!-- success confirmation -->
+      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" >
+          
+          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                   Dokument dodan u arhivu _____
+                  <hr/>
+                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+              </div>
+          
+            </div>
+        </div>
+      </div>
+
+      <!-- success confirmation -->
+      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" >
+          
+          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                   Došlo je do greške prilikom učitavanja dokumenta
+                  <hr/>
+                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+              </div>
+          
+            </div>
+        </div>
+      </div>
+
   </div>
 </template>
 

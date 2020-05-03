@@ -6,8 +6,8 @@
             </div>
             <div class="row">
                  <div class="col heading">        
-                  <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
-                  <div><i class="fas fa-info-circle fa-2x" ></i></div>
+                    <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
+                    <button type="button" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
                 </div>         
             </div>
             <form action="/action_page.php">
@@ -82,6 +82,38 @@
                     <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" >Dodaj</button>
                 </div> 
             </form>
+
+            <!-- Modal -->
+                <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="display:block;">
+                        <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Pomoć</h3>
+                      </div>
+                      <div class="modal-body" style="border: 1px solid black; margin-left: 10px; margin-right: 10px;">
+                        <p> 
+                          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus,
+                          porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus
+                          sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur. 
+                        </p>
+                        <p>
+                          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus 
+                          auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget 
+                          quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna
+                        </p>
+                        <p>
+                          Vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                          Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+                           Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                        </p> 
+                      </div>
+                      <div class="modal-footer" style="text-align:center; display:block;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:#00A2FF">Zatvori</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
             <!-- footer
             <div class="row">
                 <div class="col archive"></div>
@@ -287,7 +319,7 @@ a{
 
 #headlineDiv{
   width: 100%; 
-  padding-left:33px;
+  padding-left:44px;
   text-align:center; 
 }
 

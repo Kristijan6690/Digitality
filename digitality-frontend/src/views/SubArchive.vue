@@ -134,10 +134,40 @@
                   <!-- maknuti submit iz buttona? -->
                   <button type="submit" v-on:click="go_back()" class="btn btn-pr imary my-2 my-sm-0" id="backButton">Natrag</button>             
                   <div style="width: 100%;" id="headlineDiv"><h1 id="headline">Internet</h1></div>
-                  <button type="submit" class="btn btn-primary my-2 my-sm-0" id="deleteButton">Izbriši</button>
+                  <button type="button" class="btn btn-primary my-2 my-sm-0" id="deleteButton"  data-toggle="modal" data-target="#delete_confirmation">Izbriši</button>
             </div>         
         </div>
-       
+
+            <!-- Delete modal -->
+            <div class="modal fade" id="delete_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border-radius: 7.5px;">
+                  <div class="modal-header">
+                    <h5 class="col-12 modal-title text-center" id="exampleModalLongTitle" style="font-size: 30px;  color:#00A2FF;"> Potvrdite brisanje </h5>
+                  </div>
+                  <!-- <div class="modal-body"> </div> -->
+                  <div class="modal-footer">
+                    <div  style="display: inline-block; font-size: 25px; width: 50%; color: green" data-dismiss="modal" data-toggle="modal" data-target="#success_confirmation"><i class="fas fa-check"></i></div>
+                    <div style="display: inline-block; font-size: 25px; width: 50%; color: red"  data-dismiss="modal"><i class="fas fa-times"></i></div>  
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- delete success confirmation -->
+            <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" >
+                
+                <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+                    <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                        Uspješno izbrisano
+                        <hr/>
+                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+                    </div>
+                
+                  </div>
+              </div>
+            </div>
         <div class="row">
             <div class="col archive">
               <Document v-bind:key="card.id" v-bind:info="card" v-for="card in store.documentData" /> 
@@ -151,6 +181,7 @@
               </div>
               -->
             </div>
+
 
         </div>
         <!-- footer
@@ -636,6 +667,7 @@ h2::before{
   /* order-bottom: 2px solid  #707070; i bez before-a za full bottom border */
 
 }
+
 
 .dropdown-menu{
   border: 2px solid  #00A2FF;
