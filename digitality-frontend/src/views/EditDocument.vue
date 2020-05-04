@@ -3,6 +3,7 @@
       <div class="container">
             <div class="row">
                 <!-- mjesto za header ako ce ici -->
+                <span style="background-color:red;">Kristus evo tu je ta obrazac kire mare ucitat z baze vrijedosti i kire wokhu korisnik zamejna</span>
             </div>
             <div class="row">
                  <div class="col heading">        
@@ -15,11 +16,11 @@
                         <div class="box one archive">
                             <div class="data">
                                 <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
+                                <input v-model="proba" type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
                             </div>
                             <div class="data">
                                 <label for="nazKupca">Naziv kupca:</label>
-                                <input type="text" id="nazKupca" name="nazKupca"><br><br>
+                                <input v-model="proba" type="text" id="nazKupca" name="nazKupca"><br><br>
                             </div>
                             <div class="data">
                                 <label for="brojRacuna">Broj računa:</label>
@@ -79,7 +80,8 @@
         
                 </div>
                 <div class="row addButtonDiv">
-                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" >Dodaj</button>
+                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button>
+                    <button type="button" @click="go_back()" class="btn btn-primary my-2 my-sm-0" id="backButton" > Odustani </button>
                 </div> 
             </form>
 
@@ -131,6 +133,17 @@ export default {
   name: 'Home',
   components: {
     
+  },
+   data(){
+      return {
+        proba: 'valda se tu dejva preko v-modela ko te, valda nejson kako glupost naridu haha'
+      }
+  },
+
+  methods:{
+    go_back(){
+      return this.$router.go(-1);
+    },
   }
 }
 </script>
@@ -338,6 +351,7 @@ background-color: #f6f6f2;
 #addButton{
   font-size:20px; 
   width:150px;
+  margin: 10px;
 }
 
 
@@ -354,6 +368,13 @@ background-color: #f6f6f2;
   opacity: 1; 
 }
 
+#backButton{
+  font-size:20px; 
+  width:150px;
+  margin:10px;
+  background-color: #888888;
+  border-color: #888888;
+}
 
 
 /* y@media screen and (min-width: 1024px){} */

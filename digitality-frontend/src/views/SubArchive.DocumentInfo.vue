@@ -7,8 +7,8 @@
             <div class="row">
                  <div class="col heading">        
                     <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
-                    <button type="button" data-toggle="modal" data-target="#pictureModal" style="border:none;"><i class="fa fa-picture-o fa-2x"></i></button>
-                    <button type="button" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
+                    <button type="button" class="glowEffect" data-toggle="modal" data-target="#pictureModal" style="border:none;"><i class="fa fa-picture-o fa-2x"></i></button>
+                    <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
                 </div>         
             </div>
             <form action="/action_page.php">
@@ -80,7 +80,7 @@
         
                 </div>
                 <div class="row addButtonDiv">
-                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button>
+                    <router-link to="/editdocument"><button type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button></router-link>
                 </div> 
             </form>
 
@@ -362,6 +362,21 @@ background-color: #f6f6f2;
   font-size:20px; 
   width:150px;
 }
+
+@keyframes glow {
+  80%, 100% {
+      text-shadow: 0 0 5px #00A2FF;
+  }
+}
+
+.glowEffect {
+  animation: glow 2s 4;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  opacity: 1; 
+}
+
+
 /* y@media screen and (min-width: 1024px){} */
 
 @media screen and (min-width : 992px) and (max-width : 1200px){

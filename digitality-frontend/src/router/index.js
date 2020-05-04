@@ -48,6 +48,11 @@ const routes = [
     name: 'ManualScan',
     component: () => import('../views/ManualScan.vue')
   },
+  {
+    path: '/editdocument',
+    name: 'EditDocument',
+    component: () => import('../views/EditDocument.vue')
+  },
   
 ]
 
