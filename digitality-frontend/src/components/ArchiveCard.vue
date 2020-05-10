@@ -50,4 +50,17 @@ export default {
   color: #888888;  
 }
 
+@media screen and (min-width : 0px) and (max-width : 767px){
+.subArchive{
+  width:120px;
+  height: 140px;
+  margin-top:25px;
+  margin-left: 25px;
+  margin-right: 10px;
+  display: block; 
+  float: left;
+  }
+
+}
+
 </style>

@@ -56,4 +56,11 @@ export default {
   font-size: 17.5px;
   color: #707070;
 }
+
+@media screen and (min-width : 0px) and (max-width : 767px){
+  .document{
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+}
 </style>

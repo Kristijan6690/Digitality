@@ -134,7 +134,7 @@
         <div class="row">
           <div class="col archive">
             <ArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.archiveData" />
-            <div class="subArchive" >
+            <div class="subArchivePlus" >
                 <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
                 <div class="folderName">Dodaj podarhivu</div>
           </div>
@@ -147,10 +147,9 @@
         </div>
         -->
       </div>
-    <router-link to="/login">Login</router-link>
   </div>
 </template>
-<!-- popraviti :  settings email overflow, search bottom padding elip, effecti elips, header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer? active navbar, bolji način za pozicioniranje filter ikone-->
+<!-- popraviti : logo na title kartici,mobile dva subarchiva u jednom redu,settings email overflow, search bottom padding elip, effecti elips, header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer? active navbar, bolji način za pozicioniranje filter ikone-->
 <script>
 
 import ArchiveCard from '@/components/ArchiveCard.vue';
@@ -210,11 +209,11 @@ export default {
   /* border-bottom: 2px solid  #00A2FF;  -border za footer */
 }
 
-.subArchive{
+.subArchivePlus{
   width:120px;
   height: 140px;
   margin-top:25px;
-  margin-left: 48px;
+  margin-left: 50px;
   margin-right: 10px;
   display: block; 
   float: left;
@@ -600,15 +599,6 @@ height: 60px;
   
   } 
 
-.subArchive{
-  width:120px;
-  height: 140px;
-  margin-top:25px;
-  margin-left: 25px;
-  margin-right: 10px;
-  display: inline-block; 
- }
-
  .search{
   width: 135px;
 }
@@ -638,6 +628,22 @@ height: 60px;
 
 .filterOptions > input{
   width:60%;
+}
+
+/*  */
+
+.subArchivePlus{
+  width:120px;
+  height: 140px;
+  margin-top:25px;
+  margin-left: 25px;
+  margin-right: 10px;
+  display: block; 
+  float: left;
+  /* varijanta manji razmak i centrirane
+  margin-left: 10px;
+  margin-right: 10px;
+  display: inline-block; */
 }
 
 

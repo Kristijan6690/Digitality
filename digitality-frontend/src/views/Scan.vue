@@ -1,10 +1,10 @@
 <template>
-  <div class="container">
-    <croppa 
+  <div class="container" >
+    <croppa class="croppa1"
         v-model="myCroppa"
         :width="700"
         :height="500"
-        :placeholder="'Drag and drop your file here'"
+        :placeholder= this.placeholder
         :placeholder-font-size="40"
         :quality="2"
         :zoom-speed="3"
@@ -17,6 +17,7 @@
         :prevent-white-space="false"
         :reverse-scroll-to-zoom="false"
         :show-remove-button="false"
+        auto-sizing
         :initial-image="'path/to/initial-image.png'"
         @new-image-drawn="onLoad()"
       ></croppa>
@@ -62,7 +63,9 @@ import { app } from "@/services";
 export default {
   data() {
     return {
-      myCroppa: null
+      myCroppa: null,
+      placeholderFontSize: 1,
+      placeholder: 'Drag and drop your file here'
     };
   },
 
@@ -87,21 +90,77 @@ export default {
       await app.sendDocument(blobData,url_dokumenta)
     },
 
-  }
+    myEventHandler(e) {
+      if(screen.width < 757){
+        this.placeholder = 'Choose a file';
+      }
+
+      else{
+        this.placeholder = 'Drag and drop your file here';
+      }
+    }
+
+  },
+
+  created() {
+    window.addEventListener("resize", this.myEventHandler);
+  },
+
+  destroyed() {
+    window.removeEventListener("resize", this.myEventHandler);
+  },
+
 };
+
+
 //popraviti: na mobitelu i kompu drugaciji prikaz, dodati forgot password, popraviti za neke ekrane small tag se ne ponasa kako treba, staviti ikonu za brisanje maila?
 </script>
 
 <style scoped>
+
 .container {
   display: -webkit-box;
   justify-content: center;
   align-items: center;
-  height: 700px;
 }
 
 .croppa-container {
   /* https://kovart.github.io/dashed-border-generator/ */
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2300A2FFFF' stroke-width='6' stroke-dasharray='23' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 }
+
+@media screen and (min-width: 768px){
+ .croppa-container.croppa1 {
+  margin: 50px auto;
+ }
+
+ .container {
+  display: -webkit-box;
+  justify-content: center;
+  align-items: center;
+  }
+}
+
+
+@media screen and (min-width : 0px) and (max-width : 767px){
+
+.croppa-container.croppa1 {
+  width: 100%;
+  height: 300px;
+  margin: 50px auto;
+  display: block;
+ }
+}
+
+canvas{
+  width:20px !important;  
+}
+
+.container {
+  display: -webkit-box;
+  justify-content: center;
+  align-items: center;
+
+}
+
 </style>
