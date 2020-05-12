@@ -67,58 +67,61 @@
                           <option value="Archive_4">Arhiva_4</option>
                         </select>
                   </div>
-                       <!-- filter i filter dropdown -->
+                       <!-- sort dropdown -->
                       <div class="btn-group" >
-                        <button type="button" class="btn btn-secondary filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                          <div id="filterIcon" ><i class="fa fa-filter  fa-lg"  aria-hidden="true" ></i></div>
+                        <button type="button" class="btn btn-secondary sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                          <div id="sortIcon" ><i class="fas fa-sort-amount-down fa-lg"></i></div>
                         </button>
 
                         <div class="dropdown-menu dropdown-menu-right" @click.stop=''>
                           <div class="dropdownHeader" > 
-                              <h2 >Filter</h2> 
+                              <h2 >Organiziraj arhivu</h2> 
                           </div>
 
-                          <div class="dropdownBody">                       
-                              <div class="filterOptions custom-control custom-checkbox " >
-                                <input type="checkbox" class="custom-control-input" id="datDodavanja" name="datDodavanja" value="datDodavanja">
-                                <label for="datDodavanja" class="custom-control-label">Datum dodavanja:</label>
-                                <input type="text" id="datDodavanja" name="datDodavanja"><br>
+                          <div class="dropdownBody" style="padding-top:10px;">              
+                            <div style="margin: 0 10px 0 10px">         
+                                <!-- Default inline 1 bootstrap-->
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                                <label class="custom-control-label" for="defaultInline1" style="padding-right:5px;">
+                                  Datum pregleda silazno 
+                                  <i class="fas fa-sort-amount-down"></i>       
+                                </label>  
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="nazDobavljaca" name="nazDobavljaca" value="nazDobavljaca">
-                                <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
-                                <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
+
+                              <!-- Default inline 2-->
+                              <div class="custom-control custom-checkbox custom-control-inline" style="margin-left: 5px;">
+                                <input type="checkbox" class="custom-control-input" id="defaultInline2">
+                                <label class="custom-control-label" for="defaultInline2" style="padding-right:5px;">
+                                  Abecedno silazno
+                                  <i class="fas fa-sort-amount-up"></i>    
+                                </label>       
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="datIzdavanja" name="datIzdavanja" value="datIzdavanja">
-                                <label for="datIzdavanja" class="custom-control-label">Datum izdavanja:</label>
-                                <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
+                            </div>
+                             
+                            <div style="margin: 0 10px 0 10px">    
+                              <!-- Default inline 3-->
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="defaultInline3">
+                                <label class="custom-control-label" for="defaultInline3" style="padding-right:5px;">
+                                  Datum pregleda uzlazno
+                                  <i class="fas fa-sort-numeric-down-alt"></i>
+                                </label>
+                               
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="datDospijeca" name="datDospijeca" value="datDospijeca">
-                                <label for="datDospijeca" class="custom-control-label">Datum dospijeća:</label>
-                                <input type="text" id="datDospijeca" name="datDospijeca"><br>
+                              <!-- Default inline 4-->
+                              <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="defaultInline4">
+                                <label class="custom-control-label" for="defaultInline4" style="padding-right:5px;">
+                                  Abecedno uzlazno
+                                  <i class="fas fa-sort-numeric-up-alt"></i>
+                                </label>         
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="vrstaUsluge" name="vrstaUsluge" value="vrstaUsluge">
-                                <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
-                                <input type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
-                              </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="kolicina" name="kolicina" value="kolicina">
-                                <label for="kolicina" class="custom-control-label">Kolicina:</label>
-                                <input type="text" id="kolicina" name="kolicina"><br>
-                              </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="iznos" name="iznos" value="iznos">
-                                <label for="iznos" class="custom-control-label">Iznos:</label>
-                                <input type="text" id="iznos" name="iznos"><br>
-                              </div>
-                            
+                            </div>
+                                                   
                           </div>
                           <div class="addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="sortButton"> Potvrdi </button>
                           </div>
                       </div>
                     </div>
@@ -414,7 +417,7 @@ a{
 */
 
 /* dropdown filter*/
-.filter{
+.sort{
   width: 30px;
   height: 30px;
   background-color: white;
@@ -427,22 +430,23 @@ a{
   
 }
 
-.filterOptions{
+.sortOptions{
   margin: 0 5px 5px 5px;
   width: 410px;
   
 }
 
-.filterOptions > label{
+.sortOptions > label{
+  width:40%;
+  padding-right: 5px;
+}
+
+.sortOptions > input > text{
   width:40%;
 }
 
-.filterOptions > input > text{
-  width:40%;
-}
 
-
-.filterOptions > input{
+.sortOptions > input{
   color: black;
   border-radius: 5px;
   border: 2px solid #888888;
@@ -450,7 +454,7 @@ a{
   padding-right: 5px;
 }
 
-.filterOptions > input > checkbox {
+.sortOptions > input > checkbox {
   width:40%;
   color:blue;
   background-color: pink;
@@ -496,24 +500,17 @@ h2::before{
 
 
 
-#filterIcon{
+#sortIcon{
   display:inline-block; 
   position: absolute; 
   left: 3px; 
   top: 4px;
 }
 
-#addButtonFilter{
+#sortButton{
   margin: 5px; 
   border-radius:5px; 
   border:0;
-}
-
-#removeButtonFilter{
-  margin: 5px; 
-  border-radius:5px; 
-  border:0;
-  background-color: #888888;
 }
 
 .addButtonDiv{
@@ -615,18 +612,18 @@ height: 60px;
   	padding-left: 3px;
 }
 
-/* filter dropdown */
+/* sort dropdown */
 
-.filterOptions {
+.sortOptions {
   width:auto;
 }
 
-.filterOptions > label{
+.sortOptions > label{
   width:40%;
   font-size: 75%;
 }
 
-.filterOptions > input{
+.sortOptions > input{
   width:60%;
 }
 
