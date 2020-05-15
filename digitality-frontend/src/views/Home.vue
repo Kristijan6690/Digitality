@@ -58,26 +58,62 @@
                       </div>
                     </div>
 
-                  <div class="chooseArchive">
-                      <i class="far fa-file fa-lg" ></i>
-                      <select id="archiveSelector">
-                          <option value="Archive_1">Arhiva_1</option>
-                          <option value="Archive_2">Arhiva_2</option>
-                          <option value="Archive_3">Arhiva_3</option>
-                          <option value="Archive_4">Arhiva_4</option>
-                          <option disabled>──────────</option>
-                          <option value="Archive_4">Dodaj arhivu</option>
-                        </select>
-                  </div>
-                       <!-- sort dropdown -->
+                    <!-- choose Archive (Dropdown umjesto selecta zbog veće mogućnosti customizacije -- prebaciti css u css--> 
+                     <div class="btn-group  dropdown" >
+                       
+                       <button class="btn btn-light dropdown-toggle chooseArchive" type="button" id="dropdownMenuArchive" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #00A2FF; margin-left:0px; text-align:left; vertical-align: top;">
+                        <div style="display:inline-block; padding: 0px 5px; width:20%; vertical-align: top;"><i class="far fa-file fa-lg" ></i></div>
+                        <div style="display:inline-block; padding: 0px 10px; width:70%; overflow:hidden; text-overflow: ellipsis;  vertical-align: top;"> {{store.currentArchive}} </div>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-left menu-settings">
+                          <div class="dropdownHeader"  @click.stop=''> 
+                              <h2 id="archiveHeader" style="font-size: 1.5rem; margin:5px 20px 0 20px; height:35px;"> Odaberite arhivu </h2> 
+                          </div>
+                  
+                          <div class="dropdownBody body-settings" style="border: solid 1px #D3D3D3; margin: 0px 40px 0 40px; padding: 0 0 0 0;">                       
+                            
+                              <div id="pristupPopis" style="padding: 5px 5px 30px 5px; ">  
+                               <form id="archiveForm" name="archiveForm">
+                                <div class="filterOptions custom-control custom-radio " >
+                                  <input  v-model="store.currentArchive" checked="checked" type="radio" class="custom-control-input" id="Arhiva_1" name="Archive" value="Arhiva_1">
+                                  <label for="Arhiva_1" class="custom-control-label">Arhiva_1</label>
+                                </div>
+                                <div class="filterOptions custom-control custom-radio " >
+                                  <input  v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_2" name="Archive" value="Arhiva_2">
+                                  <label for="Arhiva_2" class="custom-control-label">Arhiva_2</label>
+                                </div>
+                                <div class="filterOptions custom-control custom-radio " >
+                                  <input v-model="store.currentArchive"  type="radio" class="custom-control-input" id="Arhiva_3" name="Archive" value="Arhiva_3">
+                                  <label for="Arhiva_3" class="custom-control-label">Arhiva_3</label>
+                                </div>
+                                <div class="filterOptions custom-control custom-radio " >
+                                  <input v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_4" name="Archive" value="Arhiva_4">
+                                  <label for="Arhiva_4" class="custom-control-label">Arhiva_4</label>
+                                </div>
+                                <div class="filterOptions custom-control custom-radio " >
+                                  <input v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_5" name="Archive" value="Arhiva_5">
+                                  <label for="Arhiva_5" class="custom-control-label">Arhiva_5_Dugi_Naziv</label>
+                                </div>
+                               </form>
+                              </div>
+                            </div>
+                          <div class="dropdownFooter addButtonDiv"  @click.stop=''>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" style="margin: 5px; border-radius:5px; border:0" > Dodaj </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
+                          </div>
+                      </div>
+                    </div>
+            
+                  
+                       <!-- sort dropdown prebaciti css u css i popraviti nazive-->
                       <div class="btn-group" >
                         <button type="button" class="btn btn-secondary sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                           <div id="sortIcon" ><i class="fas fa-sort-amount-down fa-lg"></i></div>
                         </button>
 
                         <div class="dropdown-menu dropdown-menu-right" @click.stop=''>
-                          <div class="dropdownHeader" > 
-                              <h2 >Organiziraj arhivu</h2> 
+                          <div class="dropdownHeader" >
+                              <h2 style="height:42px;">Organiziraj arhivu</h2> 
                           </div>
 
                           <div class="dropdownBody" style="padding-top:10px; font-size: 15px;">              
@@ -92,7 +128,7 @@
                               </div>
 
                               <!-- Default inline 2-->
-                              <div class="custom-control custom-checkbox custom-control-inline" style="margin-left: 5px;">
+                              <div class="custom-control custom-checkbox custom-control-inline" id="defaultInline2Div" >
                                 <input onclick="selectOnlyThis(this.id)"  name="myCheckbox" value="2" type="checkbox" class="custom-control-input" id="defaultInline2">
                                 <label class="custom-control-label" for="defaultInline2" style="padding-right:5px;">
                                   Abecedno silazno
@@ -194,9 +230,13 @@ export default {
     el.checked = false;
      });
     id.checked = true;  
-    }
-  }
+    },
+    
+  },
+
 }
+
+
 </script>
 
 <style scoped>
@@ -275,6 +315,7 @@ a{
   float: left;
   border-radius: 5px;
   border: 2px solid  #00A2FF;
+  padding: 3px;
 }
 
 .settings{
@@ -471,6 +512,9 @@ a{
   background-color: pink;
 }
 
+#defaultInline2Div{
+  margin-left: 5px;
+}
 
 .btn-group{
   display:block;
@@ -491,7 +535,12 @@ h2::before{
   left: 15%;
   border-top: 2px solid #707070;
   /* order-bottom: 2px solid  #707070; i bez before-a za full bottom border */
+}
 
+
+#archiveHeader::before {
+  left: 5%;
+  width: 90%;
 }
 
 .dropdown-menu{
@@ -555,7 +604,7 @@ height: 60px;
 }   
 
 .fa-file{
-  width:20%;
+  width:10%;
   color:#00a2ff;
   background-color: white;
 }
@@ -638,6 +687,11 @@ height: 60px;
   width:60%;
 }
 
+#defaultInline2Div{
+  margin-left: 0px;
+}
+
+
 /*  */
 
 .subArchivePlus{
@@ -652,6 +706,10 @@ height: 60px;
   margin-left: 10px;
   margin-right: 10px;
   display: inline-block; */
+}
+
+.dropdown-toggle::after{
+  display: none;
 }
 
 

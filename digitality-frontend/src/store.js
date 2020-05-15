@@ -1,5 +1,6 @@
 export default {
   authenticated: false,
+  currentArchive: 'Arhiva_1',
 
   userData: '',   //Podaci ulogiranog korisnika
   archiveData: '', //Podaci za arhive (voda,struja...)
