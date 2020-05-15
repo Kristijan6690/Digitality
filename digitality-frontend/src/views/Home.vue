@@ -195,6 +195,12 @@ export default {
      });
     id.checked = true;  
     }
+  },
+
+  async mounted() {
+    let result = await app.getArchives() // jos nadogradit da vuce za određenog usera
+    if (result) this.store.archiveData = result
+    else console.log("Prazan collection")
   }
 }
 </script>

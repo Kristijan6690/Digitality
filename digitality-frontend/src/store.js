@@ -1,6 +1,4 @@
 export default {
-  authenticated: false,
-
   userData: '',   //Podaci ulogiranog korisnika
   archiveData: '', //Podaci za arhive (voda,struja...)
   documentData: '', //Podaci za svaki dokument sa arhive

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Croppa from 'vue-croppa'
+import store from '@/store.js';
 
  Vue.use(Croppa)  
 
@@ -11,7 +12,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { requiresAuth: true }
   },
   {
     path: '/login',
@@ -26,7 +28,8 @@ const routes = [
   {
     path: '/scan',
     name: 'Scan',
-    component: () => import('../views/Scan.vue')
+    component: () => import('../views/Scan.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/signup2',
@@ -37,21 +40,25 @@ const routes = [
     path: '/subarchive/:naziv_arhive',
     name: 'SubArchive',
     component: () => import('../views/SubArchive.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/subarchive.documentinfo/:id',
     name: 'SubArchive.DocumentInfo',
-    component: () => import('../views/SubArchive.DocumentInfo.vue')
+    component: () => import('../views/SubArchive.DocumentInfo.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/manualscan',
     name: 'ManualScan',
-    component: () => import('../views/ManualScan.vue')
+    component: () => import('../views/ManualScan.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/editdocument',
     name: 'EditDocument',
-    component: () => import('../views/EditDocument.vue')
+    component: () => import('../views/EditDocument.vue'),
+    meta: { requiresAuth: true }
   },
   
 ]
@@ -61,5 +68,20 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach( (to,from,next) => {
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if(store.userData.authenticated){
+      next();
+    }
+    else{
+      router.replace('/login');
+    }
+  }
+  else {
+    next();
+  }
+});
 
 export default router
