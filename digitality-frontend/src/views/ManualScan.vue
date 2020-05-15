@@ -26,12 +26,12 @@
                                 <input type="text" id="brojRacuna" name="brojRacuna"><br><br>
                             </div>
                             <div class="data">
-                                <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
-                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja"><br>
-                            </div>
-                            <div class="data">
                                 <label for="datIzdavanja">Datum izdavanja:</label>
                                 <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
+                            </div>
+                            <div class="data">
+                                <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
+                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja"><br>
                             </div>
                             <div class="data">
                                 <label for="vrstaUsluge" >Vrsta usluge:</label>

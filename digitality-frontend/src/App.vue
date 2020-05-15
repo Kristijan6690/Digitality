@@ -31,7 +31,7 @@
                         <router-link to="/manualscan" class="nav-link"> Ručno dodavanje <span class="sr-only">(current)</span></router-link>    
                     </li>
                   </ul>
-                  <button class="btn btn-primary my-2 my-sm-0" type="submit" style="border-radius: 5px;">Odjavi se</button> <!-- maknuti da nije submit -->
+                  <button class="btn btn-primary my-2 my-sm-0" type="submit" style="border-radius: 5px;">Odjavi se</button> 
               </div>
           </nav>
     <router-view/>

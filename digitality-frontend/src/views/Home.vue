@@ -65,6 +65,8 @@
                           <option value="Archive_2">Arhiva_2</option>
                           <option value="Archive_3">Arhiva_3</option>
                           <option value="Archive_4">Arhiva_4</option>
+                          <option disabled>──────────</option>
+                          <option value="Archive_4">Dodaj arhivu</option>
                         </select>
                   </div>
                        <!-- sort dropdown -->
@@ -78,11 +80,11 @@
                               <h2 >Organiziraj arhivu</h2> 
                           </div>
 
-                          <div class="dropdownBody" style="padding-top:10px;">              
+                          <div class="dropdownBody" style="padding-top:10px; font-size: 15px;">              
                             <div style="margin: 0 10px 0 10px">         
                                 <!-- Default inline 1 bootstrap-->
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                                <input @click="selectOnlyThis(this.id)"  name="myCheckbox" value="1" type="checkbox" class="custom-control-input" id="defaultInline1" >
                                 <label class="custom-control-label" for="defaultInline1" style="padding-right:5px;">
                                   Datum pregleda silazno 
                                   <i class="fas fa-sort-amount-down"></i>       
@@ -91,7 +93,7 @@
 
                               <!-- Default inline 2-->
                               <div class="custom-control custom-checkbox custom-control-inline" style="margin-left: 5px;">
-                                <input type="checkbox" class="custom-control-input" id="defaultInline2">
+                                <input onclick="selectOnlyThis(this.id)"  name="myCheckbox" value="2" type="checkbox" class="custom-control-input" id="defaultInline2">
                                 <label class="custom-control-label" for="defaultInline2" style="padding-right:5px;">
                                   Abecedno silazno
                                   <i class="fas fa-sort-amount-up"></i>    
@@ -102,7 +104,7 @@
                             <div style="margin: 0 10px 0 10px">    
                               <!-- Default inline 3-->
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="defaultInline3">
+                                <input onclick="selectOnlyThis(this.id)"  name="myCheckbox" value="3" type="checkbox" class="custom-control-input" id="defaultInline3">
                                 <label class="custom-control-label" for="defaultInline3" style="padding-right:5px;">
                                   Datum pregleda uzlazno
                                   <i class="fas fa-sort-numeric-down-alt"></i>
@@ -110,8 +112,8 @@
                                
                               </div>
                               <!-- Default inline 4-->
-                              <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" id="defaultInline4">
+                              <div class="custom-control custom-checkbox custom-control-inline"> 
+                                <input onclick="selectOnlyThis(this.id)"  name="myCheckbox" value="4" type="checkbox" class="custom-control-input" id="defaultInline4">
                                 <label class="custom-control-label" for="defaultInline4" style="padding-right:5px;">
                                   Abecedno uzlazno
                                   <i class="fas fa-sort-numeric-up-alt"></i>
@@ -184,6 +186,15 @@ export default {
       pretraga = this.searchTerm
       this.store.archiveData = await app.getSearchArchives(pretraga)
     },
+
+  //https://stackoverflow.com/questions/6724064/only-one-selected-checkbox
+  selectOnlyThis(id){
+    var myCheckbox = document.getElementsByName("myCheckbox");
+    Array.prototype.forEach.call(myCheckbox,function(el){
+    el.checked = false;
+     });
+    id.checked = true;  
+    }
   }
 }
 </script>
