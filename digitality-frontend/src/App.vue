@@ -2,17 +2,17 @@
   <div id="app">
         <!-- navbar -->
         <nav v-if="this.$route.name !== 'Login' && this.$route.name !== 'Signup' " class="navbar navbar-expand-lg navbar-light bg-light border " >
-              <a class="navbar-brand" id="navbarDesktop" href="/">
+              <router-link to="/" class="navbar-brand" id="navbarDesktop">
                 <div class="logo-brand ">
                    <img src="/Images/logo.png"/>
                 </div>
-              </a> 
+              </router-link> 
               <!-- logo na mobitelu (kvalitetniji prikaz nego png) -->
-              <a class="navbar-brand" id="navbarMob" href="/">
+              <router-link to="/" class="navbar-brand" id="navbarMob">
                 <div class="logo-brand ">
                   Digitality
                 </div>
-              </a> 
+              </router-link> 
             
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -31,7 +31,7 @@
                         <router-link to="/manualscan" class="nav-link"> Ručno dodavanje <span class="sr-only">(current)</span></router-link>    
                     </li>
                   </ul>
-                  <button class="btn btn-primary my-2 my-sm-0" type="submit" style="border-radius: 5px;">Odjavi se</button> 
+                  <button v-on:click = "logout()" class="btn btn-primary my-2 my-sm-0" type="submit" style="border-radius: 5px;">Odjavi se</button> 
               </div>
           </nav>
     <router-view/>
@@ -49,10 +49,13 @@ export default {
     }
   },
 
-  async mounted() {
-    let result = await app.getArchives() // jos nadogradit da vuce za određenog usera
-    if (result) this.store.archiveData = result
-    else console.log("Prazan collection")
+  methods : {
+    async logout() {
+      this.store.userData = ""
+      this.store.archiveData = ""
+      this.store.documentData = ""
+      this.$router.push({ name: 'Login' })
+    }
   }
 }
 </script>

@@ -28,7 +28,8 @@ def registracija():
         'ime' : ime,
         'prezime' : prezime,
         'email' : email,
-        'password' : password
+        'password' : password,
+        'authenticated' : True
     })
 
     return "Poslano"
@@ -56,6 +57,7 @@ def login():
                         'ime' : x['ime'],
                         'prezime' : x['prezime'],
                         'email' : x['email'],
+                        'authenticated' : x['authenticated']
                     }     
                 else:
                     access = False
