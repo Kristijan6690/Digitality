@@ -54,7 +54,14 @@ export default {
       this.store.userData = ""
       this.store.archiveData = ""
       this.store.documentData = ""
+      localStorage.removeItem('userData')
       this.$router.push({ name: 'Login' })
+    }
+  },
+
+  mounted() {
+    if(localStorage.getItem('userData') != null) {
+      this.store.userData = JSON.parse(localStorage.getItem('userData'))
     }
   }
 }

@@ -55,6 +55,7 @@ export default {
         let result = await app.login(this.email, this.password);
         if(result){
           this.store.userData = result;
+          localStorage.setItem('userData', JSON.stringify(result))
           this.$router.push({ name: 'Home' })
         } 
         else console.log("Invalid username or password")
