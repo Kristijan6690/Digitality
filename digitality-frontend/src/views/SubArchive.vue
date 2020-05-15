@@ -221,7 +221,6 @@ export default {
       if(Object.keys(filter_podaci).length > 0) {
         let regex = new RegExp (`^(${filter_podaci.naziv_dobavljača.toLowerCase()})`)
         this.store.documentData = {}
-        console.log(this.store.documentData)
 
         for(let j = 0; j < Object.keys(this.tempDoc).length; j++){
           if(this.tempDoc[j].naziv.toLowerCase().match(regex)){
