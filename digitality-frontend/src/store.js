@@ -31,7 +31,7 @@ export default {
       let mm = String(today.getMonth() + 1).padStart(2, '0');
       let yyyy = today.getFullYear();
      
-      return yyyy + '/' + mm + '/' + dd; 
+      return dd + '/' + mm + '/' + yyyy; 
       //https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
     },
   current_time(){
