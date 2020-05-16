@@ -6,14 +6,13 @@
       <div class="row">
         <div class="col-sm"></div>
         <div class="col-sm">
-          <form v-on:submit.prevent="registracija">
+          <form v-on:submit.prevent="registration">
             <div class="nameSurname">
               <i class="fas fa-user"></i>
               <input
                 type="text"
                 v-model="name"
                 class="form-control placeholderEmail"
-                name="name"
                 aria-describedby="emailHelp"
                 placeholder=" ime i prezime..."
               />
@@ -24,7 +23,6 @@
                 type="email"
                 v-model="email"
                 class="form-control placeholderEmail"
-                name="email"
                 aria-describedby="emailHelp"
                 placeholder=" e-mail..."
               />
@@ -36,7 +34,6 @@
                 type="password"
                 v-model="password"
                 class="form-control"
-                name="password"
                 placeholder="lozinka..."
               />
             </div>
@@ -46,7 +43,6 @@
                 type="password"
                 v-model="confimpassword"
                 class="form-control"
-                name="confirmpassword"
                 placeholder="ponovi lozinku..."
               />
             </div>
@@ -64,7 +60,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { app } from "@/services";
 
 export default {
   data() {
@@ -77,24 +73,14 @@ export default {
   },
 
   methods: {
-    async registracija() {
-      let confimpassword = this.confimpassword;
-      let password = this.password;
-      if (confimpassword == password) {
-        let temp = this.name.split(" ")
-        let response = await axios.post("http://127.0.0.1:5000/register", {
-          ime: temp[0],
-          prezime: temp[1],
-          email: this.email,
-          password
-        });
-        let vrijednost = await response;
-        console.log(vrijednost);
-        this.$router.push({name : 'Login'});
-      } else {
-        console.log("Kriva lozinka");
-      }
-    }
+    async registration() {
+      if (this.confimpassword == this.password) {
+        let temp = this.name.split(" ");
+        await app.registracija(temp, this.email, this.password); // moguce jos nadograditi
+        this.$router.push({ name: "Login" });
+      } 
+      else console.log("Lozinka se ne podudara")
+    },
   }
 };
 </script>
@@ -148,7 +134,7 @@ input {
 
 .signup {
   position: relative;
-  animation: mymove2 2s;
+  animation: mymove2 1s;
   animation-fill-mode: forwards;
   margin-top: -5%;
 }

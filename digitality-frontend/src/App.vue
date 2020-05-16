@@ -2,17 +2,17 @@
   <div id="app">
         <!-- navbar -->
         <nav v-if="this.$route.name !== 'Login' && this.$route.name !== 'Signup' " class="navbar navbar-expand-lg navbar-light bg-light border " >
-              <a class="navbar-brand" id="navbarDesktop" href="/">
+              <router-link to="/" class="navbar-brand" id="navbarDesktop">
                 <div class="logo-brand ">
-                   <img src="logo.png"  />
+                   <img src="/Images/logo.png"/>
                 </div>
-              </a> 
+              </router-link> 
               <!-- logo na mobitelu (kvalitetniji prikaz nego png) -->
-              <a class="navbar-brand" id="navbarMob" href="/">
+              <router-link to="/" class="navbar-brand" id="navbarMob">
                 <div class="logo-brand ">
                   Digitality
                 </div>
-              </a> 
+              </router-link> 
             
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -21,17 +21,17 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                      <router-link v-bind:to="'/'" ><a class="nav-link" href="#"> Arhiva <span class="sr-only">(current)</span></a></router-link>  <!-- current?-->
+                      <router-link to="/" class="nav-link" > Arhiva <span class="sr-only">(current)</span></router-link>  <!-- current?-->
                     </li>
-                    <li class="nav-item active"> <!-- obrisati active za dobivanje unactive? -->
-                        <router-link v-bind:to="'/'" class="nav-link"> Skeniraj <span class="sr-only">(current)</span></router-link>    
+                    <li class="nav-item active"> 
+                        <router-link to="/scan" class="nav-link"> Skeniraj <span class="sr-only">(current)</span></router-link>    
                     </li>
 
                     <li class="nav-item active">
-                        <router-link v-bind:to="'/manualscan'" class="nav-link"> Ručno dodavanje <span class="sr-only">(current)</span></router-link>    
+                        <router-link to="/manualscan" class="nav-link"> Ručno dodavanje <span class="sr-only">(current)</span></router-link>    
                     </li>
                   </ul>
-                  <button class="btn btn-primary my-2 my-sm-0" type="submit" style="border-radius: 5px;">Odjavi se</button> <!-- maknuti da nije submit -->
+                  <button v-on:click = "logout()" class="btn btn-primary my-2 my-sm-0" type="submit" style="border-radius: 5px;">Odjavi se</button> 
               </div>
           </nav>
     <router-view/>
@@ -39,24 +39,31 @@
 </template>
 
 <script>
-import store from '@/store.js'
-import axios from 'axios'
+import store from '@/store.js';
+import { app } from "@/services";
+
 export default {
   data(){
-    return{
+    return {
       store
     }
   },
-  
-  mounted() { 
-     axios.get("http://127.0.0.1:5000/arhive").then((response) => {
-       this.store.arhiveData = response.data
-       console.log(this.store.arhiveData)
-     }).catch((err) => {
-       console.log(err)
-     })
-  }
 
+  methods : {
+    async logout() {
+      this.store.userData = ""
+      this.store.archiveData = ""
+      this.store.documentData = ""
+      localStorage.removeItem('userData')
+      this.$router.push({ name: 'Login' })
+    }
+  },
+
+  mounted() {
+    if(localStorage.getItem('userData') != null) {
+      this.store.userData = JSON.parse(localStorage.getItem('userData'))
+    }
+  }
 }
 </script>
 
@@ -97,7 +104,11 @@ export default {
     background-color: white !important;
 }
 
-
+/*
+router-link:hover{
+   color: #00FF00; 
+} 
+*/
 
 @media screen and (min-width: 1024px){
  #navbarMob{

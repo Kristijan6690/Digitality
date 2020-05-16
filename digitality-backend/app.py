@@ -1,4 +1,4 @@
-from flask import Flask, jsonify , request, json # vraća json response
+from flask import Flask, jsonify , request, json
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
@@ -14,6 +14,7 @@ CORS(app)
 @app.route('/')
 def index():
     return "Hello World"
+
 
 @app.route('/register', methods=['POST'])
 def registracija():
@@ -33,43 +34,127 @@ def registracija():
     return "Poslano"
 
 
+# Dovršiti access token da vraća sve potrebne atribute uključujući authenticated
 @app.route('/login', methods=['POST'])
 def login():
 
-    email = request.get_json()['email']
-    password = request.get_json()['password']
-    korisnici = mongo.db.Korisnik
     access = ""
 
-    for x in korisnici.find():
-        if (x['email'] == email):
-            if bcrypt.check_password_hash(x['password'],password):
-                access = {
-                    'ID' : str(x['_id']),
-                    'ime' : x['ime'],
-                    'prezime' : x['prezime'],
-                    'email' : x['email'],
-                }     
-            else:
-                access = False
+    if (mongo.db.Korisnik.count() == 0):
+        access = False
+        return jsonify(access)
 
-    return jsonify(access)
+    else:
+        email = request.get_json()['email']
+        password = request.get_json()['password']
+
+        for x in mongo.db.Korisnik.find():
+            if (x['email'] == email):
+                if bcrypt.check_password_hash(x['password'],password):
+                    access = {
+                        'ID' : str(x['_id']),
+                        'ime' : x['ime'],
+                        'prezime' : x['prezime'],
+                        'email' : x['email']
+                    }     
+                else:
+                    access = False
+
+        return jsonify(access)
 
 
-@app.route('/arhive',)
+# Dovršiti da vraća arhive za određenog usera/arhive kojima ima pristup(PUBLIC)
+@app.route('/arhives')
 def getarhive():
-    lista_arhiva = mongo.db.Lista_arhiva
-    arhive = {}
-    i = 0
-    
-    for x in lista_arhiva.find():
-        arhive[i] = {
-            'ID' : str(x['_id']),
-            'naziv' : x['naziv']
-        }
-        i += 1
 
-    return jsonify(arhive)
+    if (mongo.db.Lista_arhiva.count()== 0):
+        provjera = False
+        return provjera
+
+    else:
+        arhive = {}
+        i = 0
+        
+        for x in mongo.db.Lista_arhiva.find():
+            arhive[i] = {
+                'ID' : str(x['_id']),
+                'naziv' : x['naziv'].capitalize()
+            }
+            i += 1
+
+        return jsonify(arhive)
+
+
+# Dovršiti da vraća dokumente za određenog usera
+@app.route('/documents', methods=['POST'])
+def getdocument():
+
+    naziv_arhive = request.get_json()['naziv'].lower()
+    dokumenti = {}
+    i = 0
+
+    for x in mongo.db.Lista_arhiva.find():
+        if (naziv_arhive == x['naziv']):
+            if (not x['documents']):
+                dokumenti = False
+                break
+            else:
+                for y in x['documents']:    
+                    # staviti if da se nađe id korisnika
+                    dokumenti[i] = {
+                        'id' : str(y['id']),
+                        'naziv' : y['naziv_doc'].capitalize()
+                    }
+                    i += 1
+
+    return jsonify(dokumenti)
+
+
+# Proces spremanje dokumenta u bazu nakon skeniranja. Još u razradi za sada sprema samo blob i ime dokumenta u bazu
+@app.route('/send_document', methods=['POST'])
+def sendDocument():
+    docfile = request.get_json()['docfile']
+    docname = request.get_json()['docname']
+    mongo.db.test_loadImage.insert({
+        'docfile' : docfile,
+        'docname' : docname
+    })
+
+    return "Poslano u bazu"
+
+
+@app.route('/search/lista_arhiva', methods=['POST'])
+def searchArchives():
+
+    searchTerm = str(request.get_json()['searchTerm'])
+    searchTerm = searchTerm.lower()
+    rezultat = {}
+    i = 0
+
+    if(searchTerm):
+
+        cursor = mongo.db.Lista_arhiva.find({'naziv':{'$regex':'^(%s)' % searchTerm}})
+        result = list(cursor)
+        
+        for x in result:
+            rezultat[i] = {
+                'ID' : str(x['_id']),
+                'naziv' : x['naziv'].capitalize()
+            }
+            i += 1
+            
+        return jsonify(rezultat)
+
+    else:
+        for x in mongo.db.Lista_arhiva.find():
+            rezultat[i] = {
+                'ID' : str(x['_id']),
+                'naziv' : x['naziv'].capitalize()
+            }
+            i += 1  
+            
+        return jsonify(rezultat)  
+
 
 
 if __name__ == "__main__":

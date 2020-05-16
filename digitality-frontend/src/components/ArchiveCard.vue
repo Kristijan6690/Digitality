@@ -1,19 +1,16 @@
 <template>
-  <router-link v-bind:to="'/'"> <!-- napraviti view kamo svaka vodi + id -->
-  <div class="subArchive" >
-      <div class="folder"><i class="fas fa-folder fa-7x" ></i></div>
-      <div class="folderName">{{info.naziv}}</div>
-  </div>
+  <router-link v-bind:to="'SubArchive/' + info.naziv">
+    <div class="subArchive" >
+        <div class="folder"><i class="fas fa-folder fa-7x" ></i></div>
+        <div class="folderName">{{info.naziv}}</div>
+    </div>
   </router-link>
 </template>
 
 <script>
-
 export default {
-  name: 'SubArchive',
   props: ["info"]
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -51,6 +48,19 @@ export default {
 .fa-folder, .fa-folder-plus{
   text-shadow: 0 0 10px #00A2FF;
   color: #888888;  
+}
+
+@media screen and (min-width : 0px) and (max-width : 767px){
+.subArchive{
+  width:120px;
+  height: 140px;
+  margin-top:25px;
+  margin-left: 25px;
+  margin-right: 10px;
+  display: block; 
+  float: left;
+  }
+
 }
 
 </style>

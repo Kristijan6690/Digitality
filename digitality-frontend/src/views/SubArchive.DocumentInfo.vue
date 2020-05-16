@@ -7,6 +7,7 @@
             <div class="row">
                  <div class="col heading">        
                     <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
+                    <button type="button" class="glowEffect" data-toggle="modal" data-target="#pictureModal" style="border:none;"><i class="fa fa-picture-o fa-2x"></i></button>
                     <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
                 </div>         
             </div>
@@ -15,76 +16,89 @@
                         <div class="box one archive">
                             <div class="data">
                                 <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
+                                <input type="text" id="nazDobavljaca" name="nazDobavljaca" disabled><br>
                             </div>
                             <div class="data">
                                 <label for="nazKupca">Naziv kupca:</label>
-                                <input type="text" id="nazKupca" name="nazKupca"><br><br>
+                                <input type="text" id="nazKupca" name="nazKupca" disabled ><br><br>
                             </div>
                             <div class="data">
                                 <label for="brojRacuna">Broj računa:</label>
-                                <input type="text" id="brojRacuna" name="brojRacuna"><br><br>
+                                <input type="text" id="brojRacuna" name="brojRacuna" disabled ><br><br>
                             </div>
-                            <div class="data inner-addon right-addon" >
+                            <div class="data">
                                 <label for="datIzdavanja">Datum izdavanja:</label>
-                                <i  @click="this.exchangeData()" class="fas fa-exchange-alt" ></i>
-                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja"><br>
+                                <input type="text" id="datIzdavanja" name="datIzdavanja" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
-                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja"><br>
+                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="vrstaUsluge" >Vrsta usluge:</label>
-                                <input type="text" id="vrstaUsluge" name="vrstaUsluge" placeholder="internet / struja / mobilni operater..."><br>
+                                <input type="text" id="vrstaUsluge" name="vrstaUsluge" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="kolicina">Količina:</label>
-                                <input type="text" id="kolicina" name="kolicina"><br>
+                                <input type="text" id="kolicina" name="kolicina" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="pozNaBroj">Poziv na broj:</label>
-                                <input type="text" id="pozNaBroj" name="pozNaBroj"><br>
+                                <input type="text" id="pozNaBroj" name="pozNaBroj" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="IBANplatitelja">IBAN platitelja:</label>
-                                <input type="text" id="IBANplatitelja" name="IBANplatitelja"><br>
+                                <input type="text" id="IBANplatitelja" name="IBANplatitelja" disabled ><br>
                             </div>
                         </div>
                         <div class="box two archive">
                              <div class="data">
                                 <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input type="text" id="OIBdobavljaca" name="OIBdobavljaca"><br>
+                                <input type="text" id="OIBdobavljaca" name="OIBdobavljaca"  disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="OIBkupca">OIB kupca:</label>
-                                <input type="text" id="OIBkupca" name="OIBkupca"><br><br><br><br>
+                                <input type="text" id="OIBkupca" name="OIBkupca"  disabled ><br><br><br><br>
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
-                                <input v-model="datDospTemp"  type="text" id="datDospijeca" name="datDospijeca"><br><br><br><br>
+                                <input type="text" id="datDospijeca" name="datDospijeca"  disabled ><br><br><br><br>
                             </div>
                             <div class="data">
                                 <label for="pdv">PDV:</label>
-                                <input type="text" id="pdv" name="pdv"><br>
+                                <input type="text" id="pdv" name="pdv"  disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="iznos">Iznos:</label>
-                                <input type="text" id="iznos" name="iznos"><br>
+                                <input type="text" id="iznos" name="iznos"  disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="IBANprimatelja">IBAN primatelja:</label>
-                                <input type="text" id="IBANprimatelja" name="IBANprimatelja"><br>
+                                <input type="text" id="IBANprimatelja" name="IBANprimatelja"  disabled ><br>
                             </div> 
                         </div>
         
                 </div>
                 <div class="row addButtonDiv">
-                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" >Dodaj</button>
+                    <router-link to="/editdocument"><button type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button></router-link>
                 </div> 
             </form>
 
-            <!-- Modal -->
+            <!-- Document picture Modal -->
+              <div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <img style="max-width: 100%;max-height: 100%;" src='/Images/docPicExample.jpg'/>
+                    </div>
+                    <div class="modal-footer" style="display:block;">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:#00A2FF">Zatvori</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            <!-- Help Modal -->
                 <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -114,75 +128,30 @@
                     </div>
                   </div>
                 </div>
-            
             <!-- footer
             <div class="row">
                 <div class="col archive"></div>
             </div>
             -->
-<!-- success confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" >
-          
-          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Dokument dodan u arhivu _____
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
-            </div>
-        </div>
-      </div>
-
-      
-      <!-- error confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" >
-          
-          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Došlo je do greške prilikom učitavanja dokumenta
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
-            </div>
-        </div>
-      </div>
-
       </div>
   </div>
 </template>
-<!-- popraviti :  label value,mobile responsive, footer?, hovere na sve-->
-<script>
 
-import ArchiveCard from '@/components/ArchiveCard.vue';
+<script>
+import store from "@/store.js";
 
 export default {
   data(){
-    return {
-      datIzdTemp: '',
-      datDospTemp: ''
-    }
-  },
-  name: 'Home',
-  components: {
-    
-  },
-
-  methods:{
-    exchangeData(){
-      let temp = this.datIzdTemp;
-      datIzdTemp = datDospTemp;
-      datDospTemp = temp;
-      console.log(datDospTemp)
-    }
+      return {
+          store
+      }
   }
 }
 </script>
 
-<style scoped>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+
 
 .row{
     margin-right: 0px;
@@ -291,7 +260,6 @@ a{
   border: 2px solid  #00A2FF;
 }
 
-
 .filter{
   width: 30px;
   height: 30px;
@@ -327,6 +295,13 @@ a{
 .fa-info-circle{
   color:#00A2FF; 
   float: right;
+  padding: 7.5px 7.5px 7.5px 10px;
+}
+
+.fa-picture-o{
+  color:#00A2FF; 
+  float: right;
+  padding: 7.5px;
 }
 
 
@@ -367,7 +342,7 @@ a{
 
 #headlineDiv{
   width: 100%; 
-  padding-left:44px;
+  padding-left:33px;
   text-align:center; 
 }
 
@@ -388,7 +363,6 @@ background-color: #f6f6f2;
   width:150px;
 }
 
-
 @keyframes glow {
   80%, 100% {
       text-shadow: 0 0 5px #00A2FF;
@@ -402,25 +376,6 @@ background-color: #f6f6f2;
   opacity: 1; 
 }
 
-/*   exchange icon positioning */
-
-/* enable absolute positioning */
-.inner-addon { 
-    position: relative; 
-}
-
-/* style icon */
-.inner-addon .fas {
-  position: absolute;
-  padding: 10px;
-  pointer-events: none;
-}
-
-/* align icon */
-.right-addon .fas { right: 0px;}
-
-/* add padding  */
-.right-addon input { padding-right: 30px; }
 
 /* y@media screen and (min-width: 1024px){} */
 
@@ -526,4 +481,5 @@ label{
 }
 
 }
+
 </style>

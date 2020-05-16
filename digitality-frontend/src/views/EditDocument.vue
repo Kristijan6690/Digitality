@@ -3,6 +3,7 @@
       <div class="container">
             <div class="row">
                 <!-- mjesto za header ako ce ici -->
+                <span style="background-color:red;">Kristus evo tu je ta obrazac kire mare ucitat z baze vrijedosti i kire wokhu korisnik zamejna</span>
             </div>
             <div class="row">
                  <div class="col heading">        
@@ -15,20 +16,19 @@
                         <div class="box one archive">
                             <div class="data">
                                 <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
+                                <input v-model="proba" type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
                             </div>
                             <div class="data">
                                 <label for="nazKupca">Naziv kupca:</label>
-                                <input type="text" id="nazKupca" name="nazKupca"><br><br>
+                                <input v-model="proba" type="text" id="nazKupca" name="nazKupca"><br><br>
                             </div>
                             <div class="data">
                                 <label for="brojRacuna">Broj računa:</label>
                                 <input type="text" id="brojRacuna" name="brojRacuna"><br><br>
                             </div>
-                            <div class="data inner-addon right-addon" >
+                            <div class="data">
                                 <label for="datIzdavanja">Datum izdavanja:</label>
-                                <i  @click="this.exchangeData()" class="fas fa-exchange-alt" ></i>
-                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja"><br>
+                                <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
                             </div>
                             <div class="data">
                                 <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
@@ -62,7 +62,7 @@
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
-                                <input v-model="datDospTemp"  type="text" id="datDospijeca" name="datDospijeca"><br><br><br><br>
+                                <input type="text" id="datDospijeca" name="datDospijeca"><br><br><br><br>
                             </div>
                             <div class="data">
                                 <label for="pdv">PDV:</label>
@@ -80,7 +80,8 @@
         
                 </div>
                 <div class="row addButtonDiv">
-                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" >Dodaj</button>
+                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button>
+                    <button type="button" @click="go_back()" class="btn btn-primary my-2 my-sm-0" id="backButton" > Odustani </button>
                 </div> 
             </form>
 
@@ -120,37 +121,6 @@
                 <div class="col archive"></div>
             </div>
             -->
-<!-- success confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" >
-          
-          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Dokument dodan u arhivu _____
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
-            </div>
-        </div>
-      </div>
-
-      
-      <!-- error confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" >
-          
-          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Došlo je do greške prilikom učitavanja dokumenta
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
-            </div>
-        </div>
-      </div>
-
       </div>
   </div>
 </template>
@@ -160,24 +130,20 @@
 import ArchiveCard from '@/components/ArchiveCard.vue';
 
 export default {
-  data(){
-    return {
-      datIzdTemp: '',
-      datDospTemp: ''
-    }
-  },
   name: 'Home',
   components: {
     
   },
+   data(){
+      return {
+        proba: 'valda se tu dejva preko v-modela ko te, valda nejson kako glupost naridu haha'
+      }
+  },
 
   methods:{
-    exchangeData(){
-      let temp = this.datIzdTemp;
-      datIzdTemp = datDospTemp;
-      datDospTemp = temp;
-      console.log(datDospTemp)
-    }
+    go_back(){
+      return this.$router.go(-1);
+    },
   }
 }
 </script>
@@ -291,7 +257,6 @@ a{
   border: 2px solid  #00A2FF;
 }
 
-
 .filter{
   width: 30px;
   height: 30px;
@@ -386,6 +351,7 @@ background-color: #f6f6f2;
 #addButton{
   font-size:20px; 
   width:150px;
+  margin: 10px;
 }
 
 
@@ -402,25 +368,14 @@ background-color: #f6f6f2;
   opacity: 1; 
 }
 
-/*   exchange icon positioning */
-
-/* enable absolute positioning */
-.inner-addon { 
-    position: relative; 
+#backButton{
+  font-size:20px; 
+  width:150px;
+  margin:10px;
+  background-color: #888888;
+  border-color: #888888;
 }
 
-/* style icon */
-.inner-addon .fas {
-  position: absolute;
-  padding: 10px;
-  pointer-events: none;
-}
-
-/* align icon */
-.right-addon .fas { right: 0px;}
-
-/* add padding  */
-.right-addon input { padding-right: 30px; }
 
 /* y@media screen and (min-width: 1024px){} */
 
