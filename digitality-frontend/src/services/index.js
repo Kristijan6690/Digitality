@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let Service = axios.create({
-    baseURL: "http://localhost:5000/"
+    baseURL: "https://digitality.now.sh/login"
 });
 
 let app = {

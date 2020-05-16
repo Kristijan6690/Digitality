@@ -278,6 +278,8 @@ export default {
     let result = await app.getArchives() // jos nadogradit da vuce za određenog usera
     if (result) this.store.archiveData = result
     else console.log("Prazan collection")
+    let datum = this.store.current_date();
+    console.log(datum)
   }
 }
 
