@@ -26,23 +26,12 @@
                               <div id="pristupNaslov">
                                 <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
                               </div>
-                              <div id="pristupPopis">  
-                               
-                                <div class="userData" >
-                                    <div class="personIcon"><i class="far fa-user"></i></div>
-                                    <div class="mailOsobe">example@email.com</div> 
-                                    <div class="opcijaPopis">ukloni</div>  
-                                </div>
-                                <div class="userData">
-                                    <div class="personIcon"><i class="far fa-user"></i> </div>
-                                    <div class="mailOsobe">example@email.com</div> 
-                                    <div class="opcijaPopis">ukloni</div>  
-                                </div>
-                                <div class="userData" >
-                                     <div class="personIcon"><i class="far fa-user"></i> </div>
-                                     <div class="mailOsobe">example@email.com</div> 
-                                     <div class="opcijaPopis">ukloni</div>  
-                                </div>
+                                <div id="pristupPopis">  
+
+                                <UserData />
+                                <UserData />
+                                <UserData />
+
                                 <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
                                      <div class="mailOsobe addUserName">example@email.com</div> 
@@ -69,7 +58,7 @@
                   </div>
                    <!-- filter i filter dropdown -->
                       <div class="btn-group" >
-                        <button type="button" class="btn btn-secondary filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <button type="button" class="btn btn-secondary filter glowEffect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <div id="filterIcon" ><i class="fa fa-filter  fa-lg"  aria-hidden="true" ></i></div>
                         </button>
 
@@ -198,6 +187,7 @@
 <script>
 
 import Document from '@/components/Document.vue';
+import UserData from '@/components/UserData.vue';
 import store from '@/store.js';
 import { app } from "@/services";
 import _ from "lodash";
@@ -214,7 +204,8 @@ export default {
 
   name: 'SubArchive',  //krivo ?
   components: {
-    Document
+    Document,
+    UserData
   },
 
   watch: {
@@ -290,6 +281,7 @@ export default {
       this.store.documentData = ''
       console.log("Korisnik nema dokumenta")
     }
+    $('#element').popover('show')
   }
 }
 </script>
@@ -643,6 +635,19 @@ export default {
   width:40%;
   color:blue;
   background-color: pink;
+}
+
+@keyframes glow {
+  80%, 100% {
+      text-shadow: 0 0 5px #00A2FF;
+  }
+}
+
+.glowEffect {
+  animation: glow 2s 5;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  opacity: 1; 
 }
 
 

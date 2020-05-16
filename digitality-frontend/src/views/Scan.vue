@@ -1,6 +1,16 @@
 <template>
   <div class="container" >
-    <croppa class="croppa1"
+    <!--
+     <div class="row">
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+      </div>
+     </div>
+     -->
+     <croppa class="croppa1"
         v-model="myCroppa"
         :width="700"
         :height="500"
@@ -21,7 +31,7 @@
         :initial-image="'path/to/initial-image.png'"
         @new-image-drawn="onLoad()"
       ></croppa>
-
+      
     <!-- success confirmation -->
       <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
@@ -37,7 +47,7 @@
         </div>
       </div>
 
-      <!-- success confirmation -->
+      <!-- error confirmation -->
       <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
@@ -161,6 +171,12 @@ canvas{
   justify-content: center;
   align-items: center;
 
+}
+
+.alert-warning {
+    color: white;
+    background-color: mediumseagreen;
+    border-color: #ffeeba;
 }
 
 </style>
