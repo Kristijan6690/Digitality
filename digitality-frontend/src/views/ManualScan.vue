@@ -25,9 +25,10 @@
                                 <label for="brojRacuna">Broj računa:</label>
                                 <input type="text" id="brojRacuna" name="brojRacuna"><br><br>
                             </div>
-                            <div class="data">
+                            <div class="data inner-addon right-addon" >
                                 <label for="datIzdavanja">Datum izdavanja:</label>
-                                <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
+                                <i  @click="this.exchangeData()" class="fas fa-exchange-alt" ></i>
+                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja"><br>
                             </div>
                             <div class="data">
                                 <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
@@ -61,7 +62,7 @@
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
-                                <input type="text" id="datDospijeca" name="datDospijeca"><br><br><br><br>
+                                <input v-model="datDospTemp"  type="text" id="datDospijeca" name="datDospijeca"><br><br><br><br>
                             </div>
                             <div class="data">
                                 <label for="pdv">PDV:</label>
@@ -119,6 +120,37 @@
                 <div class="col archive"></div>
             </div>
             -->
+<!-- success confirmation -->
+      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" >
+          
+          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                   Dokument dodan u arhivu _____
+                  <hr/>
+                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+              </div>
+          
+            </div>
+        </div>
+      </div>
+
+      
+      <!-- error confirmation -->
+      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" >
+          
+          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                   Došlo je do greške prilikom učitavanja dokumenta
+                  <hr/>
+                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+              </div>
+          
+            </div>
+        </div>
+      </div>
+
       </div>
   </div>
 </template>
@@ -128,9 +160,24 @@
 import ArchiveCard from '@/components/ArchiveCard.vue';
 
 export default {
+  data(){
+    return {
+      datIzdTemp: '',
+      datDospTemp: ''
+    }
+  },
   name: 'Home',
   components: {
     
+  },
+
+  methods:{
+    exchangeData(){
+      let temp = this.datIzdTemp;
+      datIzdTemp = datDospTemp;
+      datDospTemp = temp;
+      console.log(datDospTemp)
+    }
   }
 }
 </script>
@@ -244,6 +291,7 @@ a{
   border: 2px solid  #00A2FF;
 }
 
+
 .filter{
   width: 30px;
   height: 30px;
@@ -354,7 +402,25 @@ background-color: #f6f6f2;
   opacity: 1; 
 }
 
+/*   exchange icon positioning */
 
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .fas {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align icon */
+.right-addon .fas { right: 0px;}
+
+/* add padding  */
+.right-addon input { padding-right: 30px; }
 
 /* y@media screen and (min-width: 1024px){} */
 
