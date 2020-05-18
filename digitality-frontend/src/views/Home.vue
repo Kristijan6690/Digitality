@@ -178,11 +178,11 @@
                   <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Kreiraj podarhivu</h3>
                 </div>
                 <div class="modal-body">
-                  <input v-model = "createArchiveName" placeholder="Unesite ime podarhive" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
+                  <input v-model = "createArchiveName" placeholder="Unesite ime podarhive" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Unesite ime podarhive'" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
                 </div>
                 <div class="modal-footer" style="text-align:center; display:block;">
-                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#success_confirmation" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
-                  <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
+                  <button v-on:click="dodaj_arhivu()" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#success_confirmation" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button v-on:click="add_archive_cancle()" type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
                 </div>
               </div>
             </div>
@@ -194,7 +194,7 @@
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Arhiva xyz uspješno kreirana
+                   Arhiva uspješno kreirana
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -242,7 +242,7 @@ export default {
     return {
       searchTerm: '',
       store,
-      createArchiveName: ''
+      createArchiveName: '',
     }
   },
 
@@ -270,6 +270,37 @@ export default {
     checkboxes.forEach((item) => {
         if (item !== checkbox) item.checked = false
       })
+    },
+
+    async dodaj_arhivu() {
+      let flag = false
+
+      if(this.createArchiveName != '') {
+        this.createArchiveName = this.createArchiveName.toLowerCase()
+        for(let i = 0; i < Object.keys(this.store.archiveData).length; i++){
+          if(this.createArchiveName == this.store.archiveData[i].naziv.toLowerCase()){
+            flag = true
+          }
+        }
+
+        if(flag) {
+          console.log("Naziv arhive vec postoji")
+          this.createArchiveName = ''
+        }
+        else {
+          await app.createSubarchive(this.createArchiveName,this.store.userData.ID)
+          let result = await app.getArchives()
+          this.createArchiveName = ''
+          this.store.archiveData = ''
+          this.store.archiveData = result
+        }
+        
+      }
+      else console.log("Unesite naziv")
+    },
+
+    add_archive_cancle() {
+      this.createArchiveName = ''
     }
     
   },
@@ -278,8 +309,6 @@ export default {
     let result = await app.getArchives() // jos nadogradit da vuce za određenog usera
     if (result) this.store.archiveData = result
     else console.log("Prazan collection")
-    let datum = this.store.current_date();
-    console.log(datum)
   }
 }
 
@@ -760,5 +789,9 @@ height: 60px;
 }
 
 
+}
+
+.subArchivePlus:hover{
+  cursor: pointer;
 }
 </style>

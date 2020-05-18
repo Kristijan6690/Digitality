@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let Service = axios.create({
-    baseURL: "https://digitality.now.sh/login"
+    baseURL: "http://localhost:5000/"
 });
 
 let app = {
@@ -24,7 +24,7 @@ let app = {
     },
 
     async getArchives() {
-        let response = await Service.get('/arhives');
+        let response = await Service.get('/archives');
         return response.data;
     },
 
@@ -48,6 +48,19 @@ let app = {
         })
         return response.data;
     },
+
+    async createSubarchive(naziv,userID){
+        await Service.post('/archives/createSubarchive', {
+            archive_name : naziv,
+            archive_access_user_ID : userID
+        })
+    },
+
+    async deleteSubarchive(naziv_arhive){
+        await Service.post('/archive/deleteSubarchive', {
+            archive_name : naziv_arhive
+        })
+    }
 };
 
 export { app, Service };

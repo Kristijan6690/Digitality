@@ -136,7 +136,7 @@
                   </div>
                   <!-- <div class="modal-body"> </div> -->
                   <div class="modal-footer">
-                    <div  style="display: inline-block; font-size: 25px; width: 50%; color: green" data-dismiss="modal" data-toggle="modal" data-target="#success_confirmation"><i class="fas fa-check"></i></div>
+                    <div style="display: inline-block; font-size: 25px; width: 50%; color: green" data-dismiss="modal" data-toggle="modal" data-target="#success_confirmation"><i class="fas fa-check"></i></div>
                     <div style="display: inline-block; font-size: 25px; width: 50%; color: red"  data-dismiss="modal"><i class="fas fa-times"></i></div>  
                   </div>
                 </div>
@@ -144,7 +144,7 @@
             </div>
 
             <!-- delete success confirmation -->
-            <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div v-on:click="izbrisi_podarhivu()" class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" >
                 
                 <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
@@ -216,6 +216,7 @@ export default {
 
   methods : {
     go_back(){
+      this.store.documentData = ''
       return this.$router.go(-1);
     },
 
@@ -269,6 +270,12 @@ export default {
       }
     },
 
+    async izbrisi_podarhivu(){
+      await app.deleteSubarchive(this.naziv);
+      this.store.documentData = ''
+      this.store.archiveData = ''
+      return this.$router.go(-1);
+    }
   },
 
   async mounted() {

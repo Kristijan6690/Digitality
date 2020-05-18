@@ -2,6 +2,7 @@ from flask import Flask, jsonify , request, json
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
+import datetime
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/Digitality?retryWrites=true&w=majority'
@@ -64,7 +65,7 @@ def login():
 
 
 # Dovršiti da vraća arhive za određenog usera/arhive kojima ima pristup(PUBLIC)
-@app.route('/arhives')
+@app.route('/archives')
 def getarhive():
 
     if (mongo.db.Lista_arhiva.count()== 0):
@@ -78,7 +79,8 @@ def getarhive():
         for x in mongo.db.Lista_arhiva.find():
             arhive[i] = {
                 'ID' : str(x['_id']),
-                'naziv' : x['naziv'].capitalize()
+                'naziv' : x['naziv'].capitalize(),
+                'datum_dodavanja' : x['datum_dodavanja']
             }
             i += 1
 
@@ -95,11 +97,11 @@ def getdocument():
 
     for x in mongo.db.Lista_arhiva.find():
         if (naziv_arhive == x['naziv']):
-            if (not x['documents']):
+            if (len(x['documents']) == 0):
                 dokumenti = False
                 break
             else:
-                for y in x['documents']:    
+                for y in x['documents']: 
                     # staviti if da se nađe id korisnika
                     dokumenti[i] = {
                         'id' : str(y['id']),
@@ -156,6 +158,28 @@ def searchArchives():
         return jsonify(rezultat)  
 
 
+@app.route('/archives/createSubarchive', methods=['POST'])
+def createSubarchive():
+    archive_name = request.get_json()['archive_name'].lower()
+    archive_access_user_ID = request.get_json()['archive_access_user_ID']
+
+    mongo.db.Lista_arhiva.insert({
+        'naziv' : archive_name,
+        'datum_dodavanja' : datetime.datetime.utcnow(),
+        'access_user_id' : [archive_access_user_ID],
+        'documents' : []
+    })
+
+
+    return "radi"
+
+
+@app.route('/archive/deleteSubarchive', methods=['POST'])
+def deleteSubarchive():
+    archive_name = request.get_json()['archive_name'].lower()
+    mongo.db.Lista_arhiva.delete_one({'naziv' : archive_name})
+
+    return "izbrisano"
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
