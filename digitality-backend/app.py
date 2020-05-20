@@ -92,8 +92,7 @@ def getarhive():
 def getdocument():
 
     naziv_arhive = request.get_json()['naziv'].lower()
-    dokumenti = {}
-    i = 0
+    dokumenti = []
 
     for x in mongo.db.Lista_arhiva.find():
         if (naziv_arhive == x['naziv']):
@@ -103,12 +102,8 @@ def getdocument():
             else:
                 for y in x['documents']: 
                     # staviti if da se nađe id korisnika
-                    dokumenti[i] = {
-                        'id' : str(y['id']),
-                        'naziv' : y['naziv_doc'].capitalize()
-                    }
-                    i += 1
-
+                    dokumenti.append(y)
+                    
     return jsonify(dokumenti)
 
 
@@ -165,7 +160,7 @@ def createSubarchive():
 
     mongo.db.Lista_arhiva.insert({
         'naziv' : archive_name,
-        'datum_dodavanja' : datetime.datetime.utcnow(),
+        'datum_dodavanja' : datetime.datetime.now(),
         'access_user_id' : [archive_access_user_ID],
         'documents' : []
     })

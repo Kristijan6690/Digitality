@@ -240,15 +240,16 @@ export default {
           filter_podaci[varijable_filtera[i]] = this.store.filter[varijable_filtera[i]]
         }
       }
+      console.log(filter_podaci)
+      
       //samo primjer filtriranja za sada:
       if(Object.keys(filter_podaci).length > 0) {
         let regex = new RegExp (`^(${filter_podaci.naziv_dobavljača.toLowerCase()})`)
         this.store.documentData = {}
-        console.log(this.store.documentData)
 
         for(let j = 0; j < Object.keys(this.tempDoc).length; j++){
-          if(this.tempDoc[j].naziv.toLowerCase().match(regex)){
-            this.store.documentData[j] = this.tempDoc[j] 
+          if(this.tempDoc[j].naziv_doc.toLowerCase().match(regex)){
+            this.store.documentData[j] = this.tempDoc[j]  
           }
         }
       }
@@ -259,9 +260,9 @@ export default {
         pretraga = this.searchTerm.toLowerCase()
         let regex = new RegExp (`^(${pretraga})`)
         this.store.documentData = {}
-
+        //dan mjesec godina - datum
         for(let i = 0; i < Object.keys(this.tempDoc).length; i++){
-          if(this.tempDoc[i].naziv.toLowerCase().match(regex)){
+          if(this.tempDoc[i].naziv_doc.toLowerCase().match(regex)){
             this.store.documentData[i] = this.tempDoc[i] 
           }
         }
