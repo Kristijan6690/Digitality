@@ -1,9 +1,11 @@
 <template>
   <div class="home">
       <div class="container">
+         <button type="button" id="button"> </button>
         <div class="row">
+          
             <div class="col archive-options">
-
+                
                    <!-- settings dropdown -->
                       <div class="btn-group" >
                         <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
@@ -136,7 +138,7 @@
                   </div>
                   <!-- <div class="modal-body"> </div> -->
                   <div class="modal-footer">
-                    <div style="display: inline-block; font-size: 25px; width: 50%; color: green" data-dismiss="modal" data-toggle="modal" data-target="#success_confirmation"><i class="fas fa-check"></i></div>
+                    <div  style="display: inline-block; font-size: 25px; width: 50%; color: green" data-dismiss="modal" data-toggle="modal" data-target="#success_confirmation"><i class="fas fa-check"></i></div>
                     <div style="display: inline-block; font-size: 25px; width: 50%; color: red"  data-dismiss="modal"><i class="fas fa-times"></i></div>  
                   </div>
                 </div>
@@ -144,7 +146,7 @@
             </div>
 
             <!-- delete success confirmation -->
-            <div v-on:click="izbrisi_podarhivu()" class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" >
                 
                 <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
@@ -179,6 +181,7 @@
         </div>
         -->
       </div>
+      
   </div>
 </template>
 <!-- popraviti :  clear custom filters ikona ,da dugi nazivi neidu izvan mobile responsive, footer? back i delete buttoni na mobitelu -> back btn netreba na mobu, delete u settings?-->
@@ -191,6 +194,7 @@ import UserData from '@/components/UserData.vue';
 import store from '@/store.js';
 import { app } from "@/services";
 import _ from "lodash";
+import toastr from "toastr"
 
 export default {
   data(){
@@ -216,7 +220,6 @@ export default {
 
   methods : {
     go_back(){
-      this.store.documentData = ''
       return this.$router.go(-1);
     },
 
@@ -241,15 +244,15 @@ export default {
         }
       }
       console.log(filter_podaci)
-      
       //samo primjer filtriranja za sada:
       if(Object.keys(filter_podaci).length > 0) {
         let regex = new RegExp (`^(${filter_podaci.naziv_dobavljača.toLowerCase()})`)
         this.store.documentData = {}
+        console.log(this.store.documentData)
 
         for(let j = 0; j < Object.keys(this.tempDoc).length; j++){
           if(this.tempDoc[j].naziv_doc.toLowerCase().match(regex)){
-            this.store.documentData[j] = this.tempDoc[j]  
+            this.store.documentData[j] = this.tempDoc[j] 
           }
         }
       }
@@ -260,9 +263,9 @@ export default {
         pretraga = this.searchTerm.toLowerCase()
         let regex = new RegExp (`^(${pretraga})`)
         this.store.documentData = {}
-        //dan mjesec godina - datum
+
         for(let i = 0; i < Object.keys(this.tempDoc).length; i++){
-          if(this.tempDoc[i].naziv_doc.toLowerCase().match(regex)){
+          if(this.tempDoc[i].naziv.toLowerCase().match(regex)){
             this.store.documentData[i] = this.tempDoc[i] 
           }
         }
@@ -271,12 +274,6 @@ export default {
       }
     },
 
-    async izbrisi_podarhivu(){
-      await app.deleteSubarchive(this.naziv);
-      this.store.documentData = ''
-      this.store.archiveData = ''
-      return this.$router.go(-1);
-    }
   },
 
   async mounted() {
@@ -290,6 +287,32 @@ export default {
       console.log("Korisnik nema dokumenta")
     }
     $('#element').popover('show')
+
+    
+    $('button').on('click',function(){
+                  toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": false,
+          "positionClass": "toast-top-right",
+          "preventDuplicates": true,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut",
+          "z-index": "10000",
+          "position": "absolute"
+        } 
+
+        Command: toastr["info"]("Isprobajte naš filter!", "Ne možete naći dokument?")
+    })
+
   }
 }
 </script>
