@@ -28,7 +28,7 @@
                             <div class="data inner-addon right-addon" >
                                 <label for="datIzdavanja">Datum izdavanja:</label>
                                 <i  @click="this.exchangeData()" class="fas fa-exchange-alt" ></i>
-                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" required><br>
+                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required ><br>
                             </div>
                             <div class="data">
                                 <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
@@ -412,7 +412,7 @@ background-color: #f6f6f2;
 /* style icon */
 .inner-addon .fas {
   position: absolute;
-  padding: 10px;
+  padding: 5px;
   pointer-events: none;
 }
 

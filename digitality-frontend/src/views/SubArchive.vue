@@ -1,7 +1,7 @@
 <template>
   <div class="home">
       <div class="container">
-         <button type="button" id="button"> </button>
+         <button type="button" id="button" style="height:30px;"> </button>
         <div class="row">
           
             <div class="col archive-options">
