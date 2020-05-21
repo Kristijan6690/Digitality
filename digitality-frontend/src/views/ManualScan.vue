@@ -15,66 +15,66 @@
                         <div class="box one archive">
                             <div class="data">
                                 <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
+                                <input type="text" id="nazDobavljaca" name="nazDobavljaca" required><br>
                             </div>
                             <div class="data">
                                 <label for="nazKupca">Naziv kupca:</label>
-                                <input type="text" id="nazKupca" name="nazKupca"><br><br>
+                                <input type="text" id="nazKupca" name="nazKupca" required><br><br>
                             </div>
                             <div class="data">
                                 <label for="brojRacuna">Broj računa:</label>
-                                <input type="text" id="brojRacuna" name="brojRacuna"><br><br>
+                                <input type="text" id="brojRacuna" name="brojRacuna" required><br><br>
                             </div>
                             <div class="data inner-addon right-addon" >
                                 <label for="datIzdavanja">Datum izdavanja:</label>
                                 <i  @click="this.exchangeData()" class="fas fa-exchange-alt" ></i>
-                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja"><br>
+                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" required><br>
                             </div>
                             <div class="data">
                                 <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
-                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja"><br>
+                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" required><br>
                             </div>
                             <div class="data">
                                 <label for="vrstaUsluge" >Vrsta usluge:</label>
-                                <input type="text" id="vrstaUsluge" name="vrstaUsluge" placeholder="internet / struja / mobilni operater..."><br>
+                                <input type="text" id="vrstaUsluge" name="vrstaUsluge" placeholder="internet / struja / mobilni operater..." required><br>
                             </div>
                             <div class="data">
                                 <label for="kolicina">Količina:</label>
-                                <input type="text" id="kolicina" name="kolicina"><br>
+                                <input type="text" id="kolicina" name="kolicina" required><br>
                             </div>
                             <div class="data">
                                 <label for="pozNaBroj">Poziv na broj:</label>
-                                <input type="text" id="pozNaBroj" name="pozNaBroj"><br>
+                                <input type="text" id="pozNaBroj" name="pozNaBroj" required><br>
                             </div>
                             <div class="data">
                                 <label for="IBANplatitelja">IBAN platitelja:</label>
-                                <input type="text" id="IBANplatitelja" name="IBANplatitelja"><br>
+                                <input type="text" id="IBANplatitelja" name="IBANplatitelja" required><br>
                             </div>
                         </div>
                         <div class="box two archive">
                              <div class="data">
                                 <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input type="text" id="OIBdobavljaca" name="OIBdobavljaca"><br>
+                                <input type="text" id="OIBdobavljaca" name="OIBdobavljaca" required><br>
                             </div>
                             <div class="data">
                                 <label for="OIBkupca">OIB kupca:</label>
-                                <input type="text" id="OIBkupca" name="OIBkupca"><br><br><br><br>
+                                <input type="text" id="OIBkupca" name="OIBkupca" required><br><br><br><br>
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
-                                <input v-model="datDospTemp"  type="text" id="datDospijeca" name="datDospijeca"><br><br><br><br>
+                                <input v-model="datDospTemp"  type="text" id="datDospijeca" name="datDospijeca" required><br><br><br><br>
                             </div>
                             <div class="data">
                                 <label for="pdv">PDV:</label>
-                                <input type="text" id="pdv" name="pdv"><br>
+                                <input type="text" id="pdv" name="pdv" required><br>
                             </div>
                             <div class="data">
                                 <label for="iznos">Iznos:</label>
-                                <input type="text" id="iznos" name="iznos"><br>
+                                <input type="text" id="iznos" name="iznos" required><br>
                             </div>
                             <div class="data">
                                 <label for="IBANprimatelja">IBAN primatelja:</label>
-                                <input type="text" id="IBANprimatelja" name="IBANprimatelja"><br>
+                                <input type="text" id="IBANprimatelja" name="IBANprimatelja" required><br>
                             </div> 
                         </div>
         
