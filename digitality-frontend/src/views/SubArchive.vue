@@ -1,11 +1,10 @@
 <template>
   <div class="home">
+    <notifications group="notify" />
       <div class="container">
-         <button type="button" id="button" style="height:30px;"> </button>
         <div class="row">
-          
-            <div class="col archive-options">
-                
+
+            <div class="col archive-options">       
                    <!-- settings dropdown -->
                       <div class="btn-group" >
                         <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
@@ -286,32 +285,16 @@ export default {
       this.store.documentData = ''
       console.log("Korisnik nema dokumenta")
     }
-    $('#element').popover('show')
-
     
-    $('button').on('click',function(){
-                  toastr.options = {
-          "closeButton": true,
-          "debug": false,
-          "newestOnTop": false,
-          "progressBar": false,
-          "positionClass": "toast-top-right",
-          "preventDuplicates": true,
-          "onclick": null,
-          "showDuration": "300",
-          "hideDuration": "1000",
-          "timeOut": "5000",
-          "extendedTimeOut": "1000",
-          "showEasing": "swing",
-          "hideEasing": "linear",
-          "showMethod": "fadeIn",
-          "hideMethod": "fadeOut",
-          "z-index": "10000",
-          "position": "absolute"
-        } 
-
-        Command: toastr["info"]("Isprobajte naš filter!", "Ne možete naći dokument?")
-    })
+    //https://www.npmjs.com/package/vue-notification
+    this.$notify({
+        group: 'notify',
+        type: 'info',
+        title: 'Ne možete pronaći dokument?',
+        text: 'Isprobajte naš filter!',
+        duration: 7000,
+        position:'top right'
+    });
 
   }
 }
