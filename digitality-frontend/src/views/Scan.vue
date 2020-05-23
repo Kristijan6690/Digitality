@@ -15,7 +15,7 @@
       
     </div>
      
-     <croppa class="croppa1"
+     <croppa class="c1"
         v-model="myCroppa"
         :width="700"
         :height="500"
@@ -50,7 +50,6 @@ export default {
   data() {
     return {
       myCroppa: null,
-      placeholderFontSize: 1,
       placeholder: 'Drag and drop your file here'
     };
   },
@@ -71,14 +70,15 @@ export default {
       })
     },
 
-    async onLoad() {
+   async onLoad() {
       let blobData = await this.getImageBlob()
       let url_dokumenta = "nesto"   // osmislit od kud cemo vuci url
       console.log(blobData,url_dokumenta)
       await app.sendDocument(blobData,url_dokumenta)
     },
+  },
 
-    myEventHandler(e) {
+  myEventHandler(e) {
       if(screen.width < 757){
         this.placeholder = 'Choose a file';
       }
@@ -86,17 +86,13 @@ export default {
       else{
         this.placeholder = 'Drag and drop your file here';
       }
-    }
-
-  },
+    },
 
   created() {
     window.addEventListener("resize", this.myEventHandler);
   },
 
-  destroyed() {
-    window.removeEventListener("resize", this.myEventHandler);
-  },
+  
 
   mounted(){
     $('#successAlert').hide();
@@ -111,10 +107,11 @@ export default {
 
 <style scoped>
 
-.container {
-  display: -webkit-box;
-  justify-content: center;
-  align-items: center;
+.croppa-container.c1 {
+  width: 750px;
+  height: 550px;
+  margin: 50px auto;
+  display: block;
 }
 
 .croppa-container {
@@ -127,37 +124,31 @@ export default {
 }
 
 @media screen and (min-width: 768px){
- .croppa-container.croppa1 {
-  margin: 50px auto;
- }
+} 
 
- .container {
-  display: -webkit-box;
-  justify-content: center;
-  align-items: center;
-  }
+.croppa-container.c1 {
+  width: 750px;
+  height: 550px;
+  margin: 50px auto;
+  display: block;
 }
 
 
 @media screen and (min-width : 0px) and (max-width : 767px){
 
-.croppa-container.croppa1 {
-  width: 100%;
+.croppa-container.c1 {
+  width: 325px;
   height: 300px;
-  margin: 50px auto;
   display: block;
- }
 }
 
-canvas{
-  width:20px !important;  
-}
-
-.container {
-  display: -webkit-box;
-  justify-content: center;
-  align-items: center;
 
 }
+
+.alert-success[data-v-6a73f337], .alert-warining[data-v-6a73f337] {
+    width: 360px;
+}
+
+
 
 </style>
