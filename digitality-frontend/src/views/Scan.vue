@@ -1,15 +1,20 @@
 <template>
   <div class="container" >
-    <!--
-     <div class="row">
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-      </div>
-     </div>
-     -->
+    
+     <div class="row" style="display:inline-block;">
+
+        <div class="alert alert-success alert-dismissible fade show" id="successAlert">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Uspjeh!</strong> Vaš dokument je uspješno obrađen i spremljen u arhivu "xyz".
+        </div>
+        
+        <div class="alert alert-warning alert-dismissible fade show" id="warningAlert">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Greška!</strong> Došlo je do greške prilikom obrade dokumenta.
+        </div>
+      
+    </div>
+     
      <croppa class="croppa1"
         v-model="myCroppa"
         :width="700"
@@ -32,35 +37,6 @@
         @new-image-drawn="onLoad()"
       ></croppa>
       
-    <!-- success confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" >
-          
-          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Dokument dodan u arhivu _____
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
-            </div>
-        </div>
-      </div>
-
-      <!-- error confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" >
-          
-          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Došlo je do greške prilikom učitavanja dokumenta
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
-            </div>
-        </div>
-      </div>
 
   </div>
 </template>
@@ -85,9 +61,11 @@ export default {
         this.myCroppa.generateBlob(blobData => {
           if(blobData != null) {
             resolve(blobData)
+            $('#successAlert').show();
           }
           else {
             reject("Error with getting blob")
+             $('#warningAlert').show();
           }
         })
       })
@@ -120,6 +98,11 @@ export default {
     window.removeEventListener("resize", this.myEventHandler);
   },
 
+  mounted(){
+    $('#successAlert').hide();
+    $('#warningAlert').hide();
+  }
+
 };
 
 
@@ -137,6 +120,10 @@ export default {
 .croppa-container {
   /* https://kovart.github.io/dashed-border-generator/ */
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2300A2FFFF' stroke-width='6' stroke-dasharray='23' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+.alert-success, .alert-warining{
+  width: 700px;
 }
 
 @media screen and (min-width: 768px){
@@ -171,12 +158,6 @@ canvas{
   justify-content: center;
   align-items: center;
 
-}
-
-.alert-warning {
-    color: white;
-    background-color: mediumseagreen;
-    border-color: #ffeeba;
 }
 
 </style>

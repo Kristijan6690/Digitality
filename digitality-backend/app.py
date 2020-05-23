@@ -110,12 +110,16 @@ def getdocument():
 # Proces spremanje dokumenta u bazu nakon skeniranja. Još u razradi za sada sprema samo blob i ime dokumenta u bazu
 @app.route('/send_document', methods=['POST'])
 def sendDocument():
-    docfile = request.get_json()['docfile']
-    docname = request.get_json()['docname']
-    mongo.db.test_loadImage.insert({
-        'docfile' : docfile,
-        'docname' : docname
-    })
+    try:
+        docfile = request.get_json()['docfile']
+        docname = request.get_json()['docname']
+        mongo.db.test_loadImage.insert({
+            'docfile' : docfile,
+            'docname' : docname
+        })
+
+    except:
+        return 'Greška prilikom obrade dokumenta'
 
     return "Poslano u bazu"
 
