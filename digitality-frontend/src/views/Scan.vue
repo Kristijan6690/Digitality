@@ -124,30 +124,30 @@ export default {
 }
 
 @media screen and (min-width: 768px){
-} 
-
-.croppa-container.c1 {
+  .croppa-container.c1 {
   width: 750px;
   height: 550px;
   margin: 50px auto;
   display: block;
-}
+  }
 
+
+} 
 
 @media screen and (min-width : 0px) and (max-width : 767px){
 
-.croppa-container.c1 {
-  width: 325px;
-  height: 300px;
-  display: block;
-}
+  .croppa-container.c1 {
+    width: 325px;
+    height: 300px;
+    display: block;
+  }
 
 
 }
 
-.alert-success[data-v-6a73f337], .alert-warining[data-v-6a73f337] {
-    width: 360px;
-}
+  .alert-success[data-v-6a73f337], .alert-warining[data-v-6a73f337] {
+      width: 360px;
+  }
 
 
 
