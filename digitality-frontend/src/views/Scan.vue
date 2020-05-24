@@ -1,7 +1,7 @@
 <template>
-  <div class="container" >
+  <div class="container">
     
-     <div class="row" style="display:inline-block;">
+     <div class="row">
 
         <div class="alert alert-success alert-dismissible fade show" id="successAlert">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -79,20 +79,24 @@ export default {
   },
 
   myEventHandler(e) {
-      if(screen.width < 757){
+      if(screen.width < 757){ 
         this.placeholder = 'Choose a file';
+        console.log('manji')
       }
 
       else{
         this.placeholder = 'Drag and drop your file here';
+        console.log('veci')
       }
     },
 
   created() {
     window.addEventListener("resize", this.myEventHandler);
   },
+  destroyed() {
+    window.removeEventListener("resize", this.myEventHandler);
+  },
 
-  
 
   mounted(){
     $('#successAlert').hide();
@@ -107,34 +111,39 @@ export default {
 
 <style scoped>
 
-.croppa-container.c1 {
-  width: 750px;
-  height: 550px;
-  margin: 50px auto;
-  display: block;
-}
 
 .croppa-container {
   /* https://kovart.github.io/dashed-border-generator/ */
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2300A2FFFF' stroke-width='6' stroke-dasharray='23' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 }
 
-.alert-success, .alert-warining{
-  width: 700px;
-}
 
 @media screen and (min-width: 768px){
+ .row{
+   display:inline-block; 
+   height:50px; 
+   width:750px;
+ }
+
   .croppa-container.c1 {
   width: 750px;
   height: 550px;
-  margin: 50px auto;
+  margin: auto;
   display: block;
   }
 
+.alert-success, .alert-warning{
+  width: 750px;
+ }
 
 } 
 
 @media screen and (min-width : 0px) and (max-width : 767px){
+  .row{
+   display:inline-block; 
+   height:100px; 
+   width:auto;
+ }
 
   .croppa-container.c1 {
     width: 325px;
@@ -142,13 +151,10 @@ export default {
     display: block;
   }
 
+.alert-success, .alert-warning{
+  width: auto;
+ }
 
 }
-
-  .alert-success[data-v-6a73f337], .alert-warining[data-v-6a73f337] {
-      width: 360px;
-  }
-
-
 
 </style>
