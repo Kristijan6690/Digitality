@@ -99,16 +99,16 @@
                           <div id="sortIcon" ><i class="fas fa-sort-amount-down fa-lg"></i></div>
                         </button>
 
-                        <div class="dropdown-menu dropdown-menu-right" @click.stop=''>
-                          <div class="dropdownHeader" >
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <div class="dropdownHeader"  @click.stop=''>
                               <h2 style="height:42px;">Organiziraj arhivu</h2> 
                           </div>
 
-                          <div class="dropdownBody" style="padding-top:10px; font-size: 15px;">              
+                          <div class="dropdownBody" style="padding-top:10px; font-size: 15px;" @click.stop=''>              
                             <div style="margin: 0 10px 0 10px">         
                                 <!-- Default inline 1 bootstrap-->
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input name="check" @click="onlyOne(this)" value="1"  checked="checked" type="checkbox" class="custom-control-input" id="defaultInline1" >
+                                <input type="checkbox" name="check" v-on:onclick="onlyOne(this)" class="custom-control-input" id="defaultInline1" >
                                 <label class="custom-control-label" for="defaultInline1" style="padding-right:5px;">
                                   Datum pregleda silazno 
                                   <i class="fas fa-sort-amount-down"></i>       
@@ -117,7 +117,7 @@
 
                               <!-- Default inline 2-->
                               <div class="custom-control custom-checkbox custom-control-inline" id="defaultInline2Div" >
-                                <input name="check" @click="onlyOne(this)" value="2" type="checkbox" class="custom-control-input" id="defaultInline2">
+                                <input type="checkbox" name="check" v-on:-onclick="onlyOne(this)" class="custom-control-input" id="defaultInline2">
                                 <label class="custom-control-label" for="defaultInline2" style="padding-right:5px;">
                                   Abecedno silazno
                                   <i class="fas fa-sort-amount-up"></i>    
@@ -128,7 +128,7 @@
                             <div style="margin: 0 10px 0 10px">    
                               <!-- Default inline 3-->
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input name="check" @click="onlyOne(this)" value="3" type="checkbox" class="custom-control-input" id="defaultInline3">
+                                <input type="checkbox" name="check" v-on:-onclick="onlyOne(this)" class="custom-control-input" id="defaultInline3">
                                 <label class="custom-control-label" for="defaultInline3" style="padding-right:5px;">
                                   Datum pregleda uzlazno
                                   <i class="fas fa-sort-numeric-down-alt"></i>
@@ -137,7 +137,7 @@
                               </div>
                               <!-- Default inline 4-->
                               <div class="custom-control custom-checkbox custom-control-inline"> 
-                                <input name="check" @click="onlyOne(this)" value="4" type="checkbox" class="custom-control-input" id="defaultInline4">
+                                <input type="checkbox" name="check" v-on:-onclick="onlyOne(this)" class="custom-control-input" id="defaultInline4">
                                 <label class="custom-control-label" for="defaultInline4" style="padding-right:5px;">
                                   Abecedno uzlazno
                                   <i class="fas fa-sort-numeric-up-alt"></i>
@@ -266,7 +266,7 @@ export default {
 
   //https://stackoverflow.com/questions/9709209/html-select-only-one-checkbox-in-a-group
   onlyOne(checkbox) {
-    var checkboxes = document.getElementsByName('check')
+    let checkboxes = document.getElementsByName('check')
     checkboxes.forEach((item) => {
         if (item !== checkbox) item.checked = false
       })
@@ -301,15 +301,16 @@ export default {
 
     add_archive_cancle() {
       this.createArchiveName = ''
-    }
-    
-  },
+    },
+
+ },
 
   async mounted() {
     let result = await app.getArchives() // jos nadogradit da vuce za određenog usera
     if (result) this.store.archiveData = result
     else console.log("Prazan collection")
-  }
+  },
+
 }
 
 
