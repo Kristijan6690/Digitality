@@ -152,7 +152,7 @@
                     <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
                         Uspješno izbrisano
                         <hr/>
-                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+                        <div v-on:click="izbrisi_arhivu()" data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
                     </div>
                 
                   </div>
@@ -273,9 +273,20 @@ export default {
       }
     },
 
+    async izbrisi_arhivu(){
+      await app.deleteSubarchive(this.naziv)
+      let temp = JSON.parse(localStorage.getItem('archiveData'))
+      delete temp[Object.keys(temp).length - 1]
+      localStorage.setItem('archiveData',JSON.stringify(temp))
+      this.store.archiveData = temp
+      this.store.documentData = ''
+      this.$router.push({ name: 'Home' })
+    }
   },
 
   async mounted() {
+    if(this.store.archiveData) await app.update_exDate(this.naziv);
+      
     let result = await app.getDocuments(this.naziv);  // Još nadograditi da vuce doc za određenog usera
     if (result) {
       this.store.documentData = result

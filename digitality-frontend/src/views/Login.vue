@@ -52,10 +52,18 @@ export default {
     },
   methods: {
       async login() {
-        let result = await app.login(this.email, this.password);
-        if(result){
-          this.store.userData = result;
-          localStorage.setItem('userData', JSON.stringify(result))
+        let userResult = await app.login(this.email, this.password);
+
+        if(userResult){
+          this.store.userData = userResult;
+          localStorage.setItem('userData', JSON.stringify(userResult))
+          let archiveResult = await app.getArchives() // jos nadogradit da vuce za određenog usera
+
+          if (archiveResult) {
+            this.store.archiveData = archiveResult
+            localStorage.setItem('archiveData',JSON.stringify(archiveResult))
+          }
+          else console.log("Prazan collection")
           this.$router.push({ name: 'Home' })
         } 
         else console.log("Invalid username or password")

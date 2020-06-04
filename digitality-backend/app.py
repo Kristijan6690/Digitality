@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 import datetime
+import scan_engine
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/Digitality?retryWrites=true&w=majority'
@@ -80,7 +81,8 @@ def getarhive():
             arhive[i] = {
                 'ID' : str(x['_id']),
                 'naziv' : x['naziv'].capitalize(),
-                'datum_dodavanja' : x['datum_dodavanja']
+                'datum_dodavanja' : x['datum_dodavanja'],
+                'datum_pregleda' : x['datum_pregleda']
             }
             i += 1
 
@@ -110,16 +112,10 @@ def getdocument():
 # Proces spremanje dokumenta u bazu nakon skeniranja. Još u razradi za sada sprema samo blob i ime dokumenta u bazu
 @app.route('/send_document', methods=['POST'])
 def sendDocument():
-    try:
-        docfile = request.get_json()['docfile']
-        docname = request.get_json()['docname']
-        mongo.db.test_loadImage.insert({
-            'docfile' : docfile,
-            'docname' : docname
-        })
 
-    except:
-        return 'Greška prilikom obrade dokumenta'
+    doc_url = request.get_json()['doc_url']
+    print(doc_url)
+    scan_engine.photo_to_dict(doc_url)
 
     return "Poslano u bazu"
 
@@ -165,6 +161,7 @@ def createSubarchive():
     mongo.db.Lista_arhiva.insert({
         'naziv' : archive_name,
         'datum_dodavanja' : datetime.datetime.now(),
+        'datum_pregleda' : '',
         'access_user_id' : [archive_access_user_ID],
         'documents' : []
     })
@@ -178,7 +175,46 @@ def deleteSubarchive():
     archive_name = request.get_json()['archive_name'].lower()
     mongo.db.Lista_arhiva.delete_one({'naziv' : archive_name})
 
-    return "izbrisano"
+    return "Obrisano"
+
+
+@app.route('/archive/UpdateExaminationDate',methods=['POST'])
+def update_examination_date():
+
+    naziv_arhive = request.get_json()['archive_name'].lower()
+    mongo.db.Lista_arhiva.update_one({'naziv':naziv_arhive},{'$set':{'datum_pregleda':datetime.datetime.now()}})
+
+    return "Dodano"
+
+
+@app.route('/archives/SortArchives',methods=['POST'])
+def sortArchives():
+
+    if (mongo.db.Lista_arhiva.count()== 0):
+        provjera = False
+        return provjera
+
+    else:
+        sorttype = request.get_json()['sorttype']
+        arhive = {}
+        i = 0
+
+        if(sorttype == 'abecedno_uzlazno' or sorttype == 'datum_pregleda_uzlazno'): ascORdes = 1
+        else: ascORdes = -1
+        if(sorttype == 'abecedno_uzlazno' or sorttype == 'abecedno_silazno'): sortby = "naziv"
+        else: sortby = "datum_pregleda"
+
+        for x in mongo.db.Lista_arhiva.find().sort('%s' % sortby,ascORdes):
+            arhive[i] = {
+                'ID' : str(x['_id']),
+                'naziv' : x['naziv'].capitalize(),
+                'datum_dodavanja' : x['datum_dodavanja'],
+                'datum_pregleda' : x['datum_pregleda']
+            }
+            i += 1
+
+        return jsonify(arhive)
+    
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

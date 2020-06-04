@@ -35,10 +35,9 @@ let app = {
         return response.data;
     },
 
-    async sendDocument(blob,nazivDokumenta){
+    async sendDocument(urlDokumenta){
         await Service.post('/send_document',{
-            docfile : blob,
-            docname : nazivDokumenta
+            doc_url : urlDokumenta
         })
     },
 
@@ -60,6 +59,19 @@ let app = {
         await Service.post('/archive/deleteSubarchive', {
             archive_name : naziv_arhive
         })
+    },
+
+    async update_exDate(naziv_arhive){
+        await Service.post('/archive/UpdateExaminationDate',{
+            archive_name: naziv_arhive
+        })
+    },
+
+    async sort_Archives(check_value){
+        let response = await Service.post('/archives/SortArchives', {
+            sorttype: check_value
+        })
+        return response.data;
     }
 };
 

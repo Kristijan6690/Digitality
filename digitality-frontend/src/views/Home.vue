@@ -93,7 +93,7 @@
                     </div>
             
                        <!-- sort dropdown prebaciti css u css i popraviti nazive-->
-                      <div class="btn-group" >
+                      <div id ="SortDropDown" class="btn-group" >
                         <button type="button" class="btn btn-secondary sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                           <div id="sortIcon" ><i class="fas fa-sort-amount-down fa-lg"></i></div>
                         </button>
@@ -107,7 +107,7 @@
                             <div style="margin: 0 10px 0 10px">         
                                 <!-- Default inline 1 bootstrap-->
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="radio" name="check" class="custom-control-input" checked="check" id="defaultInline1" >
+                                <input type="radio" name="check" class="custom-control-input" id="defaultInline1" >
                                 <label class="custom-control-label" for="defaultInline1" style="padding-right:5px;">
                                   Datum pregleda silazno 
                                   <i class="fas fa-sort-amount-down"></i>       
@@ -136,7 +136,7 @@
                               </div>
                               <!-- Default inline 4-->
                               <div class="custom-control custom-checkbox custom-control-inline"> 
-                                <input type="radio" name="check" class="custom-control-input" id="defaultInline4">
+                                <input type="radio" name="check" class="custom-control-input" id="defaultInline4" checked>
                                 <label class="custom-control-label" for="defaultInline4" style="padding-right:5px;">
                                   Abecedno uzlazno
                                   <i class="fas fa-sort-numeric-up-alt"></i>
@@ -146,7 +146,7 @@
                                                    
                           </div>
                           <div class="addButtonDiv">
-                                <button type="submit" @click="closeSortDropdown" class="btn btn-primary my-2 my-sm-0" id="sortButton"> Potvrdi </button>
+                                <button type="submit" @click="closeSortDropdown()" class="btn btn-primary my-2 my-sm-0" id="sortButton"> Potvrdi </button>
                           </div>
                       </div>
                      </div>
@@ -264,6 +264,11 @@ export default {
       this.store.archiveData = await app.getSearchArchives(pretraga)
     },
 
+    async dodaj_datum_pregleda() {
+      this.store.proba = "radi"
+      this.$router.push({ name: 'Scan' })
+    },
+
     async dodaj_arhivu() {
       let flag = false
 
@@ -274,7 +279,6 @@ export default {
             flag = true
           }
         }
-
         if(flag) {
           console.log("Naziv arhive vec postoji")
           this.createArchiveName = ''
@@ -282,11 +286,11 @@ export default {
         else {
           await app.createSubarchive(this.createArchiveName,this.store.userData.ID)
           let result = await app.getArchives()
+          localStorage.setItem('archiveData',JSON.stringify(result))
           this.createArchiveName = ''
           this.store.archiveData = ''
-          this.store.archiveData = result
+          this.store.archiveData = result //isprazni i napuni sa novim podacima
         }
-        
       }
       else console.log("Unesite naziv")
     },
@@ -294,23 +298,25 @@ export default {
     add_archive_cancel() {
       this.createArchiveName = ''
     },
-
-    closeSortDropdown(){
-    //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
-     $('#sortButton').trigger("click");
-     $('#removeButtonSettings').trigger("click");
-     },
-    
-     
-   
+  
+    async closeSortDropdown(){
+      let sortby = ''
+      if(document.getElementById("defaultInline1").checked) sortby = 'datum_pregleda_silazno'
+      else if(document.getElementById("defaultInline2").checked) sortby = 'abecedno_silazno'
+      else if(document.getElementById("defaultInline3").checked) sortby = 'datum_pregleda_uzlazno'
+      else if(document.getElementById("defaultInline4").checked) sortby = 'abecedno_uzlazno'
+      let result = await app.sort_Archives(sortby)
+      localStorage.setItem('archiveData',JSON.stringify(result))
+      this.store.archiveData = result
+      $('#SortDropDown').trigger("click"); //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
+    },
   },
 
-  async mounted() {
-    let result = await app.getArchives() // jos nadogradit da vuce za određenog usera
-    if (result) this.store.archiveData = result
-    else console.log("Prazan collection")
-  },
-
+  mounted(){
+    if(localStorage.getItem('archiveData') != null) {
+      this.store.archiveData = JSON.parse(localStorage.getItem('archiveData'))
+    }
+  }
 }
 
 

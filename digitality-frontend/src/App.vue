@@ -55,6 +55,7 @@ export default {
       this.store.archiveData = ""
       this.store.documentData = ""
       localStorage.removeItem('userData')
+      localStorage.removeItem('archiveData')
       this.$router.push({ name: 'Login' })
     }
   },
