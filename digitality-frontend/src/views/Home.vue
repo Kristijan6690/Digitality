@@ -242,7 +242,7 @@ export default {
     return {
       searchTerm: '',
       store,
-      createArchiveName: '',
+      createArchiveName: ''
     }
   },
 
@@ -282,6 +282,7 @@ export default {
         if(flag) {
           console.log("Naziv arhive vec postoji")
           this.createArchiveName = ''
+          this.provjera = true
         }
         else {
           await app.createSubarchive(this.createArchiveName,this.store.userData.ID)
@@ -290,9 +291,9 @@ export default {
           this.createArchiveName = ''
           this.store.archiveData = ''
           this.store.archiveData = result //isprazni i napuni sa novim podacima
+          this.provjera = false
         }
       }
-      else console.log("Unesite naziv")
     },
 
     add_archive_cancel() {
