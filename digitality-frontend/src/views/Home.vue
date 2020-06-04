@@ -181,7 +181,7 @@
                   <input v-model = "createArchiveName" placeholder="Unesite ime podarhive" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Unesite ime podarhive'" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
                 </div>
                 <div class="modal-footer" style="text-align:center; display:block;">
-                  <button v-on:click="dodaj_arhivu()" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#success_confirmation" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button v-on:click="dodaj_arhivu()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
                   <button v-on:click="add_archive_cancel()" type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
                 </div>
               </div>
@@ -204,12 +204,12 @@
       </div>
 
       <!-- error confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal fade" id="unsuccess_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Došlo je do greške prilikom kreiranja podarhive
+                   Došlo je do pogreške,arhiva već postoji
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -280,9 +280,8 @@ export default {
           }
         }
         if(flag) {
-          console.log("Naziv arhive vec postoji")
           this.createArchiveName = ''
-          this.provjera = true
+          $("#unsuccess_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
         }
         else {
           await app.createSubarchive(this.createArchiveName,this.store.userData.ID)
@@ -291,7 +290,7 @@ export default {
           this.createArchiveName = ''
           this.store.archiveData = ''
           this.store.archiveData = result //isprazni i napuni sa novim podacima
-          this.provjera = false
+          $("#success_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
         }
       }
     },

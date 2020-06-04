@@ -123,7 +123,7 @@
             <div class="col heading">
                   <!-- maknuti submit iz buttona? -->
                   <button type="submit" v-on:click="go_back()" class="btn btn-pr imary my-2 my-sm-0" id="backButton">Natrag</button>             
-                  <div style="width: 100%;" id="headlineDiv"><h1 id="headline">Internet</h1></div>
+                  <div style="width: 100%;" id="headlineDiv"><h1 id="headline">{{this.naziv}}</h1></div>
                   <button type="button" class="btn btn-primary my-2 my-sm-0" id="deleteButton"  data-toggle="modal" data-target="#delete_confirmation">Izbriši</button>
             </div>         
         </div>
