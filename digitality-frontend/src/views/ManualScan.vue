@@ -35,8 +35,14 @@
                                 <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" required><br>
                             </div>
                             <div class="data">
-                                <label for="vrstaUsluge" >Vrsta usluge:</label>
-                                <input type="text" id="vrstaUsluge" name="vrstaUsluge" placeholder="internet / struja / mobilni operater..." required><br>
+                                <label for="vrstaUsluge">Vrsta usluge:</label>
+                                      <select v-model="vrstaUsluge" id="billTypeDropdown" style="height:28px; width:70%;">
+                                        <option disabled value="">Odaberite vrstu usluge</option>
+                                        <option> Internet </option>
+                                        <option> Struja</option>
+                                        <option> Voda </option>
+                                      </select> 
+                                <br>
                             </div>
                             <div class="data">
                                 <label for="kolicina">Količina:</label>
@@ -163,7 +169,8 @@ export default {
   data(){
     return {
       datIzdTemp: '',
-      datDospTemp: ''
+      datDospTemp: '',
+      vrstaUsluge: 'Odaberite vrstu usluge'
     }
   },
   name: 'Home',
@@ -228,7 +235,7 @@ export default {
   /* border-bottom: 2px solid  #00A2FF;  -border za footer */
 }
 
-input{
+input, #billTypeDropdown{
     display:inline-block;
     width:70%;
     border-radius: 5px;
