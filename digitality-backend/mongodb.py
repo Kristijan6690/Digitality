@@ -50,49 +50,63 @@ def get_data_oib(oib_list):
     return (user_data, company_data)
  
 
-def add_new_document(archive, document):
+def get_archive(collection, archive):
+    filter = {'_id': archive}
+    try:
+        arc = collection.find_one(filter)  
+    except:
+        print("Fail - Collection.FindOne")
+        arc = None
+        
+    return arc
+
+def update_subarchive(arc, document):
+    filter = {'_id': arc}
+    update = {'$set': {subarchive: document}}
+    
+    try:
+        result = collection.update_one(filter, update)   
+    except:
+        print("Unable to update document")
+        result = None
+    
+    return result   
+
+
+def update_document(arc, document):
     db = connect_to_db()
     if not db:
         return None    
     collection = db["Archives"]
     
-    filter = {'_id': archive}
-    try:
-        arch = collection.find_one(filter)  
-    except:
-        print("Fail - Collection.FindOne")
-        return
-    
+    arc = get_archive(collection, arc)
     subarchive = document['naziv_dobavljaca']
     
-    # APPEND NEW DOCUMENT
+    # FIND AND REPLACE DOC IN LIST
+    
+    return update_subarchive(archive, arc[subarchive])
+
+def create_document(arc, document):
+    db = connect_to_db()
+    if not db:
+        return None    
+    collection = db["Archives"]
+    
+    arc = get_archive(collection, arc)
+    subarchive = document['naziv_dobavljaca']
+    
     try:
-        arch[subarchive].append(document)
+        arc[subarchive].append(document)
     except KeyError:
-        arch[subarchive] = []
-        arch[subarchive].append(document)
-    except TypeError:
-        print("Fail - Append()")
-        return
+        arc[subarchive] = [document]
     
-    # UPDATE THE DATABASE
-    update = {
-        '$set': {subarchive: arch[subarchive]}
-    }
-    try:
-        result = collection.update_one(filter, update)   
-    except:
-        print("Unable to update document")
-        return
-    
-    return result
+    return update_subarchive(arc, arc[subarchive])
 
 
 def get_cur_alias():
     with open('current_user.json', 'r') as fp:
         user = json.load(fp)   
     return user['alias']       
-
 
 
 # TESTING

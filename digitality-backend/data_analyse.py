@@ -77,8 +77,12 @@ def check_iban(iban_list, company_data):
         
     # Edge case handling
     if not iban_list:
-        print("ERROR! - No iban found from scanning, returning most used one!")        
-        return company_ibans[0]
+        try:
+            print("ERROR! - No iban found from scanning, returning most used one!")     
+            return company_ibans[0]
+        except:
+            print("ERROR! - No company data found, nothing will be returned!")    
+            return None
     elif len(iban_list) == 1:
         return iban_list[0]
     

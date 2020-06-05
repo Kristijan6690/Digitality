@@ -6,8 +6,7 @@ import data_analyse as da
 from datetime import datetime
 
 """
-    Za spojit treba naadodat:
-        mongodb.py line 39
+    find and replace - mongodb.py update_document()
         
     Test data:
         if __name__=... u svakom file-u 
@@ -16,57 +15,28 @@ from datetime import datetime
 """
 
 # SCAN IMG
-def build_dict(company_data, user_data, place, dates, amounts):
-    if not company_data:
-        company_data = {
-            'naziv': None,
-            'oib': None,
-            'iban': None        
-        }
+def photo_to_dict(photo):
+    scanned_text = scan.scan_image(photo)
     
-    if not user_data:
-        user_data = {
-            'ime': None,
-            'prezime': None,
-            'oib': None,
-            'iban': None,            
-        }
+    final_dict = {}
     
-    return {
-        'naziv_dobavljaca': company_data['naziv'],
-        'oib_dobavljaca': company_data['oib'],
-        'iban_primatelja': company_data['iban'],     
-        
-        'naziv_kupca': user_data['ime'] + " " + user_data['prezime'],
-        'oib_kupca': user_data['oib'],
-        'iban_platitelja': user_data['iban'],
-        
-        'mjesto_izdavanja': place,
-        'datum_izdavanja': dates['izdavanje'],
-        'datum_dospijeca': dates['dospijece'],
-        
-        'broj_racuna': None,
-        'poziv_na_broj': None,
-        
-        'iznos': amounts['total'],
-        'pdv': amounts['pdv'],
-        'neto': amounts['neto']       
-    }
-
-def photo_to_dict(path):
-    scanned_text = scan.scan_image(path)
+    amounts = extract.amounts_extraction(scanned_text) # dict
+    final_dict.update(amounts)
     
-    amounts = extract.amounts_extraction(scanned_text)
-    place = extract.postal_numbers(scanned_text)
-    dates = extract.payment_dates(scanned_text)
-    iban_list = extract.iban_numbers(scanned_text)
+    final_dict['mjesto_izdavanja']  = extract.postal_numbers(scanned_text) # string
+    
+    dates = extract.payment_dates(scanned_text) # dict
+    final_dict.update(dates)
     
     # Na temelju oib-a se iz baze povlace podaci o korisniku i izdavacu racuna
     user_data, company_data = extract.oib_numbers(scanned_text)
-
-    company_data['iban'] = da.check_iban(iban_list, company_data)
+    final_dict.update(user_data)
     
-    return build_dict(company_data, user_data, place, dates, amounts)
+    company_data['iban_primatelja'] = extract.iban_numbers(scanned_text, company_data)
+    del company_data['iban']
+    final_dict.update(company_data)
+    
+    return final_dict
 
 # ADD DOC
 def add_meta_data():
@@ -79,10 +49,10 @@ def add_meta_data():
 def add_to_database(archive, document):
     document['meta_data'] = add_meta_data()
     
-    db.add_new_document(archive, document)
-    update_data(document)
+    db.create_document(archive, document)
+    update_company(document)
 
-def update_data(document):
+def update_company(document):
     company_data = db.get_company(db.connect_to_db(), document['oib_dobavljaca'])
     update_company_iban(document['iban_primatelja'], company_data)
 
@@ -108,8 +78,8 @@ def test_scaning():
     print('Datum izdavanja: ',final_dict['datum_izdavanja'])
     print('Datum dospijeca: ',final_dict['datum_dospijeca'])
 
-    print('Broj racuna: ',final_dict['broj_racuna'])
-    print('Poziv na broj: ',final_dict['poziv_na_broj'])
+    #print('Broj racuna: ',final_dict['broj_racuna'])
+    #print('Poziv na broj: ',final_dict['poziv_na_broj'])
 
     print('Neto: ',final_dict['neto'])   
     print('PDV: ',final_dict['pdv'])   
@@ -117,7 +87,7 @@ def test_scaning():
     
     print("\n###########################################################")
 
-def test_update_data():
+def test_update_company():
     doc = {
         'meta_data': {
             'added_by': 'john@smith.com',
@@ -141,7 +111,7 @@ def test_update_data():
         'vrsta_usluge': 'Internet',
         'iznos': '100kn'
     }
-    res = update_data(doc)
+    res = update_company(doc)
     print(res)
     
 if __name__ == '__main__':
