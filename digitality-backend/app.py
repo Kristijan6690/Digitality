@@ -114,8 +114,7 @@ def getdocument():
 def sendDocument():
 
     doc_url = request.get_json()['doc_url']
-    print(doc_url)
-    scan_engine.photo_to_dict(doc_url)
+    temp = scan_engine.photo_to_dict(doc_url)
 
     return "Poslano u bazu"
 

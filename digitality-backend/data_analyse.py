@@ -1,21 +1,20 @@
 import mongodb as db
+import json
 
 # IBAN ##########################################
-# UPDATE ###############
 def compare_possible_ibans(iban, company_data):
+    # possible_ibans - iban brojevi koji se nisu pojavili dovoljno puta da bi se smatrali validnima
     try:
-        #Pokusamo dohvatiti atribut 'possible_ibans' iz rijecnika koji sadrzi podatke izdavacu te postavimo
-        #   ukoliko ne uspijemo, tj. taj atribut ne postoji, izvrsava se exception
-        possible_ibans = company_data['possible_ibans']
-        boundary = 5 #Koliko se puta mora iban pojaviti da bi se validirao
-        upgrade_index = -1 #Ako je boundary dosegnut validiramo iban na indexu kojeg spremamo u ovu varijablu
+        possible_ibans = company_data['possible_ibans'] # okida try/except
+        
+        boundary = 5 
+        upgrade_index = -1
         is_found = False
         
-        #Provjervamo ako se proslijeđeni iban nalazi u polju mogućih iban-a
-        #   ako se nalazi njegova ucestalost se povecava za +1 te se provjerava upgrade_index 
         for index, cur_iban in enumerate(possible_ibans):
             if cur_iban[1] == iban: 
                 cur_iban[0] += 1
+                is_found = True
                 
                 if cur_iban[0] >= boundary:
                     upgrade_index = index
@@ -24,189 +23,95 @@ def compare_possible_ibans(iban, company_data):
                     
                 break
         
-        #Ako iban nije pronađen, dodajemo ga u listu mogucih ibana
         if not is_found:
             new_iban = [1, iban]
-            company_data['possible_ibans'].append(new_iban)
-            
-        #Ukoliko je boundary zadovoljen premjestamo taj iban iz 'possible_ibans' u 'iban'
-        if upgrade_index >= 0:
+            company_data['possible_ibans'].append(new_iban)  
+        
+        elif upgrade_index != -1:
             new_iban = possible_ibans.pop(upgrade_index)
             company_data['iban'].append(new_iban)
+    
     except:
-        company_data['possible_ibans'] = [] #Ako ne postoji taj atribut u trenutnom dictionary-u stvaramo ga kao praznu listu
-        
-        #U tu praznu listu dodajemo novi element sa brojem ucestalosti postavljenim na 1
-        new_iban = [1, iban] 
-        company_data['possible_ibans'].append(new_iban)
+        # ako ne postoji possible_ibans, stvori ga
+        company_data['possible_ibans'] = [[1, iban]] 
             
     return company_data   
                    
 def update_company_iban(iban, company_data):
-    company_ibans = company_data['iban']
-    is_found = False
+    company_ibans = company_data['iban'] # format: company_ibans = [[broj_pojava, iban], [3, HR012345678512]]
     
-    #Provjeravamo ako se iban nalazi u listi, te ako se nalazi njegovu ucestalost povecavamo za +1
+    is_found = False
+    # Pronadi iban i povecaj ucestalost za +1
     for index, cur_iban in enumerate(company_ibans):
         if cur_iban[1] == iban:
-            cur_iban[0] += 1
-            company_ibans[index] = cur_iban
-            
-            is_found = True    
+            company_ibans[index][0] += 1
+            is_found = True
             break
     
-    #Ako se ne nalazi u listi, provjeravamo u listi mogucih ibana
-    #   moguci ibani su oni ibani koji su se pojavili nedovoljno puta da bi se mogli smatrati vazecim 
+    # Ako ne pronades, pretrazi u mogucim iban brojvima
     if not is_found:
         company_data = compare_possible_ibans(iban, company_data)
 
-    #Pokusavamo sortirati listu ibana po broju ucestalosti, ako jedan od ibana nije pravilnog formata dolazi do greske i polje se ne sortira
-    try:
-        company_ibans = sorted(company_ibans, key = lambda sub_list: sub_list[0])
-    except:
-        print("List of iban numbers contains an element that is not a sub list and can not be sorted!")
-    
-    #Sa novo obradenim podacima updateamo izdavaca racuna na bazi
+    company_ibans = sorted(company_ibans, key = lambda sub_list: sub_list[0])
     db.update_company(company_data)
     
-    return company_ibans
+    return company_data
 
-# CHECK ################
-#Funkcija izbacuje iz liste iban trenutnog korisnika
 def compare_user_iban(iban_list):
-    # TEST DATA #################################
-    user = {
-        '_id': '1',
-        'email': 'john@smith.com',
-        'personal_arhive': '7',
-        'archive_ids': ['7', '8'],
-        'alias': [
-            {
-                'ime': 'John',
-                'prezime': 'Smith',
-                'oib': '12345678901',
-                'iban': 'HR123456789012',
-                'postal_code': '10000',
-            },
-            {
-                'ime': 'Jane',
-                'prezime': 'Smith',
-                'oib': '10987654321',
-                'iban': 'HR210987654321',
-                'postal_code': '10000',
-            }
-        ], 
-    }
-    #############################################
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp)   
     
     aliases = user['alias']
-    
+    alias_ibans = [alias['iban'] for alias in aliases]
+
     for index, iban in enumerate(iban_list):
-        found = False
-        
-        for alias in aliases:
-            if iban == alias['iban']:
-                found = True
-                break #Break iz nested loop-a
-        
-        if found:
+        if iban in alias_ibans:
             iban_list.pop(index)
-            break #Break iz glavnog loop-a
-    
+            break
+
     return iban_list    
 
-#Funkcija kao argumente prima listu ibana koji su se pronasli na slici te dobiva podatke o izdavacu racuna
 def check_iban(iban_list, company_data):
-    company_ibans = company_data['iban']
-
+    company_ibans = company_data['iban'] # format: company_ibans = [[broj_pojava, iban], [3, HR012345678512]]
+    company_ibans = [iban[1] for iban in company_ibans]
+        
+    # Edge case handling
     if not iban_list:
         print("ERROR! - No iban found from scanning, returning most used one!")        
-        return company_ibans[0][1]
+        return company_ibans[0]
     elif len(iban_list) == 1:
         return iban_list[0]
     
-    iban = None
-    is_found = False
-    for u_iban in iban_list:
-        for c_iban in company_ibans:
-            if u_iban == c_iban[1]:
-                is_found = True
-                iban = u_iban[1]
-                break
-        break
+    # Standardno pretrazivanje   
+    for iban in iban_list:
+        if iban in company_ibans:
+            return iban
     
-    if not is_found:
-        iban_list = compare_user_iban(iban_list)
-
-        n_iban = len(iban_list)
-        if n_iban >= 1:
-            iban = iban_list[0][1]
-        else: 
-            iban = company_ibans[0][1]
+    # Ako nije do sad pronadeno
+    iban_list = compare_user_iban(iban_list)
+    if len(iban_list) >= 1:
+        iban = iban_list[0]
+    else: 
+        iban = company_ibans[0]
             
     return iban       
-
-    
-# PC - POŠTANSKI BROJ ###########################
-def check_user_pc(pc_nums):
-    # TEST DATA #################################
-    user = {
-        '_id': '1',
-        'email': 'john@smith.com',
-        'personal_arhive': '7',
-        'archive_ids': ['7', '8'],
-        'alias': [
-            {
-                'ime': 'John',
-                'prezime': 'Smith',
-                'oib': '12345678901',
-                'iban': 'HR123456789012',
-                'postal_code': '10000',
-            },
-            {
-                'ime': 'Jane',
-                'prezime': 'Smith',
-                'oib': '10987654321',
-                'iban': 'HR210987654321',
-                'postal_code': '10000',
-            }
-        ], 
-    }
-    #############################################
-    
-    #Dohvacamo aliase od korisnika te ih spremamo u zasebnu varijablu
-    aliases = user['alias']
-
-    #Iako je kompleksnost ovog koda n^2 nece biti vise od 20 usporedba pa zbog toga kod nece biti pre spor
-    #Zelimo ukloniti sto vise postanskih brojeva koje cemo traziti u rijecniku da da bude sto veca vjerovatnost da je to 
-    #   postanski broj sa kojeg je poslan racun, tj da je to mjesto izdavanja. Zbog toga iz polja izbacujemo postanski broj
-    #   korisnika koji ce se takoder nalaziti na racunu.
-    for pc in pc_nums:
-        found = False
+   
+# POŠTANSKI BROJ ###########################
+def get_pc_dict():
+    try:
+        with open('postal_codes.json', 'r') as fp:
+            data = json.load(fp)        
+    except FileNotFoundError:
+        data = None
         
-        for index, alias in enumerate(aliases):
-            if pc == alias['postal_code']:
-                found = True
-                break
-        
-        if found:
-            pc_nums.pop(index)
-            break
-    
-    return pc_nums
+    return data
                
-def check_pc_dict(pc_nums):
-    #Dohvati rijecnik postanskih brojeva sa baze
-    pc_dict = db.get_pc_dict()
+def check_pc_dict(p_codes):
+    pc_dict = get_pc_dict()
     
-    #Ukoliko postanski broj nije naden u rijecniku(npr. nije pravilno skeniran sa racuna) funkcija ce vratiti None
-    result = None
-    
-    #U slucaju da su se provukli jos neki podaci, prolazimo kroz njih sve
-    #   posto postanski brojevi u RH nisu sekvencijalni(npr 10000-10001 vec 10000-10010)  velika je vjerovatnost 
-    #   da se ti junk podaci nece pronaci u rijecniu sto ce izazvati gresku koju moramo obraditi na nacin da taj 
-    #   broj jednostavno preskocimo u petlji
-    for pc in pc_nums:
+    result = None 
+    # try/catch zbog mogucih junk podataka
+    for pc in p_codes:
         try:
             result = pc_dict[pc]
             break
@@ -215,39 +120,45 @@ def check_pc_dict(pc_nums):
     
     return result
 
-def check_postal_code(pc_nums):
-    #Pretvaramo postanske brojeve u stringove da bi ih mogli pronaci u rijecniku
-    pc_nums = [str(pc) for pc in pc_nums]
+def check_user_pc(p_codes):
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp)   
     
-    #Ukoliko je samo jedan pc u listi(u slucaju da je racun poslan iz istog mjesta gdje se nalazi primatelj)
-    #   ne zelimo izbaciti taj broj pa preskacemo ovaj korak
-    if len(pc_nums) > 1:
-        pc_nums = check_user_pc(pc_nums)
-    
-    #Mjesto izdavanja trazimo u rjecniku koji sadrzi sve postanske brojeve iz RH 
-    place = check_pc_dict(pc_nums)
-    
-    return place 
+    aliases = user['alias']
+    alias_codes = [alias['postal_code'] for alias in aliases]
 
+    for index, p_code in enumerate(p_codes):
+        if p_code in alias_codes:
+            p_codes.pop(index)
+            break
+    
+    return p_codes
 
-if __name__ == "__main__":
+def check_postal_code(p_codes):
+    p_codes = [str(pc) for pc in p_codes]
     
-    pc_nums = [10110, 51304]
+    if len(p_codes) > 1:
+        p_codes = check_user_pc(p_codes)
     
-    place = check_postal_code(pc_nums)
-    print(place)
+    return check_pc_dict(p_codes)
     
-    """
-    test_company = {
-        '_id': '4',
-        'naziv': 'Company A',
-        'oib': '16962783514',
 
-        'usluga': 'Internet', 
-        'iban': [[1, 'HR012329678912'], [2, 'HR012345678512'], [3, 'HR765456278512']]    
-    }
+# TEST
+def test_update_iban(test_company):
+    update_company_iban('HR012345678519', test_company)
+    
+def test_check_iban(test_company):
     test_iban = ['HR012345678512', 'HR012322678912', 'HR123456789012']
+    print("IBAN:", check_iban(test_iban, test_company))   
+
+def test_check_postal_code():
+    p_codes = [10110, 51304]
+    print(check_postal_code(p_codes))
+     
+if __name__ == "__main__":
+    test_company = db.get_company(db.connect_to_db(), '16962783514')
     
-    iban = check_iban(test_iban, test_company)
-    print("IBAN:", iban)
-    """
+    #test_update_iban(test_company)
+    #test_check_iban(test_company)
+    
+    #test_check_postal_code()

@@ -3,22 +3,19 @@ import extraction as extract
 import mongodb as db
 import data_analyse as da
 
-from os import system
+from datetime import datetime
 
 """
-Za spojit treba naadodat:
-    mongodb.py line 39
-    
-Test data:
-    if __name__=... u svakom file-u 
+    Za spojit treba naadodat:
+        mongodb.py line 39
+        
+    Test data:
+        if __name__=... u svakom file-u 
 
-    extraction.py -> oib_numbers(text)
-    
-    data_analyse.py -> compare_user_iban(iban_list)
-    data_analyse.py -> check_user_pc(pc_nums)
-    data_analyse.py -> compare_user_iban(iban_list)
+        extraction.py -> oib_numbers(text)
 """
 
+# SCAN IMG
 def build_dict(company_data, user_data, place, dates, amounts):
     if not company_data:
         company_data = {
@@ -30,6 +27,7 @@ def build_dict(company_data, user_data, place, dates, amounts):
     if not user_data:
         user_data = {
             'ime': None,
+            'prezime': None,
             'oib': None,
             'iban': None,            
         }
@@ -55,49 +53,44 @@ def build_dict(company_data, user_data, place, dates, amounts):
         'neto': amounts['neto']       
     }
 
-
 def photo_to_dict(path):
-    #Pozivamo funkciju za OCR kojoj proslijedujemo sliku racuna
-    #   funkcija nam vraca tekst racuna koji ce se u daljem izvodenju koda obradivati
     scanned_text = scan.scan_image(path)
     
-    #Funkcija za iznos racuna
     amounts = extract.amounts_extraction(scanned_text)
-    
-    #Funkcija za dobivanje postanskih brojeva sa racuna te dohvacanje mjesta izdavanja
     place = extract.postal_numbers(scanned_text)
-    
-    #Funkcija za dobivanje datuma dospijeca i datuma izdavanja
     dates = extract.payment_dates(scanned_text)
-    
-    #Funkcija nam daje listu iban brojeva koje pronade na racunu
-    #   ocekuje se da ce vratiti listu sa 2 elementa[iban primatelja i iban platitelja]
     iban_list = extract.iban_numbers(scanned_text)
     
-    #Funkcija u skeniramom tekstu pronalati oib-e te na temelju tih oib-a 
-    #   vraca podatke o izdavacu racuna i kupcu
-    data = extract.oib_numbers(scanned_text)
-    user_data = data['user']
-    company_data = data['company']
+    # Na temelju oib-a se iz baze povlace podaci o korisniku i izdavacu racuna
+    user_data, company_data = extract.oib_numbers(scanned_text)
 
     company_data['iban'] = da.check_iban(iban_list, company_data)
     
     return build_dict(company_data, user_data, place, dates, amounts)
 
+# ADD DOC
+def add_meta_data():
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp) 
+    
+    date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    return {'user': user['email'], 'date': date}
 
-def add_to_database(archive, document): # Kao argument prima dokument(dict) koji se pohranjuje na bazu te _id arhive u koju se pohranjuje
-    add_new_document(archive, document)
+def add_to_database(archive, document):
+    document['meta_data'] = add_meta_data()
+    
+    db.add_new_document(archive, document)
     update_data(document)
 
-def update_data(document): # Kao argument prima dokument(dict), na temelju tih podataka se vrsi update vec postojecih podataka na bazi
-    company_data = db.search_company(oib)
+def update_data(document):
+    company_data = db.get_company(db.connect_to_db(), document['oib_dobavljaca'])
+    update_company_iban(document['iban_primatelja'], company_data)
 
 
-# TESTIRANJE ####################################
-if __name__ == '__main__':
-    print("\n")
-    """
-    path = './images/20200416_135328.jpg'
+# TESTING 
+def test_scaning():
+    path = r'https://firebasestorage.googleapis.com/v0/b/digitality-1234567890.appspot.com/o/kkrulic%40unipu.hr%2F1591097366198.png?alt=media&token=2c0371a9-6912-405e-a0b0-b28b00f486c6&fbclid=IwAR1fslrU4OcNOud192dLA5QQUdxwdFOpNH8STNpYT1u4iryGLOsFAoL0oJs'
+    #path = './images/20200416_135328.jpg'
     #path = './images/20200323_142140.jpg'
     final_dict = photo_to_dict(path)
     
@@ -123,8 +116,36 @@ if __name__ == '__main__':
     print('Iznos: ',final_dict['iznos'])   
     
     print("\n###########################################################")
-    """
+
+def test_update_data():
+    doc = {
+        'meta_data': {
+            'added_by': 'john@smith.com',
+            'added_on': '01/01/2020',
+            'added_at': '12:00'
+        },
+        'naziv_dobavljaca': 'Company A',
+        'oib_dobavljaca': '16962783514',
+        'iban_primatelja': 'HR012329678912',    
+        
+        'naziv_kupca': 'John Smith',
+        'oib_kupca': '12345678901',
+        'iban_platitelja': 'HR123456789012',
+        
+        'mjesto_izdavanja': 'Zagreb',
+        'datum_izdavanja': '01/01/2020',
+        'datum_dospijeca': '01/02/2020',
+        
+        'broj_racuna': 'user_input',
+        'poziv_na_broj': 'user_input',
+        'vrsta_usluge': 'Internet',
+        'iznos': '100kn'
+    }
+    res = update_data(doc)
+    print(res)
     
-    #update_data()
+if __name__ == '__main__':
+    test_scaning()
+    #test_update_data()
     
     

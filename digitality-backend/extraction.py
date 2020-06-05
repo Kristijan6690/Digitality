@@ -5,49 +5,28 @@ import data_analyse as da
 
 # IZNOS RACUNA ##################################
 def build_amounts_dict(total, pdv):
-    #Pretrazujemo tekst za PDV te pomocu njega izracunavamo neto iznos
     neto = None
     if total:
         neto = total / (1 + (pdv/100))
     
-    #Iznos racuna, pdv i neto iznos vracamo kao dictionary
-    return {
-        'total': total,
-        'pdv': pdv,
-        'neto': neto
-    }    
+    return {'total': total, 'pdv': pdv, 'neto': round(neto, 2)}    
 
 def extract_pdv(text):
-    #Tražimo pdv u tekstu, te zatim iz njega uklanjamo '%' da ga možemo pretvoriti u int
-    #   ako nismo pronašli pdv, postavljamo ga na default, tj 25% 
     pattern = '(\d{2}%)'
     pdv = re.search(pattern, text).group()
 
     if pdv:
-        pdv = pdv[:-1]
-        pdv = int(pdv)
+        return int(pdv[:-1])
     else:
-        pdv = 25
-        
-    return pdv    
+        return 25 
 
 def amounts_extraction(text):
-    #Cijena moze biti zapisana sa '.' i sa ',' pa zbog toga imamo dva filter koja nam vracaju
-    #   stringove koji se podudaraju s tim patternom
-    pattern = '(\d{2,3},\d\d)'
-    result = re.findall(pattern, text)
+    results = re.findall('(\d{2,3}(\.|,)\d\d)', text)
+    results = [res[0] for res in results]
 
-    pattern = '(\d{2,3}[.]\d\d)'
-    result += re.findall(pattern, text)
-
-    #Konacni iznos racuna pronalazimo tako da u nasoj listi pronalazimo najvecu vrijednost
-    total = None
-    if result:
-        total = 0
-        for price in result:
-            price = float(price.replace(',', '.'))
-            if price > total:
-                total = price
+    if results:
+        results = [float(elem.replace(',', '.')) for elem in results]
+        total = max(results)
     
     pdv = extract_pdv(text)
     
@@ -55,108 +34,79 @@ def amounts_extraction(text):
 
 
 # POSTANSKI BROJ ################################
+def filter_p_codes(p_code):
+    p_code = int(p_code)
+    if (p_code >= 10000) and (p_code <= 53296):
+        return p_code
+        
 def postal_numbers(text):
-    #Trazimo postanske brojeve na temelju danog patterna
-    pattern = '\s\d{5}\s'
-    postal_num = re.findall(pattern, text)
+    p_codes = re.findall('\s\d{5}\s', text)
+
+    if p_codes:
+        p_codes = [filter_p_codes(code) for code in p_codes] # Uklanjanje nevazecih brojeva
+        p_codes = list(dict.fromkeys(p_codes)) # Uklanjanje duplikata
     
-    #Uklanjamo duplikate iz nase liste te one brojeve koji nisu >= 10000 te <= 53296
-    #   unutar tog raspona se krecu postanski brojevi u RH
-    #   takve brojeve spremamo u novu listu koju zatim vracamo
-    if postal_num:
-        pc_nums = []
-        for num in postal_num:
-            num = int(num)
-            if num >= 10000 and num <= 53296 and num not in pc_nums:
-                pc_nums.append(num)
-    
-        return da.check_postal_code(pc_nums)
+        return da.check_postal_code(p_codes) # Postanski broj u mjesto
     else:
         return None
 
 
 # DATUM #########################################
+def check_dates(dates):
+    length = len(dates)
+    
+    if length <= 2:
+        add_on = [None for elem in range(2 - length)] # Ako su 2< datuma, dodaj kolko ih fali
+        dates += add_on
+    return dates
+    
 def payment_dates(text):
-    #Trazimo datume po danom patternu
-    pattern = '(\d{1,2}\.\d{1,2}.\d{4})'
-    dates = re.findall(pattern, text)
+    dates = re.findall('(\d{1,2}\.\d{1,2}.\d{4})', text)
 
-    if dates:
-        #Datume pretvaramo u datetime objekt za laksi daljni rad
-        dates = [datetime.datetime.strptime(date, '%d.%m.%Y').date() for date in dates]
-
-        #Uklanjamo duplikate iz liste te sortiramo listu datuma
-        pc_nums = []
-        for date in dates:
-            if date not in pc_nums:
-                pc_nums.append(date)    
-        dates = sorted(pc_nums)
-
-        #Vracamo dictionary sa datumom dospijeca i datumom izdavanja
-        return {
-            'dospijece': dates[-1],
-            'izdavanje': dates[-2],
-        }
-    else:
-        return {
-            'dospijece': None,
-            'izdavanje': None,
-        }
+    dates = [datetime.datetime.strptime(date, '%d.%m.%Y').date() for date in dates]
+    dates = sorted(list(dict.fromkeys(dates)))
+    dates = check_dates(dates)
+    
+    return {'dospijece': dates[-1], 'izdavanje': dates[-2]}
 
 
 # IBAN ##########################################
 def iban_numbers(text):
-    #Trazimo iban brojeve po danom patternu
-    pattern = 'HR\d{19}'
-    account_num = re.findall(pattern, text)
+    account_num = re.findall('HR\d{19}', text)
     
-    pc_nums = None
     if account_num:
-        #Uklanjamo duplikate iz liste
-        pc_nums = []
-        for num in account_num:
-            if num not in pc_nums:
-                pc_nums.append(num)
-        
-    #Vracamo listu iban brojeca
-    return pc_nums
-
-
-# OIB ###########################################
-def oib_numbers(text):
-    #Trazimo oib-e po danom patternu
-    pattern = '\D\d{11}\D'
-    oib = re.findall(pattern, text)
-
-    #Dodatno filtriramo dobivene podatke jer gornji filter dohvaca suvisne znakove
-    #   koje ovim for loopom uklanjamo
-    if oib:
-        pc_nums = []
-        for num in oib:
-            pattern = '\d{11}'
-            result = re.findall(pattern, num)
-            pc_nums.append(result[0])
-
-        #Dohvacamo podatke o koriniku, to jest o izdavacu racuna iz baze na temelju oib-a
-        #   te podatke zatim vracamo u main.py
-        
-        # TEST DATA #
-        pc_nums = ['16962783514', '12345678901']
-        
-        return db.get_data_oib(pc_nums)
+        return list(dict.fromkeys(account_num))
     else:
         return None
 
+# OIB ###########################################
+def oib_numbers(text):
+    oib_list = re.findall('\D\d{11}\D', text)
+
+    if oib_list:
+        oib_list = [re.findall('\d{11}', num)[0] for num in oib_list]
+    
+        oib_list = ['16962783514', '12345678901'] # TEST DATA <-----------------------------
+        
+        return db.get_data_oib(oib_list) # Dohvacamo alias/izdavaca racuna na temelju oib-a
+    else:
+        return (None, None)
+
+
+# TESTIRANJE 
 if __name__ == "__main__":
     file = open("text.txt","r+")
     text = file.read()
 
     print("###########################################################\n\n")
     
-    print("Amounts:", amounts_extraction(text))
-    print("Postal numbers:", postal_numbers(text))
-    print("Payment dates", payment_dates(text))
-    print("IBAN:", iban_numbers(text))
-    #print("OIB:", oib_numbers(text))
+    #print("Amounts:", amounts_extraction(text))
+    #print("Postal numbers:", postal_numbers(text))
+    #print("Payment dates", payment_dates(text))
+    #print("IBAN:", iban_numbers(text))
+    
+    user, company = oib_numbers(text)
+    print("User:", user)
+    print("Company:", company)
     
     print("\n\n ###########################################################\n")
