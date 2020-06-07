@@ -87,14 +87,9 @@ export default {
     async registration() {
       if (this.confimpassword == this.password) {
         let temp = this.name.split(" ");
-<<<<<<< HEAD
-        await app.register(temp, this.email, this.password);
-        this.$router.push({ name: "Login" });
-=======
         await app.registracija(temp, this.email, this.password); // moguce jos nadograditi
          $('#successAlert').show();
         //this.$router.push({ name: "Login" });
->>>>>>> 8e02762b31fe09569f923e56f9b6222a7432d4b5
       } 
       else  $('#warningAlert').show();
     },
