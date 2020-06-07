@@ -84,14 +84,22 @@ export default {
   },
 
   methods: {
+    check_name_len(name_surname){
+      if(name_surname[1] == undefined) name_surname[1] = " ";
+      return name_surname
+    },
+
     async registration() {
       if (this.confimpassword == this.password) {
-        let temp = this.name.split(" ");
-        await app.registracija(temp, this.email, this.password); // moguce jos nadograditi
-         $('#successAlert').show();
+        let name_surname = this.name.split(" ");
+        name_surname = this.check_name_len(name_surname)
+
+        await app.register(name_surname, this.email, this.password); // moguce jos nadograditi
+        $('#successAlert').show();
         //this.$router.push({ name: "Login" });
       } 
-      else  $('#warningAlert').show();
+      else 
+        $('#warningAlert').show();
     },
 
     closeAlert(){

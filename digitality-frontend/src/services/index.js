@@ -5,7 +5,7 @@ let Service = axios.create({
 });
 
 let app = {
-    async register(ime_prezime,eposta,lozinka){
+    async register(ime_prezime, eposta, lozinka){
         await Service.post('/register',{
             name: ime_prezime[0],
             surname: ime_prezime[1],
@@ -14,7 +14,7 @@ let app = {
         })
     },
 
-    async login(eposta,lozinka){
+    async login(eposta, lozinka){
         let response = await Service.post('/login',{
             email: eposta,
             password: lozinka

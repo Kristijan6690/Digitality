@@ -57,16 +57,20 @@ export default {
         if(userResult){
           this.store.userData = userResult;
           localStorage.setItem('userData', JSON.stringify(userResult))
+          
           let archiveResult = await app.getArchives(userResult.id)
 
           if (archiveResult) {
             this.store.archiveData = archiveResult
             localStorage.setItem('archiveData',JSON.stringify(archiveResult))
           }
-          else console.log("Prazan collection")
+          else 
+            console.log("Prazan collection")
+          
           this.$router.push({ name: 'Home' })
         } 
-        else console.log("Invalid username or password")
+        else 
+          console.log("Invalid username or password")
       },
       
       show_password() {

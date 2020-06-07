@@ -1,14 +1,25 @@
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+
 from flask import Flask, jsonify , request, json
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from bson import ObjectId
+
 import datetime
+import jwt
+import os
+
 import scan_engine
+import default_data as dflt
+import mongodb as db
+
+db.index_email()
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
-
+#app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
 
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
@@ -18,66 +29,45 @@ CORS(app)
 def index():
     return "Hello World"
 
-
 @app.route('/register', methods=['POST'])
-def registracija():
+def register():
+    doc = request.get_json()
     
-    name = request.get_json()['name']
-    surname = request.get_json()['surname']
-    email = request.get_json()['email']
-    password = bcrypt.generate_password_hash(request.get_json()['password'])
-    personal_archive_id = ObjectId()
-    subarchive_id = ObjectId()
-    date = datetime.datetime.now()
-    document_id = ObjectId()
     user_id = ObjectId()
-
-    mongo.db.users.insert({
-        '_id' : user_id,
-        'name' : name,
-        'surname' : surname,
-        'email' : email,
-        'password' : password,
-        'personal_archive_id' : personal_archive_id,
-        'archive_ID' : [],
-        'alias' : []
-    })
-    mongo.db.archives.insert({
-        '_id' : personal_archive_id,
-        'naziv' : 'Arhiva A',
-        'subarchive_names' : [{'subarchive_id': subarchive_id,'name': "primjer",'examination_date': ''}],
-        'primjer' : [{"meta_data":{"added_by":"primjer@doe.com","added_on":"01/01/2020","added_at":"12:00"},"id_dokumenta":document_id,"naziv_dobavljaca":"Company C","oib_dobavljaca":"16942983514","iban_primatelja":"HR012329671212","naziv_kupca":"John Doe","oib_kupca":"32145678901","iban_platitelja":"HR321456789012","mjesto_izdavanja":"Zagreb","datum_izdavanja":"01/01/2020","datum_dospijeca":"01/02/2020","datum_dodavanja":date,"datum_pregleda":"06/06/2020","broj_racuna":"user_input","poziv_na_broj":"user_input","vrsta_usluge":"Struja","iznos":"100kn"}]
-    })
-
-    return "Poslano"
+    
+    user = {
+        '_id': user_id,
+        'name': doc['name'],
+        'surname': doc['surname'],
+        'email': doc['email'],
+        'password': bcrypt.generate_password_hash(doc['password'], 8),
+        'personal_archive_id': None,
+        'archive_ids': None,        
+        'alias_list': []
+    }
+    
+    res = db.register_user(user)
+    
+    return res
 
 
 @app.route('/login', methods=['POST'])
 def login():
-
-    access = ""
+    email = request.get_json()['email']
+    password = request.get_json()['password']
     
-    if (mongo.db.users.count() == 0):
-        access = False
-        return jsonify(access)
-
-    else:
-        email = request.get_json()['email']
-        password = request.get_json()['password']
-        for x in mongo.db.users.find():
-            if (x['email'] == email):
-                if bcrypt.check_password_hash(x['password'],password):
-                    access = {
-                        'id' : str(x['_id']),
-                        'ime' : x['name'],
-                        'prezime' : x['surname'],
-                        'email' : x['email'],
-                        'personal_archive_id' : str(x['personal_archive_id'])
-                    }     
-                else:
-                    access = False
+    user = db.get_user(email)
+    
+    if (user and user['password']) and (bcrypt.check_password_hash(user['password'], password)):
+        del user['password']
+        del user['_id'] #= str(user['_id'])
         
-        return jsonify(access)
+        one_week = datetime.datetime.now() + datetime.timedelta(days=7)
+        
+        token = jwt.encode(user, 'digitality', algorithm='HS256')
+        user['token'] = str(token)
+    
+    return jsonify(user)
 
 
 #jos da vraća alliase kad budu
@@ -146,7 +136,7 @@ def getdocument():
 
 
 # RAZRADA JOS TESAK
-@app.route('/send_document', methods=['POST'])
+@app.route('/document', methods=['POST'])
 def sendDocument():
 
     doc_url = request.get_json()['doc_url']

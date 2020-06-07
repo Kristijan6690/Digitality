@@ -1,5 +1,10 @@
 from pymongo import MongoClient
+from datetime import datetime, timedelta
+
+import bcrypt
 import json
+
+import default_data as dflt
 
 def connect_to_db():
     try:
@@ -108,7 +113,58 @@ def get_cur_alias():
         user = json.load(fp)   
     return user['alias']       
 
+# INDEXING ##########################################################
+def index_email():
+    db = connect_to_db()
+    if not db:
+        return None    
+    collection = db["Users"]
+    
+    collection.create_index([ ("email", -1) ], unique=True)
 
+# USER ##############################################################
+def register_user(user):
+    db = connect_to_db()
+    if not db:
+        return None    
+    user_collection = db["Users"]
+    arc_collection = db["Archives"]
+    
+    default_arc = dflt.get_default_arc()
+
+    user['archive_ids'] = [str(default_arc['_id'])]
+    user['personal_archive_id'] = str(default_arc['_id'])
+    
+    try:
+        user_collection.insert(user)
+    except:
+        print("Failed to insert user!")
+        return "Fail"
+    
+    try:
+        arc_collection.insert(default_arc)
+    except:
+        print("Failed to insert archive!")
+        user_collection.remove({'_id': user['_id']}) # Ako je user insertan a archive nije, obrisi usera
+        return "Fail"
+    
+    return "Success"
+
+
+def get_user(email):
+    db = connect_to_db()
+    if not db:
+        return None    
+    collection = db["Users"]
+    
+    if collection.count == 0:
+        return None
+
+    return collection.find_one({'email': email})
+
+
+        
+        
 # TESTING
 def test_add_new_doc():
     document = {
