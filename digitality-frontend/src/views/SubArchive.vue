@@ -295,6 +295,7 @@ export default {
     if (result) {
       this.store.documentData = result
       this.tempDoc = result
+      console.log(this.store.documentData)
     }
     else {
       this.store.documentData = ''

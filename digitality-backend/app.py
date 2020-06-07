@@ -209,7 +209,7 @@ def deleteSubarchive():
     subarchive_id = ObjectId(request.get_json()['subarchive_id'])
     subarchive_name = request.get_json()['subarchive_name'].lower()
     mongo.db.archives.update({'_id': personal_archive_id},{'$pull':{'subarchive_names':{'subarchive_id':subarchive_id}}})
-    mongo.db.archives.update({'$unset':{subarchive_name}})
+    mongo.db.archives.update({'$unset':{ subarchive_name: []}})
     
 
     return "Obrisano"

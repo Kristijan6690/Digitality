@@ -25,18 +25,26 @@
                                 <label for="brojRacuna">Broj računa:</label>
                                 <input type="text" id="brojRacuna" name="brojRacuna" required><br><br>
                             </div>
-                            <div class="data inner-addon right-addon" >
+                            <div class="data inner-addon right-addon input-with-icon" >
                                 <label for="datIzdavanja">Datum izdavanja:</label>
-                                <i  @click="this.exchangeData()" class="fas fa-exchange-alt" ></i>
-                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required ><br>
+                               <!--  <div><i  @click="exchangeData()" class="fas fa-exchange-alt"></i></div> -->
+                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required >
+                                 <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
+                                
                             </div>
                             <div class="data">
                                 <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
                                 <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" required><br>
                             </div>
                             <div class="data">
-                                <label for="vrstaUsluge" >Vrsta usluge:</label>
-                                <input type="text" id="vrstaUsluge" name="vrstaUsluge" placeholder="internet / struja / mobilni operater..." required><br>
+                                <label for="vrstaUsluge">Vrsta usluge:</label>
+                                      <select v-model="vrstaUsluge" id="billTypeDropdown">
+                                        <option disabled value="">Odaberite vrstu usluge</option>
+                                        <option> Internet </option>
+                                        <option> Struja</option>
+                                        <option> Voda </option>
+                                      </select> 
+                                <br>
                             </div>
                             <div class="data">
                                 <label for="kolicina">Količina:</label>
@@ -163,7 +171,8 @@ export default {
   data(){
     return {
       datIzdTemp: '',
-      datDospTemp: ''
+      datDospTemp: '',
+      vrstaUsluge: 'Odaberite vrstu usluge'
     }
   },
   name: 'Home',
@@ -174,15 +183,43 @@ export default {
   methods:{
     exchangeData(){
       let temp = this.datIzdTemp;
-      datIzdTemp = datDospTemp;
-      datDospTemp = temp;
-      console.log(datDospTemp)
+      this.datIzdTemp = this.datDospTemp;
+      this.datDospTemp = temp;
+      console.log('adsasddas')
     }
   }
 }
 </script>
 
 <style scoped>
+
+/* clickable icon in input field: https://stackoverflow.com/questions/6933941/clickable-icon-inside-input-field */
+.input-with-icon {
+  position: relative;
+  width: 25rem;
+  box-sizing: border-box;
+}
+
+.input-with-icon .form-control {
+    height: 100%;
+    width: 70%;
+    padding-right: 5%;
+    box-sizing: border-box;
+}
+
+.input-with-icon .icon {
+  position: absolute;
+  right: 0.3rem;
+  top: 0.3rem;
+  width: 2.6rem;
+  height: 20px;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+/* */
 
 .row{
     margin-right: 0px;
@@ -228,13 +265,15 @@ export default {
   /* border-bottom: 2px solid  #00A2FF;  -border za footer */
 }
 
-input{
+input, #billTypeDropdown{
     display:inline-block;
     width:70%;
     border-radius: 5px;
     border: 1px solid  #00A2FF;
     padding-left: 10px;
     padding-right: 10px;
+    height:28px; 
+    width:70%;
 }
 
 label{
@@ -445,7 +484,7 @@ label{
 }
 
 @media screen and (min-width : 768px) and (max-width : 991px){
-  input{
+  input,  #billTypeDropdown{
     display:inline-block;
     width:55%;
     border-radius: 5px;
@@ -489,7 +528,7 @@ br {
     padding-top: 0px;
 }
 
-input{
+input, #billTypeDropdown{
     display:inline-block;
     width:55%;
     border-radius: 5px;
@@ -524,6 +563,36 @@ label{
   line-height: 0px;
   height: 100px;
 }
+
+
+/* clickable icon in input field: https://stackoverflow.com/questions/6933941/clickable-icon-inside-input-field */
+.input-with-icon {
+  position: relative;
+  box-sizing: border-box;
+  text-align: left;
+  width: 100%;
+}
+
+.input-with-icon .form-control {
+    height: 100%;
+    width: 55%;
+    box-sizing: border-box;
+    
+}
+
+.input-with-icon .icon {
+  position: absolute;
+  right: 0.3rem;
+  top: 0.3rem;
+  width: 2.6rem;
+  height: 20px;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+/* */
 
 }
 </style>
