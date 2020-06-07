@@ -158,7 +158,7 @@ def get_user(email):
     collection = db["Users"]
     
     if collection.count == 0:
-        return None
+        return False
 
     return collection.find_one({'email': email})
 

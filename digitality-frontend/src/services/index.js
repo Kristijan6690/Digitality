@@ -4,7 +4,8 @@ let Service = axios.create({
     baseURL: "http://localhost:5000/"
 });
 
-let app = {
+
+let Auth = {
     async register(ime_prezime, eposta, lozinka){
         await Service.post('/register',{
             name: ime_prezime[0],
@@ -15,16 +16,57 @@ let app = {
     },
 
     async login(eposta, lozinka){
-        let response = await Service.post('/login',{
-            email: eposta,
-            password: lozinka
-        })
-        return response.data;
+        let response = await Service.post('/login', {email: eposta, password: lozinka})
+        
+        try{
+            let user = response.data;
+            localStorage.setItem('user', JSON.stringify(user));
+            return true
+        }
+        catch(e){
+            return false
+        }        
     },
 
-    async getArchives(id) {
+    logout() {
+        localStorage.removeItem('user');
+    },
+
+    getToken() {
+        let user = Auth.getUser();
+        if (user && user.token) {
+            return user.token;
+        }
+        else
+            return null
+    },
+
+    getUser() {
+        return JSON.parse(localStorage.getItem('user'));
+    },
+
+    authenticated() {
+        let user = Auth.getUser();
+        if (user && user.email) {
+            return true;
+        }
+        return false;
+    },
+
+    state: {
+        get user() {
+            return Auth.getUser();
+        },
+        get authenticated() {
+            return Auth.authenticated();
+        },
+    }
+}
+
+let app = {
+    async getArchives(email) {
         let response = await Service.post('/GetArchives',{
-            user_id: id
+            email: email
         });
         return response.data;
     },
@@ -79,4 +121,4 @@ let app = {
     }
 };
 
-export { app, Service };
+export { app, Service, Auth };

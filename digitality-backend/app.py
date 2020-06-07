@@ -73,36 +73,24 @@ def login():
 #jos da vraća alliase kad budu
 @app.route('/GetArchives', methods=['POST'])
 def getarhive():
+    user = get_user(request.get_json()['email'])
+    personal_archive_id = user['personal_archive_id']
 
-    if (mongo.db.archives.count()== 0):
-        provjera = False
-        return jsonify(provjera)
+    if(personal_archive_id):
+        for x in mongo.db.archives.find():
+            if(str(x['_id']) == personal_archive_id): #<--------------------------------------------------------
+                subArchives = [subAtributes for subAtributes x['subarchive_names']]
+                
+        #str(OBJECTID)
+        for counter,sub in enumerate(subArchives):
+            if(subArchives[counter]['subarchive_id']):
+                sub = subArchives[counter]['subarchive_id']
+                subArchives[counter]['subarchive_id'] = str(sub)
+
+        return jsonify(subArchives)
 
     else:
-        user_id = request.get_json()['user_id']
-        provjera = False
-
-        for x in mongo.db.users.find():
-            if(str(x['_id']) == user_id):
-                personal_archive_id = str(x['personal_archive_id'])
-                provjera = True
-
-        if(provjera):
-            for x in mongo.db.archives.find():
-                if(str(x['_id']) == personal_archive_id):
-                    subArchives = []
-                    for subAtributes in x['subarchive_names']:
-                        subArchives.append(subAtributes)
-            #str(OBJECTID)
-            for counter,sub in enumerate(subArchives):
-                if(subArchives[counter]['subarchive_id']):
-                    sub = subArchives[counter]['subarchive_id']
-                    subArchives[counter]['subarchive_id'] = str(sub)
-
-            return jsonify(subArchives)
-
-        else:
-            return jsonify(provjera)
+        return jsonify(False)
 
 
 # još da vraća alliase kad budu

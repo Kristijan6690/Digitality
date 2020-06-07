@@ -198,6 +198,8 @@ import toastr from "toastr"
 export default {
   data(){
     return {
+      user: localStorage.getItem('user'),
+      
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
       searchTerm: '',
       tempDoc: '',
@@ -279,7 +281,7 @@ export default {
       for(let i = 0; i < temp.length; i++){
         if(temp[i].name == this.naziv) subarchive_id = temp[i].subarchive_id 
       }
-      await app.deleteSubarchive(this.store.userData.personal_archive_id,subarchive_id,this.naziv)
+      await app.deleteSubarchive(this.user.personal_archive_id, subarchive_id, this.naziv)
      // delete temp[Object.keys(temp).length - 1]
      // localStorage.setItem('archiveData',JSON.stringify(temp))
      // this.store.archiveData = temp
@@ -290,8 +292,9 @@ export default {
 
   async mounted() {
     if(this.store.archiveData) await app.update_exDate(this.naziv);
-      
-    let result = await app.getDocuments(this.naziv,this.store.userData.personal_archive_id);
+    
+
+    let result = await app.getDocuments(this.naziv, this.user.personal_archive_id);
     if (result) {
       this.store.documentData = result
       this.tempDoc = result

@@ -40,7 +40,7 @@
 
 <script>
 import store from '@/store.js';
-import { app } from "@/services";
+import { Auth } from "@/services";
 
 export default {
   data(){
@@ -52,29 +52,14 @@ export default {
     },
   methods: {
       async login() {
-        let userResult = await app.login(this.email, this.password);
+        let success = await Auth.login(this.email, this.password);
 
-        if(userResult){
-          this.store.userData = userResult;
-          localStorage.setItem('userData', JSON.stringify(userResult))
-          
-          let archiveResult = await app.getArchives(userResult.id)
-
-          if (archiveResult) {
-            this.store.archiveData = archiveResult
-            localStorage.setItem('archiveData',JSON.stringify(archiveResult))
-          }
-          else 
-            console.log("Prazan collection")
-          
-          this.$router.push({ name: 'Home' })
-        } 
-        else 
-          console.log("Invalid username or password")
+        if (success == true) {
+            this.$router.push({ name: 'Home'});
+        }
       },
       
       show_password() {
-        
         let x = document.getElementById("hidden_password");
         
         if (x.type === "password"){

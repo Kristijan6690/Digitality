@@ -9,13 +9,16 @@
           <button @click="closeAlert" type="button" class="close">&times;</button>
           <strong>Uspjeh!</strong>  Za prijavu kliknite na "Prijavite se" (iznad gumba za potvrdu registracije)
     </div>
+
     <h1 class="logo">Digitality</h1>
     <h3 style="color: #00a2ff;">Registracija</h3>
+    
     <div class="container">
       <div class="row">
         <div class="col-sm"></div>
         <div class="col-sm">
           <form v-on:submit.prevent="registration">
+
             <div class="nameSurname">
               <i class="fas fa-user"></i>
               <input
@@ -26,6 +29,7 @@
                 placeholder=" ime i prezime..."
               />
             </div>
+
             <div class="email">
               <i class="fa fa-envelope" id="iconEmail" aria-hidden="true"></i>
               <input
@@ -47,6 +51,7 @@
                 placeholder="lozinka..."
               />
             </div>
+
             <div class="password">
               <i class="fas fa-lock"></i>
               <input
@@ -56,10 +61,12 @@
                 placeholder="ponovi lozinku..."
               />
             </div>
+
             <small class="logReg">
               Imate korisnički račun?
               <router-link to="login" style="padding-left:3px;">Prijavite se</router-link>!
             </small>
+
             <button type="submit" class="btn btn-primary">Registracija</button>
           </form>
         </div>
@@ -71,7 +78,7 @@
 </template>
 
 <script>
-import { app } from "@/services";
+import { Auth } from "@/services";
 
 export default {
   data() {
@@ -94,7 +101,7 @@ export default {
         let name_surname = this.name.split(" ");
         name_surname = this.check_name_len(name_surname)
 
-        await app.register(name_surname, this.email, this.password); // moguce jos nadograditi
+        await Auth.register(name_surname, this.email, this.password); // moguce jos nadograditi
         $('#successAlert').show();
         //this.$router.push({ name: "Login" });
       } 
