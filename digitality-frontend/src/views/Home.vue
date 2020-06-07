@@ -275,7 +275,7 @@ export default {
       if(this.createArchiveName != '') {
         this.createArchiveName = this.createArchiveName.toLowerCase()
         for(let i = 0; i < Object.keys(this.store.archiveData).length; i++){
-          if(this.createArchiveName == this.store.archiveData[i].naziv.toLowerCase()){
+          if(this.createArchiveName == this.store.archiveData[i].name.toLowerCase()){
             flag = true
           }
         }
@@ -284,8 +284,8 @@ export default {
           $("#unsuccess_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
         }
         else {
-          await app.createSubarchive(this.createArchiveName,this.store.userData.ID)
-          let result = await app.getArchives()
+          await app.createSubarchive(this.createArchiveName,this.store.userData.personal_archive_id)
+          let result = await app.getArchives(this.store.userData.id)
           localStorage.setItem('archiveData',JSON.stringify(result))
           this.createArchiveName = ''
           this.store.archiveData = ''

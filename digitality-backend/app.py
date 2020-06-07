@@ -2,11 +2,12 @@ from flask import Flask, jsonify , request, json
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
+from bson import ObjectId
 import datetime
 import scan_engine
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/Digitality?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
 
 
 mongo = PyMongo(app)
@@ -21,95 +22,130 @@ def index():
 @app.route('/register', methods=['POST'])
 def registracija():
     
-    ime = request.get_json()['ime']
-    prezime = request.get_json()['prezime']
+    name = request.get_json()['name']
+    surname = request.get_json()['surname']
     email = request.get_json()['email']
     password = bcrypt.generate_password_hash(request.get_json()['password'])
+    personal_archive_id = ObjectId()
+    subarchive_id = ObjectId()
+    date = datetime.datetime.now()
+    document_id = ObjectId()
+    user_id = ObjectId()
 
-    mongo.db.Korisnik.insert({
-        'ime' : ime,
-        'prezime' : prezime,
+    mongo.db.users.insert({
+        '_id' : user_id,
+        'name' : name,
+        'surname' : surname,
         'email' : email,
-        'password' : password
+        'password' : password,
+        'personal_archive_id' : personal_archive_id,
+        'archive_ID' : [],
+        'alias' : []
+    })
+    mongo.db.archives.insert({
+        '_id' : personal_archive_id,
+        'naziv' : 'Arhiva A',
+        'subarchive_names' : [{'subarchive_id': subarchive_id,'name': "primjer",'examination_date': ''}],
+        'primjer' : [{"meta_data":{"added_by":"primjer@doe.com","added_on":"01/01/2020","added_at":"12:00"},"id_dokumenta":document_id,"naziv_dobavljaca":"Company C","oib_dobavljaca":"16942983514","iban_primatelja":"HR012329671212","naziv_kupca":"John Doe","oib_kupca":"32145678901","iban_platitelja":"HR321456789012","mjesto_izdavanja":"Zagreb","datum_izdavanja":"01/01/2020","datum_dospijeca":"01/02/2020","datum_dodavanja":date,"datum_pregleda":"06/06/2020","broj_racuna":"user_input","poziv_na_broj":"user_input","vrsta_usluge":"Struja","iznos":"100kn"}]
     })
 
     return "Poslano"
 
 
-# Dovršiti access token da vraća sve potrebne atribute uključujući authenticated
 @app.route('/login', methods=['POST'])
 def login():
 
     access = ""
-
-    if (mongo.db.Korisnik.count() == 0):
+    
+    if (mongo.db.users.count() == 0):
         access = False
         return jsonify(access)
 
     else:
         email = request.get_json()['email']
         password = request.get_json()['password']
-
-        for x in mongo.db.Korisnik.find():
+        for x in mongo.db.users.find():
             if (x['email'] == email):
                 if bcrypt.check_password_hash(x['password'],password):
                     access = {
-                        'ID' : str(x['_id']),
-                        'ime' : x['ime'],
-                        'prezime' : x['prezime'],
-                        'email' : x['email']
+                        'id' : str(x['_id']),
+                        'ime' : x['name'],
+                        'prezime' : x['surname'],
+                        'email' : x['email'],
+                        'personal_archive_id' : str(x['personal_archive_id'])
                     }     
                 else:
                     access = False
-
+        
         return jsonify(access)
 
 
-# Dovršiti da vraća arhive za određenog usera/arhive kojima ima pristup(PUBLIC)
-@app.route('/archives')
+#jos da vraća alliase kad budu
+@app.route('/GetArchives', methods=['POST'])
 def getarhive():
 
-    if (mongo.db.Lista_arhiva.count()== 0):
+    if (mongo.db.archives.count()== 0):
         provjera = False
-        return provjera
+        return jsonify(provjera)
 
     else:
-        arhive = {}
-        i = 0
-        
-        for x in mongo.db.Lista_arhiva.find():
-            arhive[i] = {
-                'ID' : str(x['_id']),
-                'naziv' : x['naziv'].capitalize(),
-                'datum_dodavanja' : x['datum_dodavanja'],
-                'datum_pregleda' : x['datum_pregleda']
-            }
-            i += 1
+        user_id = request.get_json()['user_id']
+        provjera = False
 
-        return jsonify(arhive)
+        for x in mongo.db.users.find():
+            if(str(x['_id']) == user_id):
+                personal_archive_id = str(x['personal_archive_id'])
+                provjera = True
+
+        if(provjera):
+            for x in mongo.db.archives.find():
+                if(str(x['_id']) == personal_archive_id):
+                    subArchives = []
+                    for subAtributes in x['subarchive_names']:
+                        subArchives.append(subAtributes)
+            #str(OBJECTID)
+            for counter,sub in enumerate(subArchives):
+                if(subArchives[counter]['subarchive_id']):
+                    sub = subArchives[counter]['subarchive_id']
+                    subArchives[counter]['subarchive_id'] = str(sub)
+
+            return jsonify(subArchives)
+
+        else:
+            return jsonify(provjera)
 
 
-# Dovršiti da vraća dokumente za određenog usera
+# još da vraća alliase kad budu
 @app.route('/documents', methods=['POST'])
 def getdocument():
 
-    naziv_arhive = request.get_json()['naziv'].lower()
-    dokumenti = []
+    subArchive_name = request.get_json()['subArchive_name'].lower()
+    personal_archive_id = request.get_json()['personal_archive_id']
+    documents = []
 
-    for x in mongo.db.Lista_arhiva.find():
-        if (naziv_arhive == x['naziv']):
-            if (len(x['documents']) == 0):
-                dokumenti = False
-                break
+    for x in mongo.db.archives.find():
+        if(str(x['_id']) == personal_archive_id):
+            if (len(x[subArchive_name]) == 0):
+                documents = False
+                return jsonify(documents)
+
             else:
-                for y in x['documents']: 
-                    # staviti if da se nađe id korisnika
-                    dokumenti.append(y)
+                for atributes in x[subArchive_name]:
+                        documents.append(atributes)
+            #str(OBJECTID)
+            for counter,doc in enumerate(documents):
+                if(documents[counter]['id_dokumenta']):
+                    doc = documents[counter]['id_dokumenta']
+                    documents[counter]['id_dokumenta'] = str(doc)
                     
-    return jsonify(dokumenti)
+            return jsonify(documents) 
+
+        else:
+            documents = False
+            return jsonify(documents)
 
 
-# Proces spremanje dokumenta u bazu nakon skeniranja. Još u razradi za sada sprema samo blob i ime dokumenta u bazu
+# RAZRADA JOS TESAK
 @app.route('/send_document', methods=['POST'])
 def sendDocument():
 
@@ -155,24 +191,26 @@ def searchArchives():
 @app.route('/archives/createSubarchive', methods=['POST'])
 def createSubarchive():
     archive_name = request.get_json()['archive_name'].lower()
-    archive_access_user_ID = request.get_json()['archive_access_user_ID']
-
-    mongo.db.Lista_arhiva.insert({
-        'naziv' : archive_name,
-        'datum_dodavanja' : datetime.datetime.now(),
-        'datum_pregleda' : '',
-        'access_user_id' : [archive_access_user_ID],
-        'documents' : []
-    })
-
-
-    return "radi"
+    personal_archive_id = ObjectId(request.get_json()['personal_archive_id'])
+    subarchive_id = ObjectId()
+    mongo.db.archives.update({'_id': personal_archive_id},{'$push':{
+        'subarchive_names': {
+            'subarchive_id': subarchive_id,
+            'name': archive_name,
+            'examination_date': ''
+        }}, '$set':{ archive_name: [] }})
+        
+    return "Dodano"
 
 
 @app.route('/archive/deleteSubarchive', methods=['POST'])
 def deleteSubarchive():
-    archive_name = request.get_json()['archive_name'].lower()
-    mongo.db.Lista_arhiva.delete_one({'naziv' : archive_name})
+    personal_archive_id = ObjectId(request.get_json()['personal_archive_id'])
+    subarchive_id = ObjectId(request.get_json()['subarchive_id'])
+    subarchive_name = request.get_json()['subarchive_name'].lower()
+    mongo.db.archives.update({'_id': personal_archive_id},{'$pull':{'subarchive_names':{'subarchive_id':subarchive_id}}})
+    mongo.db.archives.update({'$unset':{subarchive_name}})
+    
 
     return "Obrisano"
 

@@ -76,7 +76,7 @@ export default {
     async registration() {
       if (this.confimpassword == this.password) {
         let temp = this.name.split(" ");
-        await app.registracija(temp, this.email, this.password); // moguce jos nadograditi
+        await app.register(temp, this.email, this.password);
         this.$router.push({ name: "Login" });
       } 
       else console.log("Lozinka se ne podudara")

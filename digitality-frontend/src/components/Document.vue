@@ -1,5 +1,5 @@
 <template>
-  <router-link v-bind:to="'/SubArchive.DocumentInfo/' + info.id">
+  <router-link v-bind:to="'/SubArchive.DocumentInfo/' + info._id">
     <div class="document">
       <div class="documentName">{{info.naziv_doc}}</div>
       <div class="documentPicDiv">

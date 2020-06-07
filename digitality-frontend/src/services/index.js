@@ -5,14 +5,13 @@ let Service = axios.create({
 });
 
 let app = {
-    async registracija(ime_prezime,eposta,lozinka){
-        let response = await Service.post('/register',{
-            ime: ime_prezime[0],
-            prezime: ime_prezime[1],
+    async register(ime_prezime,eposta,lozinka){
+        await Service.post('/register',{
+            name: ime_prezime[0],
+            surname: ime_prezime[1],
             email: eposta,
             password: lozinka
         })
-        console.log(response)
     },
 
     async login(eposta,lozinka){
@@ -23,14 +22,17 @@ let app = {
         return response.data;
     },
 
-    async getArchives() {
-        let response = await Service.get('/archives');
+    async getArchives(id) {
+        let response = await Service.post('/GetArchives',{
+            user_id: id
+        });
         return response.data;
     },
 
-    async getDocuments(naziv_arhive){
+    async getDocuments(naziv_podarhive,id_korisnikove_arhive){
         let response = await Service.post('/documents',{
-            naziv: naziv_arhive
+            subArchive_name: naziv_podarhive,
+            personal_archive_id: id_korisnikove_arhive
         });
         return response.data;
     },
@@ -48,16 +50,18 @@ let app = {
         return response.data;
     },
 
-    async createSubarchive(naziv,userID){
+    async createSubarchive(naziv,id_korisnikove_arhive){
         await Service.post('/archives/createSubarchive', {
             archive_name : naziv,
-            archive_access_user_ID : userID
+            personal_archive_id : id_korisnikove_arhive
         })
     },
 
-    async deleteSubarchive(naziv_arhive){
+    async deleteSubarchive(id_korisnikove_arhive,id_podarhive,naziv_podarhive){
         await Service.post('/archive/deleteSubarchive', {
-            archive_name : naziv_arhive
+            personal_archive_id : id_korisnikove_arhive,
+            subarchive_id : id_podarhive,
+            subarchive_name: naziv_podarhive
         })
     },
 

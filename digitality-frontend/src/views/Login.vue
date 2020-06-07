@@ -57,7 +57,7 @@ export default {
         if(userResult){
           this.store.userData = userResult;
           localStorage.setItem('userData', JSON.stringify(userResult))
-          let archiveResult = await app.getArchives() // jos nadogradit da vuce za određenog usera
+          let archiveResult = await app.getArchives(userResult.id)
 
           if (archiveResult) {
             this.store.archiveData = archiveResult
