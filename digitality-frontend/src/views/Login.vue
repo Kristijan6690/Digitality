@@ -188,23 +188,5 @@ span{
 }
 
 
-@media screen and (min-width: 1024px){
-  .login{
-    margin-top: 0% !important;
-  }
-}
 
-/*###Tablet(medium)###*/
-@media screen and (min-width : 768px) and (max-width : 1023px){
-  .login{
-    margin-top: 0px;
-  }
-}
-
-/*### Smartphones (portrait and landscape)(small)### */
-@media screen and (min-width : 0px) and (max-width : 767px){
-  .login{
-    margin-top:0%;
-  }
-}
 </style>
