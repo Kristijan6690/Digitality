@@ -13,9 +13,9 @@ import os
 
 import scan_engine
 import default_data as dflt
-import mongodb as db
+import mongodb as mongodb
 
-db.index_email()
+mongodb.index_email()
 
 app = Flask(__name__)
 #app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
@@ -33,10 +33,7 @@ def index():
 def register():
     doc = request.get_json()
     
-    user_id = ObjectId()
-    
     user = {
-        '_id': user_id,
         'name': doc['name'],
         'surname': doc['surname'],
         'email': doc['email'],
@@ -46,7 +43,7 @@ def register():
         'alias_list': []
     }
     
-    res = db.register_user(user)
+    res = mongodb.register_user(user)
     
     return res
 
@@ -56,41 +53,37 @@ def login():
     email = request.get_json()['email']
     password = request.get_json()['password']
     
-    user = db.get_user(email)
+    user = mongodb.get_user(email)
     
     if (user and user['password']) and (bcrypt.check_password_hash(user['password'], password)):
         del user['password']
-        del user['_id'] #= str(user['_id'])
+        del user['_id']
         
-        one_week = datetime.datetime.now() + datetime.timedelta(days=7)
-        
-        token = jwt.encode(user, 'digitality', algorithm='HS256')
-        user['token'] = str(token)
+        user['exp'] = datetime.datetime.now() + datetime.timedelta(days=7)
+        user['token'] = jwt.encode(user, os.getenv("JWT_SECRET"), algorithm='HS256').decode("utf-8")
     
     return jsonify(user)
 
 
-#jos da vraća alliase kad budu
 @app.route('/GetArchives', methods=['POST'])
 def getarhive():
-    user = get_user(request.get_json()['email'])
+    user = mongodb.get_user(request.get_json()['email'])
+    
+    if not user:
+        return False
+    
     personal_archive_id = user['personal_archive_id']
+    archive = mongodb.get_archive(personal_archive_id)
+    
+    if not archive:
+        return False
 
-    if(personal_archive_id):
-        for x in mongo.db.archives.find():
-            if(str(x['_id']) == personal_archive_id): #<--------------------------------------------------------
-                subArchives = [subAtributes for subAtributes x['subarchive_names']]
-                
-        #str(OBJECTID)
-        for counter,sub in enumerate(subArchives):
-            if(subArchives[counter]['subarchive_id']):
-                sub = subArchives[counter]['subarchive_id']
-                subArchives[counter]['subarchive_id'] = str(sub)
+    subArchives = archive['subarchive_names']
+    
+    for sub_arc in subArchives:
+        sub_arc['subarchive_id'] = str(sub_arc['subarchive_id'])
 
-        return jsonify(subArchives)
-
-    else:
-        return jsonify(False)
+    return jsonify(subArchives)
 
 
 # još da vraća alliase kad budu

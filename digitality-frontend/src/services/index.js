@@ -1,8 +1,28 @@
 import axios from "axios";
+import $router from '@/router'
 
 let Service = axios.create({
     baseURL: "http://localhost:5000/"
 });
+
+
+Service.interceptors.request.use((request) => {
+    try {
+        request.headers['Authorization'] = 'Bearer ' + Auth.getToken();
+    } catch (e) {
+        console.error(e);
+    }
+    return request;
+});
+
+Service.interceptors.response.use( (response) => {return response},
+    (error) => {
+        if (error.response.status == 401) {
+            Auth.logout();
+            $router.go();
+        }
+    }
+);
 
 
 let Auth = {
@@ -65,9 +85,7 @@ let Auth = {
 
 let app = {
     async getArchives(email) {
-        let response = await Service.post('/GetArchives',{
-            email: email
-        });
+        let response = await Service.post('/GetArchives', {'email': email});
         return response.data;
     },
 

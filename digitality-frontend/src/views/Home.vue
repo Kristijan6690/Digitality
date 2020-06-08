@@ -234,6 +234,7 @@
 import ArchiveCard from '@/components/ArchiveCard.vue';
 import UserData from '@/components/UserData.vue';
 import { app } from "@/services";
+import { Auth } from "@/services";
 import store from "@/store.js";
 import _ from "lodash";
 
@@ -314,9 +315,8 @@ export default {
   },
 
   mounted(){
-    if(localStorage.getItem('archiveData') != null) {
-      this.store.archiveData = JSON.parse(localStorage.getItem('archiveData'))
-    }
+    let email = Auth.getUser().email;
+    this.store.archiveData = app.getArchives(email)
   }
 }
 

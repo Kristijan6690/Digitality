@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 import bcrypt
 import json
+from bson import ObjectId
 
 import default_data as dflt
 
@@ -55,8 +56,14 @@ def get_data_oib(oib_list):
     return (user_data, company_data)
  
 
-def get_archive(collection, archive):
-    filter = {'_id': archive}
+def get_archive(archive_id, collection=None):
+    if not collection:
+        db = connect_to_db()
+        if not db:
+            return None    
+        collection = db["Archives"]
+    
+    filter = {'_id': ObjectId(archive_id)}
     try:
         arc = collection.find_one(filter)  
     except:
@@ -84,7 +91,7 @@ def update_document(arc, document):
         return None    
     collection = db["Archives"]
     
-    arc = get_archive(collection, arc)
+    arc = get_archive(arc, collection)
     subarchive = document['naziv_dobavljaca']
     
     # FIND AND REPLACE DOC IN LIST
@@ -97,7 +104,7 @@ def create_document(arc, document):
         return None    
     collection = db["Archives"]
     
-    arc = get_archive(collection, arc)
+    arc = get_archive(arc, collection)
     subarchive = document['naziv_dobavljaca']
     
     try:
@@ -161,8 +168,6 @@ def get_user(email):
         return False
 
     return collection.find_one({'email': email})
-
-
         
         
 # TESTING
