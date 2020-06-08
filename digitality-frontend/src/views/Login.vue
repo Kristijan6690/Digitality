@@ -10,12 +10,12 @@
                 <form v-on:submit.prevent="login">
                   <div class="email"> 
                       <i class="fa fa-envelope" id="iconEmail" aria-hidden="true"></i>
-                      <input type="email" v-model="email" class="form-control placeholderEmail" aria-describedby="emailHelp" placeholder=" e-mail..."  />
+                      <input type="email" v-model="email" class="form-control placeholderEmail" aria-describedby="emailHelp" placeholder=" e-mail..." required />
                   </div>
 
                   <div class="password">
                       <i class="fas fa-key"></i>
-                      <input type="password" v-model="password" class="form-control"  id="hidden_password" placeholder="lozinka..."  />
+                      <input type="password" v-model="password" class="form-control"  id="hidden_password" placeholder="lozinka..." required />
                       <i class="fas fa-eye" id="password_eye" v-on:click="show_password()"></i>
 
                   </div>

@@ -25,7 +25,20 @@
                 v-model="name"
                 class="form-control placeholderEmail"
                 aria-describedby="emailHelp"
-                placeholder=" ime i prezime..."
+                placeholder="ime..."
+                required
+              />
+            </div>
+
+            <div class="nameSurname">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                v-model="surname"
+                class="form-control placeholderEmail"
+                aria-describedby="emailHelp"
+                placeholder="prezime..."
+                required
               />
             </div>
 
@@ -37,6 +50,7 @@
                 class="form-control placeholderEmail"
                 aria-describedby="emailHelp"
                 placeholder=" e-mail..."
+                required
               />
             </div>
 
@@ -48,6 +62,7 @@
                 v-model="password"
                 class="form-control"
                 placeholder="lozinka..."
+                required
               />
             </div>
 
@@ -58,6 +73,7 @@
                 v-model="confimpassword"
                 class="form-control"
                 placeholder="ponovi lozinku..."
+                required
               />
             </div>
 
@@ -83,6 +99,7 @@ export default {
   data() {
     return {
       name: "",
+      surname: "",
       email: "",
       password: "",
       confimpassword: ""
@@ -90,17 +107,11 @@ export default {
   },
 
   methods: {
-    check_name_len(name_surname){
-      if(name_surname[1] == undefined) name_surname[1] = " ";
-      return name_surname
-    },
 
     async registration() {
       if (this.confimpassword == this.password) {
-        let name_surname = this.name.split(" ");
-        name_surname = this.check_name_len(name_surname)
 
-        await Auth.register(name_surname, this.email, this.password); // moguce jos nadograditi
+        await Auth.register(this.name, this.surname, this.email, this.password); // moguce jos nadograditi
         $('#successAlert').show();
         //this.$router.push({ name: "Login" });
       } 

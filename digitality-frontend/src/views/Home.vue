@@ -314,9 +314,9 @@ export default {
     },
   },
 
-  mounted(){
+  async mounted(){
     let email = Auth.getUser().email;
-    this.store.archiveData = app.getArchives(email)
+    this.store.archiveData = await app.getArchives(email)
   }
 }
 
