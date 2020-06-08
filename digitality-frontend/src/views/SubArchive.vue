@@ -192,13 +192,14 @@ import Document from '@/components/Document.vue';
 import UserData from '@/components/UserData.vue';
 import store from '@/store.js';
 import { app } from "@/services";
+import { Auth } from "@/services";
 import _ from "lodash";
 import toastr from "toastr"
 
 export default {
   data(){
     return {
-      user: localStorage.getItem('user'),
+      personal_archive_id: Auth.getUser().personal_archive_id,
       
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
       searchTerm: '',
@@ -281,7 +282,7 @@ export default {
       for(let i = 0; i < temp.length; i++){
         if(temp[i].name == this.naziv) subarchive_id = temp[i].subarchive_id 
       }
-      let result = await app.deleteSubarchive(this.store.userData.personal_archive_id,subarchive_id,this.naziv)
+      let result = await app.deleteSubarchive(this.personal_archive_id,subarchive_id,this.naziv)
       localStorage.setItem('archiveData',JSON.stringify(result))
       this.store.archiveData = result
       this.store.documentData = ''
@@ -292,13 +293,16 @@ export default {
   async mounted() {
     if(this.store.archiveData){
       let subarchive_id = ''
+
       for(let i = 0; i < this.store.archiveData.length; i++){
-        if(this.store.archiveData[i].name == this.naziv) subarchive_id = this.store.archiveData[i].subarchive_id 
+        if(this.store.archiveData[i].name == this.naziv) 
+          subarchive_id = this.store.archiveData[i].subarchive_id 
       }
-      await app.update_exDate(this.store.userData.personal_archive_id,subarchive_id)
+
+      await app.update_exDate(this.personal_archive_id, subarchive_id)
     }
       
-    let result = await app.getDocuments(this.naziv,this.store.userData.personal_archive_id);
+    let result = await app.getDocuments(this.naziv, this.personal_archive_id);
     if (result) {
       this.store.documentData = result
       this.tempDoc = result

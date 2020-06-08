@@ -86,11 +86,13 @@ let Auth = {
 let app = {
     async getArchives(email) {
         let response = await Service.post('/GetArchives', {'email': email});
-        console.log(response.data)
-        return response.data;
+        if (response.data){
+            return response.data;
+        }
+        return false
     },
 
-    async getDocuments(naziv_podarhive,id_korisnikove_arhive){
+    async getDocuments(naziv_podarhive, id_korisnikove_arhive){
         let response = await Service.post('/documents',{
             subArchive_name: naziv_podarhive,
             personal_archive_id: id_korisnikove_arhive
