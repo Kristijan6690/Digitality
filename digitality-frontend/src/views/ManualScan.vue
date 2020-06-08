@@ -15,26 +15,26 @@
                         <div class="box one archive">
                             <div class="data">
                                 <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input type="text" id="nazDobavljaca" name="nazDobavljaca" required><br>
+                                <input v-model="store.scan_doc_data.naziv_dobavljaca" type="text" id="nazDobavljaca" name="nazDobavljaca" required><br>
                             </div>
                             <div class="data">
                                 <label for="nazKupca">Naziv kupca:</label>
-                                <input type="text" id="nazKupca" name="nazKupca" required><br><br>
+                                <input v-model="store.scan_doc_data.naziv_kupca" type="text" id="nazKupca" name="nazKupca" required><br><br>
                             </div>
                             <div class="data">
                                 <label for="brojRacuna">Broj računa:</label>
-                                <input type="text" id="brojRacuna" name="brojRacuna" required><br><br>
+                                <input v-model="store.scan_doc_data.broj_racuna" type="text" id="brojRacuna" name="brojRacuna" required><br><br>
                             </div>
                             <div class="data inner-addon right-addon input-with-icon" >
                                 <label for="datIzdavanja">Datum izdavanja:</label>
                                <!--  <div><i  @click="exchangeData()" class="fas fa-exchange-alt"></i></div> -->
-                                <input v-model="datIzdTemp" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required >
+                                <input v-model="store.scan_doc_data.datum_izdavanja" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required >
                                  <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
                                 
                             </div>
                             <div class="data">
                                 <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
-                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" required><br>
+                                <input v-model="store.scan_doc_data.mjesto_izdavanja" type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" required><br>
                             </div>
                             <div class="data">
                                 <label for="vrstaUsluge">Vrsta usluge:</label>
@@ -48,41 +48,41 @@
                             </div>
                             <div class="data">
                                 <label for="kolicina">Količina:</label>
-                                <input type="text" id="kolicina" name="kolicina" required><br>
+                                <input v-model="store.scan_doc_data.kolicina" type="text" id="kolicina" name="kolicina" required><br>
                             </div>
                             <div class="data">
                                 <label for="pozNaBroj">Poziv na broj:</label>
-                                <input type="text" id="pozNaBroj" name="pozNaBroj" required><br>
+                                <input v-model="store.scan_doc_data.poziv_na_broj" type="text" id="pozNaBroj" name="pozNaBroj" required><br>
                             </div>
                             <div class="data">
                                 <label for="IBANplatitelja">IBAN platitelja:</label>
-                                <input type="text" id="IBANplatitelja" name="IBANplatitelja" required><br>
+                                <input v-model="store.scan_doc_data.iban_platitelja" type="text" id="IBANplatitelja" name="IBANplatitelja" required><br>
                             </div>
                         </div>
                         <div class="box two archive">
                              <div class="data">
                                 <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input type="text" id="OIBdobavljaca" name="OIBdobavljaca" required><br>
+                                <input v-model="store.scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" required><br>
                             </div>
                             <div class="data">
                                 <label for="OIBkupca">OIB kupca:</label>
-                                <input type="text" id="OIBkupca" name="OIBkupca" required><br><br><br><br>
+                                <input v-model="store.scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" required><br><br><br><br>
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
-                                <input v-model="datDospTemp"  type="text" id="datDospijeca" name="datDospijeca" required><br><br><br><br>
+                                <input v-model="store.scan_doc_data.datum_dospijeca"  type="text" id="datDospijeca" name="datDospijeca" required><br><br><br><br>
                             </div>
                             <div class="data">
                                 <label for="pdv">PDV:</label>
-                                <input type="text" id="pdv" name="pdv" required><br>
+                                <input v-model="store.scan_doc_data.pdv" type="text" id="pdv" name="pdv" required><br>
                             </div>
                             <div class="data">
                                 <label for="iznos">Iznos:</label>
-                                <input type="text" id="iznos" name="iznos" required><br>
+                                <input v-model="store.scan_doc_data.iznos" type="text" id="iznos" name="iznos" required><br>
                             </div>
                             <div class="data">
                                 <label for="IBANprimatelja">IBAN primatelja:</label>
-                                <input type="text" id="IBANprimatelja" name="IBANprimatelja" required><br>
+                                <input v-model="store.scan_doc_data.iban_primatelja" type="text" id="IBANprimatelja" name="IBANprimatelja" required><br>
                             </div> 
                         </div>
         
@@ -166,13 +166,13 @@
 <script>
 
 import ArchiveCard from '@/components/ArchiveCard.vue';
+import store from '@/store.js';
 
 export default {
   data(){
     return {
-      datIzdTemp: '',
-      datDospTemp: '',
-      vrstaUsluge: 'Odaberite vrstu usluge'
+      vrstaUsluge: 'Odaberite vrstu usluge',
+      store
     }
   },
   name: 'Home',
@@ -182,11 +182,14 @@ export default {
 
   methods:{
     exchangeData(){
-      let temp = this.datIzdTemp;
-      this.datIzdTemp = this.datDospTemp;
-      this.datDospTemp = temp;
+      let temp = this.store.scan_doc_data.datum_izdavanja;
+      this.store.scan_doc_data.datum_izdavanja = this.store.scan_doc_data.datum_dospijeca
+      this.store.scan_doc_data.datum_dospijeca = temp;
       console.log('adsasddas')
     }
+  },
+  mounted(){
+    console.log(this.store.scan_doc_data)
   }
 }
 </script>

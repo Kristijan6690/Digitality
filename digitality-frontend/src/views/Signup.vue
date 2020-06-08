@@ -9,7 +9,6 @@
           <button @click="closeAlert" type="button" class="close">&times;</button>
           <strong>Uspjeh!</strong>  Za prijavu kliknite na "Prijavite se" (iznad gumba za potvrdu registracije)
     </div>
-
     <h1 class="logo">Digitality</h1>
     <h3 style="color: #00a2ff;">Registracija</h3>
     

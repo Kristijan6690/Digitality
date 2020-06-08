@@ -9,8 +9,9 @@ import default_data as dflt
 
 def connect_to_db():
     try:
-        cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
-        return cluster["Test"]
+        cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
+        #cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
+        return cluster["digitality_production"]
     except:
         print("Failed to connect to the database!")
         return None 
@@ -61,7 +62,7 @@ def get_archive(archive_id, collection=None):
         db = connect_to_db()
         if not db:
             return None    
-        collection = db["Archives"]
+        collection = db["archives"]
     
     filter = {'_id': ObjectId(archive_id)}
     try:
@@ -89,7 +90,7 @@ def update_document(arc, document):
     db = connect_to_db()
     if not db:
         return None    
-    collection = db["Archives"]
+    collection = db["archives"]
     
     arc = get_archive(arc, collection)
     subarchive = document['naziv_dobavljaca']
@@ -102,7 +103,7 @@ def create_document(arc, document):
     db = connect_to_db()
     if not db:
         return None    
-    collection = db["Archives"]
+    collection = db["archives"]
     
     arc = get_archive(arc, collection)
     subarchive = document['naziv_dobavljaca']
@@ -125,7 +126,7 @@ def index_email():
     db = connect_to_db()
     if not db:
         return None    
-    collection = db["Users"]
+    collection = db["users"]
     
     collection.create_index([ ("email", -1) ], unique=True)
 
@@ -134,8 +135,8 @@ def register_user(user):
     db = connect_to_db()
     if not db:
         return None    
-    user_collection = db["Users"]
-    arc_collection = db["Archives"]
+    user_collection = db["users"]
+    arc_collection = db["archives"]
     
     default_arc = dflt.get_default_arc()
 
@@ -162,7 +163,7 @@ def get_user(email):
     db = connect_to_db()
     if not db:
         return None    
-    collection = db["Users"]
+    collection = db["users"]
     
     if collection.count == 0:
         return False

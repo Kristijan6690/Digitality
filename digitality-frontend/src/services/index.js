@@ -38,14 +38,14 @@ let Auth = {
     async login(eposta, lozinka){
         let response = await Service.post('/login', {email: eposta, password: lozinka})
         
-        try{
+        if(response.data){
             let user = response.data;
             localStorage.setItem('user', JSON.stringify(user));
             return true
         }
-        catch(e){
-            return false
-        }        
+        console.log("Failed to login!")
+        return false
+              
     },
 
     logout() {
@@ -86,6 +86,7 @@ let Auth = {
 let app = {
     async getArchives(email) {
         let response = await Service.post('/GetArchives', {'email': email});
+        console.log(response.data)
         return response.data;
     },
 
@@ -98,14 +99,16 @@ let app = {
     },
 
     async sendDocument(urlDokumenta){
-        await Service.post('/send_document',{
+        let response = await Service.post('/send_document',{
             doc_url : urlDokumenta
         })
+        return response.data
     },
 
-    async getSearchArchives(pretraga){
+    async getSearchArchives(pretraga,id_korisnikove_arhive){
         let response = await Service.post('/search/lista_arhiva',{
-            searchTerm : pretraga
+            searchTerm : pretraga,
+            personal_archive_id: id_korisnikove_arhive
         })
         return response.data;
     },
@@ -118,22 +121,25 @@ let app = {
     },
 
     async deleteSubarchive(id_korisnikove_arhive,id_podarhive,naziv_podarhive){
-        await Service.post('/archive/deleteSubarchive', {
+        let response = await Service.post('/archive/deleteSubarchive', {
             personal_archive_id : id_korisnikove_arhive,
             subarchive_id : id_podarhive,
             subarchive_name: naziv_podarhive
         })
+        return response.data
     },
 
-    async update_exDate(naziv_arhive){
+    async update_exDate(id_korisnikove_arhive,id_podarhive){
         await Service.post('/archive/UpdateExaminationDate',{
-            archive_name: naziv_arhive
+            personal_archive_id: id_korisnikove_arhive,
+            subarchive_id: id_podarhive
         })
     },
 
-    async sort_Archives(check_value){
+    async sort_Archives(check_value,id_korisnikove_arhive){
         let response = await Service.post('/archives/SortArchives', {
-            sorttype: check_value
+            sorttype: check_value,
+            personal_archive_id: id_korisnikove_arhive
         })
         return response.data;
     }

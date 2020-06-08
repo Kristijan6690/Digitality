@@ -152,7 +152,7 @@
                     <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
                         Uspješno izbrisano
                         <hr/>
-                        <div v-on:click="izbrisi_arhivu()" data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+                        <div v-on:click="delete_archive()" data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
                     </div>
                 
                   </div>
@@ -275,26 +275,30 @@ export default {
       }
     },
 
-    async izbrisi_arhivu(){
+    async delete_archive(){
       let temp = JSON.parse(localStorage.getItem('archiveData'))
       let subarchive_id = ''
       for(let i = 0; i < temp.length; i++){
         if(temp[i].name == this.naziv) subarchive_id = temp[i].subarchive_id 
       }
-      await app.deleteSubarchive(this.user.personal_archive_id, subarchive_id, this.naziv)
-     // delete temp[Object.keys(temp).length - 1]
-     // localStorage.setItem('archiveData',JSON.stringify(temp))
-     // this.store.archiveData = temp
-     // this.store.documentData = ''
-     // this.$router.push({ name: 'Home' })
+      let result = await app.deleteSubarchive(this.store.userData.personal_archive_id,subarchive_id,this.naziv)
+      localStorage.setItem('archiveData',JSON.stringify(result))
+      this.store.archiveData = result
+      this.store.documentData = ''
+      this.$router.push({ name: 'Home' })
     }
   },
 
   async mounted() {
-    if(this.store.archiveData) await app.update_exDate(this.naziv);
-    
-
-    let result = await app.getDocuments(this.naziv, this.user.personal_archive_id);
+    if(this.store.archiveData){
+      let subarchive_id = ''
+      for(let i = 0; i < this.store.archiveData.length; i++){
+        if(this.store.archiveData[i].name == this.naziv) subarchive_id = this.store.archiveData[i].subarchive_id 
+      }
+      await app.update_exDate(this.store.userData.personal_archive_id,subarchive_id)
+    }
+      
+    let result = await app.getDocuments(this.naziv,this.store.userData.personal_archive_id);
     if (result) {
       this.store.documentData = result
       this.tempDoc = result

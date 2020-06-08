@@ -74,10 +74,11 @@ export default {
 
    async onLoad() {
       let blobData = await this.getImageBlob()
-      let url = this.user.email + "/" + Date.now() + ".png";
+      let url = this.store.userData.email + "/" + Date.now() + ".png";
       let result = await storage.ref(url).put(blobData);
       let url_dokumenta = await result.ref.getDownloadURL();
-      await app.sendDocument(url_dokumenta)
+      this.store.scan_doc_data = await app.sendDocument(url_dokumenta)
+      this.$router.push({ name: 'ManualScan' })
     },
   },
 

@@ -181,7 +181,7 @@
                   <input v-model = "createArchiveName" placeholder="Unesite ime podarhive" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Unesite ime podarhive'" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
                 </div>
                 <div class="modal-footer" style="text-align:center; display:block;">
-                  <button v-on:click="dodaj_arhivu()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button v-on:click="create_archive()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
                   <button v-on:click="add_archive_cancel()" type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
                 </div>
               </div>
@@ -263,7 +263,7 @@ export default {
   methods:{
     async searchArchives(pretraga){
       pretraga = this.searchTerm
-      this.store.archiveData = await app.getSearchArchives(pretraga)
+      this.store.archiveData = await app.getSearchArchives(pretraga, this.user.personal_archive_id) 
     },
 
     async dodaj_datum_pregleda() {
@@ -271,7 +271,7 @@ export default {
       this.$router.push({ name: 'Scan' })
     },
 
-    async dodaj_arhivu() {
+    async create_archive() {
       let flag = false
 
       if(this.createArchiveName != '') {
@@ -307,7 +307,7 @@ export default {
       else if(document.getElementById("defaultInline2").checked) sortby = 'abecedno_silazno'
       else if(document.getElementById("defaultInline3").checked) sortby = 'datum_pregleda_uzlazno'
       else if(document.getElementById("defaultInline4").checked) sortby = 'abecedno_uzlazno'
-      let result = await app.sort_Archives(sortby)
+      let result = await app.sort_Archives(sortby,this.user.personal_archive_id)
       localStorage.setItem('archiveData',JSON.stringify(result))
       this.store.archiveData = result
       $('#SortDropDown').trigger("click"); //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
