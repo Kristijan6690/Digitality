@@ -52,10 +52,18 @@ export default {
     },
   methods: {
       async login() {
-        let result = await app.login(this.email, this.password);
-        if(result){
-          this.store.userData = result;
-          localStorage.setItem('userData', JSON.stringify(result))
+        let userResult = await app.login(this.email, this.password);
+
+        if(userResult){
+          this.store.userData = userResult;
+          localStorage.setItem('userData', JSON.stringify(userResult))
+          let archiveResult = await app.getArchives(userResult.id)
+
+          if (archiveResult) {
+            this.store.archiveData = archiveResult
+            localStorage.setItem('archiveData',JSON.stringify(archiveResult))
+          }
+          else console.log("Prazan collection")
           this.$router.push({ name: 'Home' })
         } 
         else console.log("Invalid username or password")
@@ -180,23 +188,5 @@ span{
 }
 
 
-@media screen and (min-width: 1024px){
-  .login{
-    margin-top: 0% !important;
-  }
-}
 
-/*###Tablet(medium)###*/
-@media screen and (min-width : 768px) and (max-width : 1023px){
-  .login{
-    margin-top: 0px;
-  }
-}
-
-/*### Smartphones (portrait and landscape)(small)### */
-@media screen and (min-width : 0px) and (max-width : 767px){
-  .login{
-    margin-top:0%;
-  }
-}
 </style>

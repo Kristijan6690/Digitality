@@ -2,9 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Croppa from 'vue-croppa'
-import store from '@/store.js';
+import Notifications from 'vue-notification'
+ 
+Vue.use(Notifications)
 
- Vue.use(Croppa)  
+Vue.use(Croppa)  
 
 Vue.use(VueRouter)
 

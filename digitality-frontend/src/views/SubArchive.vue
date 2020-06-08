@@ -1,9 +1,10 @@
 <template>
   <div class="home">
+    <notifications group="notify" />
       <div class="container">
         <div class="row">
-            <div class="col archive-options">
 
+            <div class="col archive-options">       
                    <!-- settings dropdown -->
                       <div class="btn-group" >
                         <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
@@ -122,7 +123,7 @@
             <div class="col heading">
                   <!-- maknuti submit iz buttona? -->
                   <button type="submit" v-on:click="go_back()" class="btn btn-pr imary my-2 my-sm-0" id="backButton">Natrag</button>             
-                  <div style="width: 100%;" id="headlineDiv"><h1 id="headline">Internet</h1></div>
+                  <div style="width: 100%;" id="headlineDiv"><h1 id="headline">{{this.naziv}}</h1></div>
                   <button type="button" class="btn btn-primary my-2 my-sm-0" id="deleteButton"  data-toggle="modal" data-target="#delete_confirmation">Izbriši</button>
             </div>         
         </div>
@@ -151,7 +152,7 @@
                     <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
                         Uspješno izbrisano
                         <hr/>
-                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+                        <div v-on:click="delete_archive()" data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
                     </div>
                 
                   </div>
@@ -179,6 +180,7 @@
         </div>
         -->
       </div>
+      
   </div>
 </template>
 <!-- popraviti :  clear custom filters ikona ,da dugi nazivi neidu izvan mobile responsive, footer? back i delete buttoni na mobitelu -> back btn netreba na mobu, delete u settings?-->
@@ -191,6 +193,7 @@ import UserData from '@/components/UserData.vue';
 import store from '@/store.js';
 import { app } from "@/services";
 import _ from "lodash";
+import toastr from "toastr"
 
 export default {
   data(){
@@ -239,6 +242,7 @@ export default {
           filter_podaci[varijable_filtera[i]] = this.store.filter[varijable_filtera[i]]
         }
       }
+      console.log(filter_podaci)
       //samo primjer filtriranja za sada:
       if(Object.keys(filter_podaci).length > 0) {
         let regex = new RegExp (`^(${filter_podaci.naziv_dobavljača.toLowerCase()})`)
@@ -246,7 +250,7 @@ export default {
         console.log(this.store.documentData)
 
         for(let j = 0; j < Object.keys(this.tempDoc).length; j++){
-          if(this.tempDoc[j].naziv.toLowerCase().match(regex)){
+          if(this.tempDoc[j].naziv_doc.toLowerCase().match(regex)){
             this.store.documentData[j] = this.tempDoc[j] 
           }
         }
@@ -269,19 +273,50 @@ export default {
       }
     },
 
+    async delete_archive(){
+      let temp = JSON.parse(localStorage.getItem('archiveData'))
+      let subarchive_id = ''
+      for(let i = 0; i < temp.length; i++){
+        if(temp[i].name == this.naziv) subarchive_id = temp[i].subarchive_id 
+      }
+      let result = await app.deleteSubarchive(this.store.userData.personal_archive_id,subarchive_id,this.naziv)
+      localStorage.setItem('archiveData',JSON.stringify(result))
+      this.store.archiveData = result
+      this.store.documentData = ''
+      this.$router.push({ name: 'Home' })
+    }
   },
 
   async mounted() {
-    let result = await app.getDocuments(this.naziv);  // Još nadograditi da vuce doc za određenog usera
+    if(this.store.archiveData){
+      let subarchive_id = ''
+      for(let i = 0; i < this.store.archiveData.length; i++){
+        if(this.store.archiveData[i].name == this.naziv) subarchive_id = this.store.archiveData[i].subarchive_id 
+      }
+      await app.update_exDate(this.store.userData.personal_archive_id,subarchive_id)
+    }
+      
+    let result = await app.getDocuments(this.naziv,this.store.userData.personal_archive_id);
     if (result) {
       this.store.documentData = result
       this.tempDoc = result
+      console.log(this.store.documentData)
     }
     else {
       this.store.documentData = ''
       console.log("Korisnik nema dokumenta")
     }
-    $('#element').popover('show')
+    
+    //https://www.npmjs.com/package/vue-notification
+    this.$notify({
+        group: 'notify',
+        type: 'info',
+        title: 'Ne možete pronaći dokument?',
+        text: 'Isprobajte naš filter!',
+        duration: 7000,
+        position:'top right'
+    });
+
   }
 }
 </script>
