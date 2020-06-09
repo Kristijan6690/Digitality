@@ -7,20 +7,20 @@ from bson import ObjectId
 
 import default_data as dflt
 
+db = None
+
 def connect_to_db():
     try:
         cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
         #cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
-        return cluster["digitality_production"]
+        global db
+        db = cluster["digitality_production"]
     except:
         print("Failed to connect to the database!")
         return None 
 
 
 def update_company(company_data):
-    db = connect_to_db()
-    if not db:
-        return None
     collection = db["Company"]
     
     try:
@@ -30,38 +30,15 @@ def update_company(company_data):
         return
     
     return result
- 
 
-def get_company(db, oib):
+
+def get_company(oib):
     collection = db["Company"]
     return collection.find_one({'oib': oib})
 
 
-def get_data_oib(oib_list):
-    db = connect_to_db()
-    if not db:
-        return None
-        
-    user_data = None
-    company_data = None
-    
-    for oib in oib_list:
-        if not company_data:
-            company_data = get_company(db, oib)       
-        elif not user_data:
-            user_data = get_cur_alias()[0]
-            
-        if user_data and company_data:
-            break
-            
-    return (user_data, company_data)
- 
-
 def get_archive(archive_id, collection=None):
     if not collection:
-        db = connect_to_db()
-        if not db:
-            return None    
         collection = db["archives"]
     
     filter = {'_id': ObjectId(archive_id)}
@@ -87,9 +64,6 @@ def update_subarchive(arc, document):
 
 
 def update_document(arc, document):
-    db = connect_to_db()
-    if not db:
-        return None    
     collection = db["archives"]
     
     arc = get_archive(arc, collection)
@@ -100,9 +74,6 @@ def update_document(arc, document):
     return update_subarchive(archive, arc[subarchive])
 
 def create_document(arc, document):
-    db = connect_to_db()
-    if not db:
-        return None    
     collection = db["archives"]
     
     arc = get_archive(arc, collection)
@@ -114,27 +85,16 @@ def create_document(arc, document):
         arc[subarchive] = [document]
     
     return update_subarchive(arc, arc[subarchive])
-
-
-def get_cur_alias():
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)   
-    return user['alias']       
+     
 
 # INDEXING ##########################################################
 def index_email():
-    db = connect_to_db()
-    if not db:
-        return None    
     collection = db["users"]
     
     collection.create_index([ ("email", -1) ], unique=True)
 
 # USER ##############################################################
-def register_user(user):
-    db = connect_to_db()
-    if not db:
-        return None    
+def register_user(user): 
     user_collection = db["users"]
     arc_collection = db["archives"]
     
@@ -159,10 +119,7 @@ def register_user(user):
     return "Success"
 
 
-def get_user(email):
-    db = connect_to_db()
-    if not db:
-        return None    
+def get_user(email):  
     collection = db["users"]
     
     if collection.count == 0:

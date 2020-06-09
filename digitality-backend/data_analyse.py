@@ -145,7 +145,28 @@ def check_postal_code(p_codes):
         p_codes = check_user_pc(p_codes)
     
     return check_pc_dict(p_codes)
+
+
+def get_data_oib(oib_list):
+    user_data = None
+    company_data = None
     
+    for oib in oib_list:
+        if not company_data:
+            company_data = db.get_company(oib)       
+        elif not user_data:
+            user_data = get_cur_alias()[0]
+            
+        if user_data and company_data:
+            break
+            
+    return (user_data, company_data)
+
+
+def get_cur_alias():
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp)   
+    return user['alias']  
 
 # TEST
 def test_update_iban(test_company):

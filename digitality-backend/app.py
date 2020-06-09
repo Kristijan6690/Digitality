@@ -15,6 +15,7 @@ import scan_engine
 import default_data as dflt
 import mongodb as mongodb
 
+mongodb.connect_to_db()
 mongodb.index_email()
 
 app = Flask(__name__)
