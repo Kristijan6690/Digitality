@@ -115,7 +115,9 @@ let app = {
         return response.data;
     },
 
-    async createSubarchive(naziv,id_korisnikove_arhive){
+    async createSubarchive(naziv, id_korisnikove_arhive){
+        
+
         await Service.post('/archives/createSubarchive', {
             archive_name : naziv,
             personal_archive_id : id_korisnikove_arhive

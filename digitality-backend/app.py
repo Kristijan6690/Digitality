@@ -166,7 +166,9 @@ def searchArchives():
 def createSubarchive():
     archive_name = request.get_json()['archive_name'].lower()
     personal_archive_id = ObjectId(request.get_json()['personal_archive_id'])
+    
     subarchive_id = ObjectId()
+    
     mongo.db.archives.update({'_id': personal_archive_id},{'$push':{
         'subarchive_names': {
             'subarchive_id': subarchive_id,

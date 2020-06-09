@@ -241,7 +241,7 @@ import _ from "lodash";
 export default {
   data(){
     return {
-      user: localStorage.getItem('user'),
+      user: Auth.getUser(),
       searchTerm: '',
       store,
       createArchiveName: ''
@@ -286,7 +286,7 @@ export default {
           $("#unsuccess_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
         }
         else {
-          await app.createSubarchive(this.createArchiveName,this.user.personal_archive_id)
+          await app.createSubarchive(this.createArchiveName, this.user.personal_archive_id)
           let result = await app.getArchives(this.user.email) //---------------------------------------
           localStorage.setItem('archiveData',JSON.stringify(result))
           this.createArchiveName = ''
