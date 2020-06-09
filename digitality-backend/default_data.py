@@ -33,18 +33,18 @@ def get_default_arc():
         "iznos":"100kn"
     }
     
-    subarchive_meta_data = {
+    subarchive = {
         'subarchive_id': ObjectId(),
         'name': "primjer",
-        'last_used': cur_date
+        'last_used': cur_date,
+        'documents': [example_dict]
     }
     
     return {
         '_id' : id,
         'naziv' : 'Example archive',
         
-        'subarchive_names' : [subarchive_meta_data],
-        'primjer' : [example_dict]
+        'subarchives' : [subarchive],
     }
     
     
