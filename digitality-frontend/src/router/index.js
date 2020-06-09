@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Croppa from 'vue-croppa'
 import Notifications from 'vue-notification'
+import Loading from 'vue-loading-overlay';
+
+Vue.use(Loading);
  
 Vue.use(Notifications)
 
@@ -60,6 +63,12 @@ const routes = [
     path: '/editdocument',
     name: 'EditDocument',
     component: () => import('../views/EditDocument.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: () => import('../views/Test.vue'),
     meta: { requiresAuth: true }
   },
   
