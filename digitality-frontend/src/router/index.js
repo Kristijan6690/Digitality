@@ -3,6 +3,11 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Croppa from 'vue-croppa'
 import Notifications from 'vue-notification'
+import Loading from 'vue-loading-overlay';
+
+Vue.use(Loading, {
+  color: '#00A2FF'
+});
  
 Vue.use(Notifications)
 

@@ -5,7 +5,8 @@
 
         <div class="alert alert-success alert-dismissible fade show" id="successAlert">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Uspjeh!</strong> Vaš dokument je uspješno obrađen i spremljen u arhivu "xyz".
+          <strong>Uspjeh!</strong> Vaša slika je uspješno učitana i trenutno se obrađuje. Bit ćete preusmjereni na rezultate. Ako ima praznih
+                                   polja znači da ih nije uspjelo prepoznati pa ćete ih popuniti ručno.
         </div>
         
         <div class="alert alert-warning alert-dismissible fade show" id="warningAlert">
@@ -35,6 +36,8 @@
         auto-sizing
         :initial-image="'path/to/initial-image.png'"
         @new-image-drawn="onLoad()"
+        loading-start
+        loading-end
       ></croppa>
       
 
@@ -45,14 +48,18 @@
 import store from "@/store.js";
 import "vue-croppa/dist/vue-croppa.css";
 import { app } from "@/services";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   data() {
     return {
       user: localStorage.getItem('user'),
+      fullPage: true,
       myCroppa: null,
       placeholder: 'Drag and drop your file here',
       store
+      
     };
   },
 
@@ -72,7 +79,26 @@ export default {
       })
     },
 
+  //još urediti kod i funkcionalnost
+  //https://vuejsexamples.com/vue-js-component-for-full-screen-loading-indicator/
+    startLoading() {
+      let loader = this.$loading.show({
+        // Optional parameters
+        container: this.fullPage ? null : this.$refs.formContainer,
+        canCancel: true,
+        onCancel: this.onCancel,
+      });
+      // simulate AJAX
+      setTimeout(() => {
+        loader.hide()
+       },20000)                 
+      },
+      onCancel() {
+        console.log('User cancelled the loader.')
+    },
+
    async onLoad() {
+      this.startLoading();
       let blobData = await this.getImageBlob()
       let url = this.store.userData.email + "/" + Date.now() + ".png";
       let result = await storage.ref(url).put(blobData);
@@ -80,6 +106,8 @@ export default {
       this.store.scan_doc_data = await app.sendDocument(url_dokumenta)
       this.$router.push({ name: 'ManualScan' })
     },
+
+                 
   },
 
   myEventHandler(e) {

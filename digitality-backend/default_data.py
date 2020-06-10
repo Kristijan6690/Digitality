@@ -1,8 +1,21 @@
 from bson import ObjectId
 from datetime import datetime
 
+def get_subarchive(name):
+    cur_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    
+    return {
+        'subarchive_id': str(ObjectId()),
+        'name': name,
+        'last_used': cur_date,
+        'documents': []
+    }
+
 def get_default_arc():
+<<<<<<< HEAD
     id = str(ObjectId())
+=======
+>>>>>>> 6f3e6766ba6756d69abe0f8cd734e2750dc0814a
     cur_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     
     example_dict = {
@@ -42,9 +55,8 @@ def get_default_arc():
     }
     
     return {
-        '_id' : id,
+        '_id' : '5edfb6448f7d7c4c08b35d77',#str(ObjectId()),
         'naziv' : 'Example archive',
-        
         'subarchives' : [subarchive],
     }
     
