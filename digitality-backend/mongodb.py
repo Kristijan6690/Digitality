@@ -37,19 +37,12 @@ def get_company(oib):
     return collection.find_one({'oib': oib})
 
 
-<<<<<<< HEAD
 def get_archive(archive_ids, collection=None):
     if not collection:
         collection = db["archives"]
     
     filter = {'_id': {'$in':archive_ids}}
     
-=======
-def get_archive(archive_id):
-    collection = db["archives"]
-    
-    filter = {'_id': archive_id}
->>>>>>> 6f3e6766ba6756d69abe0f8cd734e2750dc0814a
     try:
         arc = collection.find(filter)
     except:

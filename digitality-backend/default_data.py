@@ -12,10 +12,7 @@ def get_subarchive(name):
     }
 
 def get_default_arc():
-<<<<<<< HEAD
     id = str(ObjectId())
-=======
->>>>>>> 6f3e6766ba6756d69abe0f8cd734e2750dc0814a
     cur_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     
     example_dict = {
