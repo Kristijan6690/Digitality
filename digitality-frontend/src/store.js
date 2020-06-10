@@ -1,9 +1,5 @@
 export default {
-  currentArchive: 'Arhiva_1',
-
-  userData: '',   //Podaci ulogiranog korisnika
-  archiveData: '', //Podaci za arhive (voda,struja...)
-  documentData: '', //Podaci za svaki dokument sa arhive,
+  currentArchiveData: '',
   scan_doc_data: '',
   
   filter: {
@@ -39,6 +35,13 @@ export default {
     let today = new Date();
     return today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(); 
     //https://tecadmin.net/get-current-date-time-javascript/
+  },
+  get_users_arhive(all_archives,user_archive_ids){
+    for(let i = 0; i < all_archives.length; i++){
+      for(let j = 0; j < user_archive_ids.length; j++){
+        if(all_archives[i]._id == user_archive_ids[j]) return all_archives[i]
+      }
+    }
   }
 
 }

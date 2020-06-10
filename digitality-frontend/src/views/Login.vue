@@ -55,7 +55,7 @@ export default {
         let success = await Auth.login(this.email, this.password);
 
         if (success == true) {
-            this.$router.push({ name: 'Home'});
+          this.$router.push({ name: 'Home'});
         }
       },
       

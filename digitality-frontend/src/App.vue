@@ -55,6 +55,9 @@ export default {
         Auth.logout();
         this.$router.go();
     },
+  },
+
+  mounted(){
   }
 }
 </script>

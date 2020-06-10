@@ -165,7 +165,6 @@
 <!-- popraviti :  label value,mobile responsive, footer?, hovere na sve-->
 <script>
 
-import ArchiveCard from '@/components/ArchiveCard.vue';
 import store from '@/store.js';
 
 export default {

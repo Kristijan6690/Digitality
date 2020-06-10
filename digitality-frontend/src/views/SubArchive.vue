@@ -160,7 +160,7 @@
             </div>
         <div class="row">
             <div class="col archive">
-              <Document v-bind:key="card.id" v-bind:info="card" v-for="card in store.documentData" /> 
+              <Document v-bind:key="card.id" v-bind:info="card" v-for="card in documentData" /> 
               <!-- sastav komponente
               <div class="document" >
                   <div class="documentName">Lorem ipsum</div>
@@ -199,8 +199,8 @@ import toastr from "toastr"
 export default {
   data(){
     return {
-      personal_archive_id: Auth.getUser().personal_archive_id,
-      
+      user: Auth.getUser(),
+      documentData: '',
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
       searchTerm: '',
       tempDoc: '',
@@ -277,42 +277,44 @@ export default {
     },
 
     async delete_archive(){
-      let temp = JSON.parse(localStorage.getItem('archiveData'))
       let subarchive_id = ''
-      for(let i = 0; i < temp.length; i++){
-        if(temp[i].name == this.naziv) subarchive_id = temp[i].subarchive_id 
+      for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
+        if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
+          subarchive_id = this.store.currentArchiveData.subarchives[i].subarchive_id
+          await app.deleteSubarchive(this.user.personal_archive_id,subarchive_id)
+        }
       }
-      let result = await app.deleteSubarchive(this.personal_archive_id,subarchive_id,this.naziv)
-      localStorage.setItem('archiveData',JSON.stringify(result))
-      this.store.archiveData = result
+      let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
       this.store.documentData = ''
       this.$router.push({ name: 'Home' })
     }
   },
 
   async mounted() {
-    if(this.store.archiveData){
-      let subarchive_id = ''
+    if(this.store.currentArchiveData == ''){
+      let temp = JSON.parse(localStorage.getItem('userArchives'))
+      this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
+    }
 
-      for(let i = 0; i < this.store.archiveData.length; i++){
-        if(this.store.archiveData[i].name == this.naziv) 
-          subarchive_id = this.store.archiveData[i].subarchive_id 
+    //Ispis dokumenata podarhive
+    for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
+      if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
+        this.documentData = this.store.currentArchiveData.subarchives[i].documents
       }
-
-      await app.update_exDate(this.personal_archive_id, subarchive_id)
     }
-      
-    let result = await app.getDocuments(this.naziv, this.personal_archive_id);
-    if (result) {
-      this.store.documentData = result
-      this.tempDoc = result
-      console.log(this.store.documentData)
-    }
-    else {
-      this.store.documentData = ''
-      console.log("Korisnik nema dokumenta")
-    }
+    if(this.documentData == '') console.log("Korisnik nema dokumenta")
     
+    //Update examination date
+    let subarchive_id
+    for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
+      if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
+        subarchive_id = this.store.currentArchiveData.subarchives[i].subarchive_id
+        await app.update_exDate(this.store.currentArchiveData._id,subarchive_id)
+      }  
+    }
+
     //https://www.npmjs.com/package/vue-notification
     this.$notify({
         group: 'notify',
@@ -322,7 +324,6 @@ export default {
         duration: 7000,
         position:'top right'
     });
-
   }
 }
 </script>

@@ -63,23 +63,23 @@
                               <div id="pristupPopis">  
                                <form id="archiveForm" name="archiveForm">
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input  v-model="store.currentArchive" checked="checked" type="radio" class="custom-control-input" id="Arhiva_1" name="Archive" value="Arhiva_1">
+                                  <input  v-model="currentArchive" checked="checked" type="radio" class="custom-control-input" id="Arhiva_1" name="Archive" value="Arhiva_1">
                                   <label for="Arhiva_1" class="custom-control-label">Arhiva_1</label>
                                 </div>
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input  v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_2" name="Archive" value="Arhiva_2">
+                                  <input  v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_2" name="Archive" value="Arhiva_2">
                                   <label for="Arhiva_2" class="custom-control-label">Arhiva_2</label>
                                 </div>
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="store.currentArchive"  type="radio" class="custom-control-input" id="Arhiva_3" name="Archive" value="Arhiva_3">
+                                  <input v-model="currentArchive"  type="radio" class="custom-control-input" id="Arhiva_3" name="Archive" value="Arhiva_3">
                                   <label for="Arhiva_3" class="custom-control-label">Arhiva_3</label>
                                 </div>
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_4" name="Archive" value="Arhiva_4">
+                                  <input v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_4" name="Archive" value="Arhiva_4">
                                   <label for="Arhiva_4" class="custom-control-label">Arhiva_4</label>
                                 </div>
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_5" name="Archive" value="Arhiva_5">
+                                  <input v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_5" name="Archive" value="Arhiva_5">
                                   <label for="Arhiva_5" class="custom-control-label">Arhiva_5_Dugi_Naziv</label>
                                 </div>
                                </form>
@@ -162,7 +162,7 @@
 
         <div class="row">
           <div class="col archive">
-            <ArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.archiveData" />
+            <SubArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.currentArchiveData.subarchives" />
 
             <div class="subArchivePlus" data-toggle="modal" data-target="#helpModal" style="border:none;">
                 <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
@@ -231,7 +231,7 @@
 <!-- popraviti : logo na title kartici,mobile dva subarchiva u jednom redu,settings email overflow, search bottom padding elip, effecti elips, header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer? active navbar, bolji način za pozicioniranje filter ikone-->
 <script>
 
-import ArchiveCard from '@/components/ArchiveCard.vue';
+import SubArchiveCard from '@/components/SubArchiveCard.vue';
 import UserData from '@/components/UserData.vue';
 import { app } from "@/services";
 import { Auth } from "@/services";
@@ -244,13 +244,14 @@ export default {
       user: Auth.getUser(),
       searchTerm: '',
       store,
-      createArchiveName: ''
+      createArchiveName: '',
+      currentArchive: '',
     }
   },
 
   name: 'Home',
   components: {
-    ArchiveCard,
+    SubArchiveCard,
     UserData
   },
 
@@ -263,12 +264,9 @@ export default {
   methods:{
     async searchArchives(pretraga){
       pretraga = this.searchTerm
-      this.store.archiveData = await app.getSearchArchives(pretraga, this.user.personal_archive_id) 
-    },
-
-    async dodaj_datum_pregleda() {
-      this.store.proba = "radi"
-      this.$router.push({ name: 'Scan' })
+      let archives = await app.getSearchArchives(pretraga, this.user.archive_ids,this.store.currentArchiveData._id)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids) 
     },
 
     async create_archive() {
@@ -276,8 +274,8 @@ export default {
 
       if(this.createArchiveName != '') {
         this.createArchiveName = this.createArchiveName.toLowerCase()
-        for(let i = 0; i < Object.keys(this.store.archiveData).length; i++){
-          if(this.createArchiveName == this.store.archiveData[i].name.toLowerCase()){
+        for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
+          if(this.createArchiveName == this.store.currentArchiveData.subarchives[i].name.toLowerCase()){
             flag = true
           }
         }
@@ -287,11 +285,10 @@ export default {
         }
         else {
           await app.createSubarchive(this.createArchiveName, this.user.personal_archive_id)
-          let result = await app.getArchives(this.user.email) //---------------------------------------
-          localStorage.setItem('archiveData',JSON.stringify(result))
+          let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+          localStorage.setItem('userArchives',JSON.stringify(archives))
+          this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
           this.createArchiveName = ''
-          this.store.archiveData = ''
-          this.store.archiveData = result //isprazni i napuni sa novim podacima
           $("#success_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
         }
       }
@@ -307,16 +304,16 @@ export default {
       else if(document.getElementById("defaultInline2").checked) sortby = 'abecedno_silazno'
       else if(document.getElementById("defaultInline3").checked) sortby = 'datum_pregleda_uzlazno'
       else if(document.getElementById("defaultInline4").checked) sortby = 'abecedno_uzlazno'
-      let result = await app.sort_Archives(sortby,this.user.personal_archive_id)
-      localStorage.setItem('archiveData',JSON.stringify(result))
-      this.store.archiveData = result
+      let archives = await app.sort_Archives(sortby,this.user.archive_ids,this.store.currentArchiveData._id)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
       $('#SortDropDown').trigger("click"); //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
     },
   },
 
   async mounted(){
-    let email = Auth.getUser().email;
-    this.store.archiveData = await app.getArchives(email)
+    let temp = JSON.parse(localStorage.getItem('userArchives'))
+    this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
   }
 }
 

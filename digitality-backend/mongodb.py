@@ -37,15 +37,16 @@ def get_company(oib):
     return collection.find_one({'oib': oib})
 
 
-def get_archive(archive_id, collection=None):
+def get_archive(archive_ids, collection=None):
     if not collection:
         collection = db["archives"]
     
-    filter = {'_id': ObjectId(archive_id)}
+    filter = {'_id': {'$in':archive_ids}}
+    
     try:
-        arc = collection.find_one(filter)  
+        arc = collection.find(filter)
     except:
-        print("Fail - Collection.FindOne")
+        print("Fail - Collection.Find")
         arc = None
         
     return arc
