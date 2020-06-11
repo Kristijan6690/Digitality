@@ -40,6 +40,8 @@ let Auth = {
         
         if(response.data){
             let user = response.data;
+            let archives = await app.getArchives(user.email,user.archive_ids)
+            localStorage.setItem('userArchives',JSON.stringify(archives))
             localStorage.setItem('user', JSON.stringify(user));
             return true
         }
@@ -50,6 +52,7 @@ let Auth = {
 
     logout() {
         localStorage.removeItem('user');
+        localStorage.removeItem('userArchives')
     },
 
     getToken() {
@@ -84,20 +87,15 @@ let Auth = {
 }
 
 let app = {
-    async getArchives(email) {
-        let response = await Service.post('/GetArchives', {'email': email});
+    async getArchives(eposta,dostupne_arhive_korisniku) {
+        let response = await Service.post('/GetArchives', {
+            email: eposta,
+            archive_ids: dostupne_arhive_korisniku
+        });
         if (response.data){
             return response.data;
         }
         return false
-    },
-
-    async getDocuments(naziv_podarhive, id_korisnikove_arhive){
-        let response = await Service.post('/documents',{
-            subArchive_name: naziv_podarhive,
-            personal_archive_id: id_korisnikove_arhive
-        });
-        return response.data;
     },
 
     async sendDocument(urlDokumenta){
@@ -107,43 +105,42 @@ let app = {
         return response.data
     },
 
-    async getSearchArchives(pretraga,id_korisnikove_arhive){
+    async getSearchArchives(pretraga,dostupne_arhive_korisniku,id_trenutne_arhive){
         let response = await Service.post('/search/lista_arhiva',{
             searchTerm : pretraga,
-            personal_archive_id: id_korisnikove_arhive
+            archive_ids: dostupne_arhive_korisniku,
+            currentArchive_id: id_trenutne_arhive
         })
         return response.data;
     },
 
     async createSubarchive(naziv, id_korisnikove_arhive){
         
-
         await Service.post('/archives/createSubarchive', {
             archive_name : naziv,
             personal_archive_id : id_korisnikove_arhive
         })
     },
 
-    async deleteSubarchive(id_korisnikove_arhive,id_podarhive,naziv_podarhive){
-        let response = await Service.post('/archive/deleteSubarchive', {
+    async deleteSubarchive(id_korisnikove_arhive,id_podarhive){
+        await Service.post('/archive/deleteSubarchive', {
             personal_archive_id : id_korisnikove_arhive,
-            subarchive_id : id_podarhive,
-            subarchive_name: naziv_podarhive
+            subarchive_id : id_podarhive
         })
-        return response.data
     },
 
-    async update_exDate(id_korisnikove_arhive,id_podarhive){
+    async update_exDate(id_trenutne_arhive,id_podarhive){
         await Service.post('/archive/UpdateExaminationDate',{
-            personal_archive_id: id_korisnikove_arhive,
+            currentArchive_id: id_trenutne_arhive,
             subarchive_id: id_podarhive
         })
     },
 
-    async sort_Archives(check_value,id_korisnikove_arhive){
+    async sort_Archives(check_value,dostupne_arhive_korisniku,id_trenutne_arhive){
         let response = await Service.post('/archives/SortArchives', {
             sorttype: check_value,
-            personal_archive_id: id_korisnikove_arhive
+            archive_ids: dostupne_arhive_korisniku,
+            currentArchive_id: id_trenutne_arhive
         })
         return response.data;
     }

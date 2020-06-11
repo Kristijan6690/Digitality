@@ -11,8 +11,8 @@ db = None
 
 def connect_to_db():
     try:
-        #cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
-        cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
+        cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
+        #cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
         global db
         db = cluster["digitality_production"]
     except:
@@ -37,30 +37,23 @@ def get_company(oib):
     return collection.find_one({'oib': oib})
 
 
-def get_archive(archive_id):
-    collection = db["archives"]
+def get_archive(archive_ids, collection=None):
+    if not collection:
+        collection = db["archives"]
     
-    filter = {'_id': archive_id}
+    filter = {'_id': {'$in':archive_ids}}
+    
     try:
-        arc = collection.find_one(filter)  
+        arc = collection.find(filter)
     except:
-        print("Fail - Collection.FindOne")
+        print("Fail - Collection.Find")
         arc = None
         
     return arc
 
-def get_subarchive(arc, subarchive_name):
-    for index, subarchive in enumerate(arc['subarchives']):
-        if subarchive_name == subarchive['name']:
-            return (index, subarchive)
-        
-    return (None, dflt.get_subarchive(subarchive_name))
-
-def update_subarchive(arc_id, document):
-    collection = db["archives"]
-    
-    filter = {'_id': arc_id}
-    update = {'$set': {'subarchives': document}}
+def update_subarchive(arc, document):
+    filter = {'_id': arc}
+    update = {'$set': {subarchive: document}}
     
     try:
         result = collection.update_one(filter, update)   
@@ -69,32 +62,30 @@ def update_subarchive(arc_id, document):
         result = None
     
     return result   
-            
-def update_document(arc_id, document):
-    arc = get_archive(arc_id)
-    index, subarchive = get_subarchive(arc, document['naziv_dobavljaca'])
+
+
+def update_document(arc, document):
+    collection = db["archives"]
+    
+    arc = get_archive(arc, collection)
+    subarchive = document['naziv_dobavljaca']
     
     # FIND AND REPLACE DOC IN LIST
-    for idx, doc in enumerate(subarchive['documents']):
-        if doc['_id'] == document['_id']:
-            subarchive['documents'][idx] = document
-            break
-      
-    arc['subarchives'][index] = subarchive
     
-    return update_subarchive(arc_id, arc['subarchives'])
+    return update_subarchive(archive, arc[subarchive])
 
-def create_document(arc_id, document):
-    arc = get_archive(arc_id)
-    index, subarchive = get_subarchive(arc, document['naziv_dobavljaca'])
+def create_document(arc, document):
+    collection = db["archives"]
     
-    subarchive['documents'].append(document)
-    if index:
-        arc['subarchives'][index] = subarchive
-    else:
-        arc['subarchives'].append(subarchive)
+    arc = get_archive(arc, collection)
+    subarchive = document['naziv_dobavljaca']
     
-    return update_subarchive(arc_id, arc['subarchives'])
+    try:
+        arc[subarchive].append(document)
+    except KeyError:
+        arc[subarchive] = [document]
+    
+    return update_subarchive(arc, arc[subarchive])
      
 
 # INDEXING ##########################################################
@@ -139,14 +130,13 @@ def get_user(email):
         
         
 # TESTING
-def test_add_new_doc(test_archive_id):
+def test_add_new_doc():
     document = {
         'meta_data': {
             'added_by': 'jane@doe.com',
             'added_on': '01/01/2020',
             'added_at': '12:00'
         },
-        '_id': '5edfa361c509ffb1cf2ea928',
         'naziv_dobavljaca': 'Company C',
         'oib_dobavljaca': '16942983514',
         'iban_primatelja': 'HR012329671212',    
@@ -164,43 +154,11 @@ def test_add_new_doc(test_archive_id):
         'vrsta_usluge': 'Struja',
         'iznos': '100kn'
     }
-    create_document(test_archive_id, document)
+    add_new_document('7', document)
     
-def test_update_doc(test_archive_id):
-    document = {
-        'meta_data': {
-            'added_by': 'jane@doe.com',
-            'added_on': '01/01/2020',
-            'added_at': '12:00'
-        },
-        '_id': '5edfa361c509ffb1cf2ea928',
-        'naziv_dobavljaca': 'Company C',
-        'oib_dobavljaca': '16942983514',
-        'iban_primatelja': 'HR012329671212',    
-        
-        'naziv_kupca': 'John Doe',
-        'oib_kupca': '32145678901',
-        'iban_platitelja': 'HR321456789012',
-        
-        'mjesto_izdavanja': 'Zagreb',
-        'datum_izdavanja': '01/01/2020',
-        'datum_dospijeca': '01/02/2020',
-        
-        'broj_racuna': 'user_input',
-        'poziv_na_broj': 'user_input',
-        'vrsta_usluge': 'Struja',
-        'iznos': '900kn'
-    }
-    update_document(test_archive_id, document)
-        
 def test_get_data():
     oib = ['16962783514', '12345678901']
     print("Data:", get_data_oib(oib))
       
 if __name__ == "__main__":
-    connect_to_db()
-    
-    test_archive_id = '5edfb6448f7d7c4c08b35d77'
-    
-    #test_add_new_doc(test_archive_id)
-    test_update_doc(test_archive_id)
+    test_add_new_doc()

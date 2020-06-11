@@ -7,11 +7,7 @@ from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from bson import ObjectId
 
-import datetime
-import jwt
-import os
-
-import scan_engine
+import datetime,jwt,os,scan_engine,re,operator
 import default_data as dflt
 import mongodb as mongodb
 
@@ -71,54 +67,15 @@ def getarhive():
     if not user:
         return jsonify(False)
     
-    personal_archive_id = user['personal_archive_id']
-    archive = mongodb.get_archive(personal_archive_id)
+    archive_ids = user['archive_ids']
+    archives = list(mongodb.get_archive(archive_ids))
     
-    if not archive:
+    if not archives:
         return jsonify(False)
 
-    subArchives = archive['subarchive_names']
-    
-    for sub_arc in subArchives:
-        sub_arc['subarchive_id'] = str(sub_arc['subarchive_id'])
-
-    return jsonify(subArchives)
+    return jsonify(archives)
 
 
-# još da vraća alliase kad budu
-@app.route('/documents', methods=['POST'])
-def getdocument():
-
-    subArchive_name = request.get_json()['subArchive_name'].lower()
-    personal_archive_id = request.get_json()['personal_archive_id']
-    documents = []
-
-    for x in mongo.db.archives.find():
-        if(str(x['_id']) == personal_archive_id):
-            if (len(x[subArchive_name]) == 0):
-                documents = False
-                return jsonify(documents)
-
-            else:
-                for atributes in x[subArchive_name]:
-                        documents.append(atributes)
-            
-            for doc in documents:
-                doc['id_dokumenta'] = str(doc['id_dokumenta'])
-                    
-            return jsonify(documents) 
-
-        else:
-            documents = False
-            return jsonify(documents)
-
-    for x in mongo.db.archives.find():
-        if(str(x['_id']) == personal_archive_id):
-            if (len(x[subArchive_name]) == 0):
-                documents = False
-                return jsonify(documents)
-
-# RAZRADA JOS TESKA
 @app.route('/send_document', methods=['POST'])
 def sendDocument():
 
@@ -133,81 +90,65 @@ def searchArchives():
 
     searchTerm = str(request.get_json()['searchTerm'])
     searchTerm = searchTerm.lower()
-    personal_archive_id = ObjectId(request.get_json()['personal_archive_id']) 
+    archive_ids = request.get_json()['archive_ids']
+    currentArchive_id = request.get_json()['currentArchive_id']
     result = []
+    subarchives = []
+
+    for archives in mongo.db.archives.find({'_id': {'$in':archive_ids}}):
+        result.append(archives)
 
     if(searchTerm):
         r = re.compile('^(%s)' % searchTerm)
-
-        for x in mongo.db.archives.find():
-            if(x['_id'] == personal_archive_id):
-                for sub in x['subarchive_names']:
+        for archives in mongo.db.archives.find():
+            if(archives['_id'] == currentArchive_id):
+                for sub in archives['subarchives']:
                     if(r.match(sub['name'])):
-                        result.append(sub)    
+                        subarchives.append(sub)   
 
-        for sub in result:
-            sub['subarchive_id'] = str(sub['subarchive_id'])
+        for archives in result:
+            if(archives['_id'] == currentArchive_id):
+                archives['subarchives'] = subarchives
 
         return jsonify(result)
 
     else:
-        for x in mongo.db.archives.find():
-           if(x['_id'] == personal_archive_id):
-               for sub in x['subarchive_names']:
-                   result.append(sub)    
-
-        for sub in result:
-            sub['subarchive_id'] = str(sub['subarchive_id'])
-        
-            
         return jsonify(result)  
 
 
 @app.route('/archives/createSubarchive', methods=['POST'])
 def createSubarchive():
     archive_name = request.get_json()['archive_name'].lower()
-    personal_archive_id = ObjectId(request.get_json()['personal_archive_id'])
-    
-    subarchive_id = ObjectId()
+    personal_archive_id = request.get_json()['personal_archive_id']
+    subarchive_id = str(ObjectId())
     
     mongo.db.archives.update({'_id': personal_archive_id},{'$push':{
-        'subarchive_names': {
+        'subarchives': {
             'subarchive_id': subarchive_id,
             'name': archive_name,
-            'examination_date': datetime.datetime.now()
-        }}, '$set':{ archive_name: [] }})
+            'last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            'documents': []
+        }}})
         
     return "Dodano"
 
 
 @app.route('/archive/deleteSubarchive', methods=['POST'])
 def deleteSubarchive():
-    personal_archive_id = ObjectId(request.get_json()['personal_archive_id'])
-    subarchive_id = ObjectId(request.get_json()['subarchive_id'])
-    subarchive_name = request.get_json()['subarchive_name'].lower()
-    result = []
 
-    mongo.db.archives.update({'_id': personal_archive_id},{'$pull':{'subarchive_names':{'subarchive_id':subarchive_id}}})
-    mongo.db.archives.update({subarchive_name: []},{'$unset':{ subarchive_name: 1}})
-    for x in mongo.db.archives.find():
-        if(x['_id'] == personal_archive_id):
-            for sub in x['subarchive_names']:
-                result.append(sub)
+    doc = request.get_json()
+    mongo.db.archives.update({'_id': doc['personal_archive_id']},{'$pull':{'subarchives':{'subarchive_id':doc['subarchive_id']}}})
     
-    for sub in result:
-        sub['subarchive_id'] = str(sub['subarchive_id'])
-    
-    return jsonify(result)
+    return "Izbrisano"
 
 
 @app.route('/archive/UpdateExaminationDate', methods=['POST'])
 def update_examination_date():
 
-    personal_archive_id = ObjectId(request.get_json()['personal_archive_id'])
-    subarchive_id = ObjectId(request.get_json()['subarchive_id'])
-    for x in mongo.db.archives.find():
-        if(x['_id'] == personal_archive_id):
-            mongo.db.archives.update({'subarchive_names.subarchive_id':subarchive_id},{'$set':{'subarchive_names.$.examination_date': datetime.datetime.now()}})
+    doc = request.get_json()
+    for archive in mongo.db.archives.find():
+        if(archive['_id'] == doc['currentArchive_id']):
+            mongo.db.archives.update({'subarchives.subarchive_id':doc['subarchive_id']},{'$set':{'subarchives.$.last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}})
             return "Dodano"
 
 
@@ -216,29 +157,33 @@ def sortArchives():
 
     if (mongo.db.archives.count() == 0):
         provjera = False
-        return provjera
+        return jsonify(provjera)
 
     else:
-        sorttype = request.get_json()['sorttype']
-        personal_archive_id = ObjectId(request.get_json()['personal_archive_id'])
-        subArchives = []
+        doc = request.get_json()
+        result = []
+        subarchives = []
 
-        if(sorttype == 'abecedno_uzlazno' or sorttype == 'datum_pregleda_uzlazno'): ascORdes = False
+        if(doc['sorttype'] == 'abecedno_uzlazno' or doc['sorttype'] == 'datum_pregleda_uzlazno'): ascORdes = False
         else: ascORdes = True
-        if(sorttype == 'abecedno_uzlazno' or sorttype == 'abecedno_silazno'): sortby = "name"
-        else: sortby = "examination_date"
+        if(doc['sorttype'] == 'abecedno_uzlazno' or doc['sorttype'] == 'abecedno_silazno'): sortby = "name"
+        else: sortby = "last_used"
 
-        for x in mongo.db.archives.find():
-            if(x['_id'] == personal_archive_id):
-                for sub in x['subarchive_names']:
-                    subArchives.append(sub)
+        for archives in mongo.db.archives.find({'_id': {'$in':doc['archive_ids']}}):
+            result.append(archives)
 
-        for sub in subArchives:
-            sub['subarchive_id'] = str(sub['subarchive_id'])
+        for archives in mongo.db.archives.find():
+            if(archives['_id'] == doc['currentArchive_id']):
+                for sub in archives['subarchives']:
+                    subarchives.append(sub)
 
-        subArchives.sort(key=operator.itemgetter(sortby),reverse=ascORdes)
+        subarchives.sort(key=operator.itemgetter(sortby),reverse=ascORdes)
+        
+        for archives in result:
+            if(archives['_id'] == doc['currentArchive_id']):
+                archives['subarchives'] = subarchives
 
-        return jsonify(subArchives)
+        return jsonify(result)
     
 
 if __name__ == "__main__":

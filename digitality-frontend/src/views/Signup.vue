@@ -113,6 +113,7 @@ export default {
 
         await Auth.register(this.name, this.surname, this.email, this.password); // moguce jos nadograditi
         $('#successAlert').show();
+        this.name = '', this.surname = '', this.email = '', this.password = '', this.confimpassword = '';
         //this.$router.push({ name: "Login" });
       } 
       else 
