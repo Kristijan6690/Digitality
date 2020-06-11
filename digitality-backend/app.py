@@ -68,7 +68,7 @@ def getarhive():
         return jsonify(False)
     
     archive_ids = user['archive_ids']
-    archives = list(mongodb.get_archive(archive_ids))
+    archives = list(mongodb.get_archives(archive_ids))
     
     if not archives:
         return jsonify(False)
@@ -78,7 +78,6 @@ def getarhive():
 
 @app.route('/send_document', methods=['POST'])
 def sendDocument():
-
     doc_url = request.get_json()['doc_url']
     doc_data = scan_engine.photo_to_dict(doc_url)
 

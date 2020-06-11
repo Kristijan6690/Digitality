@@ -72,9 +72,6 @@ def compare_user_iban(iban_list):
     return iban_list    
 
 def check_iban(iban_list, company_data):
-    company_ibans = company_data['iban'] # format: company_ibans = [[broj_pojava, iban], [3, HR012345678512]]
-    company_ibans = [iban[1] for iban in company_ibans]
-        
     # Edge case handling
     if not iban_list:
         try:
@@ -83,8 +80,10 @@ def check_iban(iban_list, company_data):
         except:
             print("ERROR! - No company data found, nothing will be returned!")    
             return None
-    elif len(iban_list) == 1:
+    elif len(iban_list) == 1 or not company_data['iban']:
         return iban_list[0]
+    
+    company_ibans = [iban[1] for iban in company_data['iban']]  # format: company_ibans = [[broj_pojava, iban], [3, HR012345678512]]
     
     # Standardno pretrazivanje   
     for iban in iban_list:
