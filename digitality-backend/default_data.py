@@ -51,7 +51,7 @@ def get_default_arc():
     }
     
     return {
-        '_id' : '5edfb6448f7d7c4c08b35d77',#str(ObjectId()),
+        '_id' : str(ObjectId()),
         'name' : 'Example archive',
         'subarchives' : [subarchive],
     }

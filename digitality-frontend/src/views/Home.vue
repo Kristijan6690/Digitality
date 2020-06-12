@@ -33,8 +33,8 @@
 
                                 <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
-                                     <div class="mailOsobe addUserName">example@email.com</div> 
-                                     <div class="opcijaPopis addUserButton">dodaj</div>  
+                                     <input v-model="alias_email" class="mailOsobe addUserName"  /> 
+                                     <button v-on:click ="add_access()" class="opcijaPopis addUserButton">Dodaj</button>  
                                 </div>
                               
                               </div>
@@ -246,6 +246,7 @@ export default {
       store,
       createArchiveName: '',
       currentArchive: '',
+      alias_email: ''
     }
   },
 
@@ -308,6 +309,19 @@ export default {
       localStorage.setItem('userArchives',JSON.stringify(archives))
       this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
       $('#SortDropDown').trigger("click"); //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
+    },
+
+    async add_access() {
+      let alias = await app.add_alias(this.alias_email,this.user.email)
+      if(alias){
+        this.user.alias_list.push(alias[0])
+        this.user.archive_ids.push(alias[1])
+        localStorage.setItem("user",JSON.stringify(this.user))
+        let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+        localStorage.setItem('userArchives',JSON.stringify(archives))
+        this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+        console.log("Uspijeh")
+      } else console.log("Greska")
     },
   },
 

@@ -183,7 +183,43 @@ def sortArchives():
                 archives['subarchives'] = subarchives
 
         return jsonify(result)
+
+
+@app.route('/alias/add', methods=['POST'])
+def add_alias():
+
+    doc = request.get_json()
+    flag1 = True
+    flag2 = False
+
+    for user in mongo.db.users.find():
+        if(user['email'] == doc['owner_email']):
+            for alias in user['alias_list']:
+                if(alias['email'] == doc['al_email']):
+                    flag1 = False
     
+    for user in mongo.db.users.find():
+        if(user['email'] == doc['al_email']):
+            al_name = user['name']
+            al_surname = user['surname']
+            al_personal_archive_id = user['personal_archive_id']
+            flag2 = True
+
+    if(flag1 and flag2):
+        alias_data = {'name': al_name,'surname':al_surname,'email': doc['al_email']}
+        mongo.db.users.update({'email': doc['owner_email']}, {'$push':{'alias_list': alias_data,'archive_ids': al_personal_archive_id}})
+        result = [alias_data,al_personal_archive_id]
+        return jsonify(result)
+
+    else: return jsonify(False)
+
+
+@app.route('/alias/delete', methods=['POST'])
+def delete_alias():
+
+    doc = request.get_json()
+    #nastavak
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
