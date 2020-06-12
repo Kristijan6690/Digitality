@@ -143,6 +143,15 @@ let app = {
             currentArchive_id: id_trenutne_arhive
         })
         return response.data;
+    },
+
+    //parametri:EMAIL(ili ime,prezime),OIB,IBAN,POSTCODE,trenutna arhiva
+    async add_alias(al_eposta,email_vlasnika_arhive){
+        let response = await Service.post('/alias/add', {
+            al_email: al_eposta,
+            owner_email: email_vlasnika_arhive
+        })
+        return response.data;
     }
 };
 
