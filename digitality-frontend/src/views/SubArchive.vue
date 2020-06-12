@@ -70,39 +70,54 @@
 
                           <div class="dropdownBody">                       
                               <div class="filterOptions custom-control custom-checkbox " >
-                                <input v-model ="store.filter_checks.datum_dodavanja_check" type="checkbox" class="custom-control-input" id="datDodavanja" name="datDodavanja" value="datDodavanja">
-                                <label for="datDodavanja" class="custom-control-label">Datum dodavanja:</label>
-                                <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanja" name="datDodavanja"><br>
+                                <input v-model ="store.filter_checks.datum_dodavanja_check" type="radio" class="custom-control-input" id="datDodavanjaVeciOd" name="selectedFilter">
+                                <label for="datDodavanjaVeciOd" class="custom-control-label">Datum dodavanja veći od:</label>
+                                <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanjaVeciOd" name="selectedFilter"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox " >
+                                <input v-model ="store.filter_checks.datum_dodavanja_check" type="radio" class="custom-control-input" id="datDodavanjaManjiOd" name="selectedFilter">
+                                <label for="datDodavanjaManjiOd" class="custom-control-label">Datum dodavanja manji od:</label>
+                                <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanjaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.naziv_dobavljača_check" type="checkbox" class="custom-control-input" id="nazDobavljaca" name="nazDobavljaca" value="nazDobavljaca">
+                                <input v-model ="store.filter_checks.datum_izdavanja_check" type="radio" class="custom-control-input" id="datIzdavanjaVeciOd" name="selectedFilter">
+                                <label for="datIzdavanjaVeciOd" class="custom-control-label">Datum izdavanja veći od:</label>
+                                <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanjaVeciOd" name="selectedFilter"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input v-model ="store.filter_checks.datum_izdavanja_check" type="radio" class="custom-control-input" id="datIzdavanjaManjiOd" name="selectedFilter">
+                                <label for="datIzdavanjaManjiOd" class="custom-control-label">Datum izdavanja manji od:</label>
+                                <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanjaManjiOd" name="selectedFilter"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input v-model ="store.filter_checks.datum_dospijeća_check" type="radio" class="custom-control-input" id="datDospijecaVeciOd" name="selectedFilter">
+                                <label for="datDospijecaVeciOd" class="custom-control-label">Datum dospijeća veći od:</label>
+                                <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijecaVeciOd" name="selectedFilter"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input v-model ="store.filter_checks.datum_dospijeća_check" type="radio" class="custom-control-input" id="datDospijecaManjiOd" name="selectedFilter">
+                                <label for="datDospijecaManjiOd" class="custom-control-label">Datum dospijeća manji od:</label>
+                                <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijecaManjiOd" name="selectedFilter"><br>
+                              </div>
+                              <div class="filterOptions custom-control custom-checkbox ">
+                                <input v-model ="store.filter_checks.naziv_dobavljača_check" type="radio" class="custom-control-input" id="nazDobavljaca" name="selectedFilter">
                                 <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
-                                <input v-model ="store.filter.naziv_dobavljača" type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
+                                <input v-model ="store.filter.naziv_dobavljača" type="text" id="nazDobavljaca" name="selectedFilter"><br>
                               </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.datum_izdavanja_check" type="checkbox" class="custom-control-input" id="datIzdavanja" name="datIzdavanja" value="datIzdavanja">
-                                <label for="datIzdavanja" class="custom-control-label">Datum izdavanja:</label>
-                                <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanja" name="datIzdavanja"><br>
-                              </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.datum_dospijeća_check" type="checkbox" class="custom-control-input" id="datDospijeca" name="datDospijeca" value="datDospijeca">
-                                <label for="datDospijeca" class="custom-control-label">Datum dospijeća:</label>
-                                <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijeca" name="datDospijeca"><br>
-                              </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.vrsta_usluge_check" type="checkbox" class="custom-control-input" id="vrstaUsluge" name="vrstaUsluge" value="vrstaUsluge">
+                              <div class="filterOptions custom-control custom-checkbox">
+                                <input v-model ="store.filter_checks.vrsta_usluge_check" type="radio" class="custom-control-input" id="vrstaUsluge" name="selectedFilter">
                                 <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
-                                <input v-model ="store.filter.vrsta_usluge" type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
+                                <input v-model ="store.filter.vrsta_usluge" type="text" id="vrstaUsluge" name="selectedFilter"><br>
                               </div>
+                               <div class="filterOptions custom-control custom-checkbox ">
+                                <input v-model ="store.filter_checks.iznos_check" type="radio" class="custom-control-input" id="iznosVeciOd" name="selectedFilter">
+                                <label for="iznosVeciOd" class="custom-control-label">Iznos veći od:</label>
+                                <input v-model ="store.filter.iznos" type="text" id="iznosVeciOd" name="selectedFilter"><br>
+                              </div>                    
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.kolicina_check" type="checkbox" class="custom-control-input" id="kolicina" name="kolicina" value="kolicina">
-                                <label for="kolicina" class="custom-control-label">Kolicina:</label>
-                                <input v-model ="store.filter.kolicina" type="text" id="kolicina" name="kolicina"><br>
-                              </div>
-                              <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.iznos_check" type="checkbox" class="custom-control-input" id="iznos" name="iznos" value="iznos">
-                                <label for="iznos" class="custom-control-label">Iznos:</label>
-                                <input v-model ="store.filter.iznos" type="text" id="iznos" name="iznos"><br>
+                                <input v-model ="store.filter_checks.iznos_check" type="radio" class="custom-control-input" id="iznosManjiOd" name="selectedFilter">
+                                <label for="iznosManjiOd" class="custom-control-label">Iznos manji od:</label>
+                                <input v-model ="store.filter.iznos" type="text" id="iznosManjiOd" name="selectedFilter"><br>
                               </div>
                             
                           </div>
@@ -653,12 +668,12 @@ console.log(this.store.currentArchiveData)
 
 .filterOptions{
   margin: 0 5px 5px 5px;
-  width: 410px;
+  
   
 }
 
 .filterOptions > label{
-  width:40%;
+  width:50%;
 }
 
 .filterOptions > input > text{
@@ -672,6 +687,8 @@ console.log(this.store.currentArchiveData)
   border: 2px solid #888888;
   padding-left: 5px;
   padding-right: 5px;
+  margin-left: 2px;
+  width:45%;
 }
 
 .filterOptions > input > checkbox {
