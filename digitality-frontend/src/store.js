@@ -11,15 +11,6 @@ export default {
     kolicina: '',
     iznos: '',
   },
-  filter_checks: {
-    datum_dodavanja_check: false,
-    naziv_dobavljača_check: false,
-    datum_izdavanja_check: false,
-    datum_dospijeća_check: false,
-    vrsta_usluge_check: false,
-    kolicina_check: false,
-    iznos_check: false,
-  },
 
   //Funkcije------------------------------------------------------
   current_date(){

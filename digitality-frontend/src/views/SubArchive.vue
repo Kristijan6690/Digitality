@@ -70,52 +70,52 @@
 
                           <div class="dropdownBody">                       
                               <div class="filterOptions custom-control custom-checkbox " >
-                                <input v-model ="store.filter_checks.datum_dodavanja_check" type="radio" class="custom-control-input" id="datDodavanjaVeciOd" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="datDodavanjaVeciOd" name="selectedFilter" checked>
                                 <label for="datDodavanjaVeciOd" class="custom-control-label">Datum dodavanja veći od:</label>
                                 <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanjaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox " >
-                                <input v-model ="store.filter_checks.datum_dodavanja_check" type="radio" class="custom-control-input" id="datDodavanjaManjiOd" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="datDodavanjaManjiOd" name="selectedFilter">
                                 <label for="datDodavanjaManjiOd" class="custom-control-label">Datum dodavanja manji od:</label>
                                 <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanjaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.datum_izdavanja_check" type="radio" class="custom-control-input" id="datIzdavanjaVeciOd" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="datIzdavanjaVeciOd" name="selectedFilter">
                                 <label for="datIzdavanjaVeciOd" class="custom-control-label">Datum izdavanja veći od:</label>
                                 <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanjaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.datum_izdavanja_check" type="radio" class="custom-control-input" id="datIzdavanjaManjiOd" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="datIzdavanjaManjiOd" name="selectedFilter">
                                 <label for="datIzdavanjaManjiOd" class="custom-control-label">Datum izdavanja manji od:</label>
                                 <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanjaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.datum_dospijeća_check" type="radio" class="custom-control-input" id="datDospijecaVeciOd" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="datDospijecaVeciOd" name="selectedFilter">
                                 <label for="datDospijecaVeciOd" class="custom-control-label">Datum dospijeća veći od:</label>
                                 <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijecaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.datum_dospijeća_check" type="radio" class="custom-control-input" id="datDospijecaManjiOd" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="datDospijecaManjiOd" name="selectedFilter">
                                 <label for="datDospijecaManjiOd" class="custom-control-label">Datum dospijeća manji od:</label>
                                 <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijecaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.naziv_dobavljača_check" type="radio" class="custom-control-input" id="nazDobavljaca" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="nazDobavljaca" name="selectedFilter">
                                 <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
                                 <input v-model ="store.filter.naziv_dobavljača" type="text" id="nazDobavljaca" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox">
-                                <input v-model ="store.filter_checks.vrsta_usluge_check" type="radio" class="custom-control-input" id="vrstaUsluge" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="vrstaUsluge" name="selectedFilter">
                                 <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
                                 <input v-model ="store.filter.vrsta_usluge" type="text" id="vrstaUsluge" name="selectedFilter"><br>
                               </div>
                                <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.iznos_check" type="radio" class="custom-control-input" id="iznosVeciOd" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="iznosVeciOd" name="selectedFilter">
                                 <label for="iznosVeciOd" class="custom-control-label">Iznos veći od:</label>
                                 <input v-model ="store.filter.iznos" type="text" id="iznosVeciOd" name="selectedFilter"><br>
                               </div>                    
                               <div class="filterOptions custom-control custom-checkbox ">
-                                <input v-model ="store.filter_checks.iznos_check" type="radio" class="custom-control-input" id="iznosManjiOd" name="selectedFilter">
+                                <input type="radio" class="custom-control-input" id="iznosManjiOd" name="selectedFilter">
                                 <label for="iznosManjiOd" class="custom-control-label">Iznos manji od:</label>
                                 <input v-model ="store.filter.iznos" type="text" id="iznosManjiOd" name="selectedFilter"><br>
                               </div>
