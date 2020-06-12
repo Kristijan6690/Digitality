@@ -34,6 +34,7 @@ def get_default_arc():
         
         "datum_izdavanja": "01/01/2020",
         "datum_dospijeca": "01/02/2020",
+        "datum_dodavanja": cur_date,
         
         "broj_racuna":"user_input",
         "poziv_na_broj":"user_input",
@@ -51,7 +52,7 @@ def get_default_arc():
     
     return {
         '_id' : '5edfb6448f7d7c4c08b35d77',#str(ObjectId()),
-        'naziv' : 'Example archive',
+        'name' : 'Example archive',
         'subarchives' : [subarchive],
     }
     

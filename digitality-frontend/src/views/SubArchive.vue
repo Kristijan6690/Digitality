@@ -293,11 +293,12 @@ export default {
   },
 
   async mounted() {
+
     if(this.store.currentArchiveData == ''){
       let temp = JSON.parse(localStorage.getItem('userArchives'))
       this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
     }
-
+console.log(this.store.currentArchiveData)
     //Ispis dokumenata podarhive
     for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
       if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
