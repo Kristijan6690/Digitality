@@ -170,7 +170,8 @@
           </div>
         </div>
 
-        <!-- Modal -->
+
+        <!-- Modal za kreiranje arhive -->
           <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
@@ -183,6 +184,38 @@
                 <div class="modal-footer" style="text-align:center; display:block;">
                   <button v-on:click="create_archive()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
                   <button v-on:click="add_archive_cancel()" type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal za popunjavanje podataka koji nedostaju -->
+          <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="display:block;">
+                  <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Dodatni podaci</h3>
+                </div>
+                <div class="modal-body">
+                  <small id="emailHelp" class="form-text text-muted" style="margin-bottom:10px;">
+                    Poštovani, kako bi naš sustav radio pravilno, molimo Vas da popunite sljedeće podatke:
+                  </small>
+                  <form>
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="OIB">
+                    </div>
+                     <div class="form-group">
+                      <input type="text" class="form-control" placeholder="IBAN">
+                    </div>
+                     <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Poštanski broj">
+                    </div>
+                                 
+                  </form>
+                </div>
+                <div class="modal-footer" style="text-align:center; display:block;">
+                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:red">Odustani</button>
                 </div>
               </div>
             </div>
@@ -219,6 +252,8 @@
       </div>
 
         </div>
+
+        <button type="button" class="btn btn-secondary"  data-dismiss="modal" data-toggle="modal" data-target="#formModal" >Testni gumb da se pokrene modal</button>
         <!-- footer
         <div class="row">
             <div class="col archive"></div>
@@ -682,8 +717,6 @@ h2::before{
   position: relative;
 }
 
-
-
 #sortIcon{
   display:inline-block; 
   position: absolute; 
@@ -737,6 +770,11 @@ height: 60px;
   color:#00a2ff;
   margin-left: -20px;
 }   
+
+.form-group > ::placeholder {
+  color: #2c3e50; 
+  margin-left: -20px;
+}  
 
 .fa-file{
   width:10%;
