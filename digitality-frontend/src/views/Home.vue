@@ -18,7 +18,7 @@
                                 <i class="far fa-edit"></i>
                               </div>
                               <div class="changeName" >
-                                <h5 id="changeNameHeader"> Moja_arhiva </h5> 
+                                <input id="changeNameHeader" v-model="naziv_arhive"/>
                               </div>
                           </div>
                           <div class="dropdownBody body-settings" >                       
@@ -281,7 +281,8 @@ export default {
       store,
       createArchiveName: '',
       currentArchive: '',
-      alias_email: ''
+      alias_email: '',
+      naziv_arhive: 'Moja_arhiva_promjena_imena'
     }
   },
 
@@ -358,11 +359,16 @@ export default {
         console.log("Uspijeh")
       } else console.log("Greska")
     },
+
+    formModalPopup(){
+      console.log(this.store.currentArchiveData)
+    }
   },
 
   async mounted(){
     let temp = JSON.parse(localStorage.getItem('userArchives'))
     this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
+    this.formModalPopup();
   }
 }
 
@@ -549,7 +555,11 @@ a{
 }
 
 #changeNameHeader{
-  border-bottom: 2px solid #BEBEBE;
+  font-size:20px;
+  height: 30px;
+  border:none;
+  width:150px;
+  text-align:center;
 } 
 
 .body-settings{
