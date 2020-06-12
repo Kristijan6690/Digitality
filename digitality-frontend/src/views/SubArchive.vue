@@ -122,8 +122,8 @@
                             
                           </div>
                           <div class="addButtonDiv">
-                                <button v-on:click = "filter_trazi()" type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
-                                <button v-on:click = "filter_obrisi()" type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
+                                <button v-on:click = "filter_data()" type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
+                                <button v-on:click = "filter_delete()" type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
                           </div>
                       </div>
                     </div>
@@ -240,7 +240,7 @@ export default {
       return this.$router.go(-1);
     },
 
-    filter_obrisi(){
+    filter_delete(){
       let varijable_filtera = Object.keys(this.store.filter)
 
       for(let i = 0; i < varijable_filtera.length; i++) {
@@ -250,29 +250,8 @@ export default {
       }
     },
 
-    filter_trazi() {
-      let filter_podaci = {}
-      let varijable_filtera = Object.keys(this.store.filter)
-      let varijable_filtera_checks = Object.keys(this.store.filter_checks)
+    filter_data(){
 
-      for(let i = 0; i < varijable_filtera.length; i++) {
-        if(this.store.filter_checks[varijable_filtera_checks[i]]) {
-          filter_podaci[varijable_filtera[i]] = this.store.filter[varijable_filtera[i]]
-        }
-      }
-      console.log(filter_podaci)
-      //samo primjer filtriranja za sada:
-      if(Object.keys(filter_podaci).length > 0) {
-        let regex = new RegExp (`^(${filter_podaci.naziv_dobavljača.toLowerCase()})`)
-        this.store.documentData = {}
-        console.log(this.store.documentData)
-
-        for(let j = 0; j < Object.keys(this.tempDoc).length; j++){
-          if(this.tempDoc[j].naziv_doc.toLowerCase().match(regex)){
-            this.store.documentData[j] = this.tempDoc[j] 
-          }
-        }
-      }
     },
 
     async searchDocuments(pretraga){
@@ -313,7 +292,7 @@ export default {
       let temp = JSON.parse(localStorage.getItem('userArchives'))
       this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
     }
-console.log(this.store.currentArchiveData)
+
     //Ispis dokumenata podarhive
     for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
       if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
