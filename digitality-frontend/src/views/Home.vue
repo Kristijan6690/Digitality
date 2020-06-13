@@ -252,8 +252,6 @@
       </div>
 
         </div>
-
-        <button type="button" class="btn btn-secondary"  data-dismiss="modal" data-toggle="modal" data-target="#formModal" >Testni gumb da se pokrene modal</button>
         <!-- footer
         <div class="row">
             <div class="col archive"></div>
