@@ -363,8 +363,8 @@ export default {
     },
 
     async update_cur_user(){
-      let result = await app.update_user_data(this.user.email,this.oib,this.iban,this.postal_code)
-      this.user = result
+      await app.update_user_data(this.user.email,this.oib,this.iban,this.postal_code)
+      
       localStorage.setItem('user',JSON.parse(result))
     }
   },
