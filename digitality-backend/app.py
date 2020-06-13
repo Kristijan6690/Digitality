@@ -61,6 +61,7 @@ def login():
     
     return jsonify(user)
 
+
 @app.route('/GetArchives', methods=['POST'])
 def getarhive():
     user = mongodb.get_user(request.get_json()['email'])
@@ -205,7 +206,7 @@ def add_alias():
             flag2 = True
 
     if(flag1 and flag2):
-        alias_data = {'name': alias_user['name'],'surname':alias_user['surname'],'email': alias_user['email'],'oib': alias_user['oib'],'iban': alias_user['iban'],'postal_code': alias_user['postal_code']}
+        alias_data = {'name': alias_user['name'],'surname':alias_user['surname'],'oib': alias_user['oib'],'iban': alias_user['iban'],'postal_code': alias_user['postal_code']}
         mongo.db.users.update({'email': doc['owner_email']}, {'$push':{'alias_list': alias_data,'archive_ids': alias_user['personal_archive_id']}})
         result = [alias_data,alias_user['personal_archive_id']]
         return jsonify(result)
