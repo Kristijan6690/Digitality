@@ -201,15 +201,13 @@ def add_alias():
     
     for user in mongo.db.users.find():
         if(user['email'] == doc['al_email']):
-            al_name = user['name']
-            al_surname = user['surname']
-            al_personal_archive_id = user['personal_archive_id']
+            alias_user = user
             flag2 = True
 
     if(flag1 and flag2):
-        alias_data = {'name': al_name,'surname':al_surname,'email': doc['al_email']}
-        mongo.db.users.update({'email': doc['owner_email']}, {'$push':{'alias_list': alias_data,'archive_ids': al_personal_archive_id}})
-        result = [alias_data,al_personal_archive_id]
+        alias_data = {'name': alias_user['name'],'surname':alias_user['surname'],'email': alias_user['email'],'oib': alias_user['oib'],'iban': alias_user['iban'],'postal_code': alias_user['postal_code']}
+        mongo.db.users.update({'email': doc['owner_email']}, {'$push':{'alias_list': alias_data,'archive_ids': alias_user['personal_archive_id']}})
+        result = [alias_data,alias_user['personal_archive_id']]
         return jsonify(result)
 
     else: return jsonify(False)
