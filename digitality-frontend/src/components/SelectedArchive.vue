@@ -18,9 +18,7 @@ export default {
   props: ["info"],
 
   methods:{
-    removeUserAccess(){
-      
-    }
+    
   }
 }
 </script>

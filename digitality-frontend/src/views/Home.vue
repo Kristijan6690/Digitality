@@ -18,7 +18,7 @@
                                 <i class="far fa-edit"></i>
                               </div>
                               <div class="changeName" >
-                                <input v-model="naziv_arhive" id="changeNameHeader" placeholder="Moja_arhiva" /> 
+                                <input v-model="naziv_arhive" id="changeNameHeader" style="color:#2c3e50;"/> 
                               </div>
                           </div>
                           <div class="dropdownBody body-settings" >                       
@@ -32,14 +32,13 @@
                                 <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
                                      <input v-model="alias_email" class="mailOsobe addUserName"  /> 
-                                     <button v-on:click ="add_access()" class="opcijaPopis addUserButton">Dodaj</button>  
+                                     <button v-on:click ="add_access()" class="opcijaPopis addUserButton">dodaj</button>  
                                 </div>
                               
                               </div>
                             </div>
                           <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" > Spremi </button>
-                                <button type="submit" @click="closeSortDropdown" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Poništi</button>
+                                <button type="submit" @click="closeSortDropdown" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
                           </div>
                       </div>
                     </div>
@@ -234,13 +233,28 @@
         </div>
       </div>
 
-      <!-- error confirmation -->
+      <!-- error confirmation during archive creation -->
       <div class="modal fade" id="unsuccess_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
                    Došlo je do pogreške,arhiva već postoji
+                  <hr/>
+                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+              </div>
+            </div>
+
+        </div>
+      </div>
+
+      <!-- error confirmation during adding user to archive -->
+      <div class="modal fade" id="unsuccess_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" >
+          
+          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                   Došlo je do pogreške. Provjerite da li ste unijeli ispravan mail.
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -281,7 +295,7 @@ export default {
       oib: '',
       iban: '',
       postal_code: '',
-      naziv_arhive
+      naziv_arhive: 'Moja_arhiva_promjena_naziva'
     }
   },
 
@@ -346,7 +360,15 @@ export default {
       $('#SortDropDown').trigger("click"); //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
     },
 
+    addingUserConfirmation(success){
+      if(success) $("#success_confirmation").modal()
+
+      else $("#unsuccess_confirmation_adding_user").modal()
+
+    },
+
     async add_access() {
+      let success = false
       let alias = await app.add_alias(this.alias_email,this.user.email)
       if(alias){
         this.user.alias_list.push(alias[0])
@@ -355,8 +377,11 @@ export default {
         let archives = await app.getArchives(this.user.email,this.user.archive_ids)
         localStorage.setItem('userArchives',JSON.stringify(archives))
         this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
-        console.log("Uspijeh")
+        console.log("Uspjeh")
+        success=true
       } else console.log("Greska")
+
+      this.addingUserConfirmation(success);
     },
 
     async update_cur_user(){
@@ -593,6 +618,10 @@ a{
   overflow: hidden;
   text-overflow: ellipsis;
   height: 30px;
+  background:white; 
+  border-left:none; 
+  border-top:none; 
+  border-right:none;
 }
 
 .opcijaPopis{
@@ -600,6 +629,8 @@ a{
   color:#FF0000; 
   width: 75px;
   text-align: center;
+  border:none;
+  background:white;
 }
 
 #addButtonSettings, #changeArchiveButton{
@@ -783,10 +814,6 @@ height: 60px;
   color:#00a2ff;
   margin-left: -20px;
 } 
-
-#changeNameHeader > ::placeholder{
-  color:#2c3e50;
-}
 
 .form-group > ::placeholder {
   color: #2c3e50; 
