@@ -601,6 +601,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   height: 30px;
+  background:white; 
+  border-left:none; 
+  border-top:none; 
+  border-right:none;
 }
 
 .opcijaPopis{
@@ -608,6 +612,8 @@ export default {
   color:#FF0000; 
   width: 75px;
   text-align: center;
+  border:none;
+  background:white;
 }
 
 #addButtonSettings{

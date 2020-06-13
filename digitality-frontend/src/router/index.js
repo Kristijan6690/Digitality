@@ -67,6 +67,12 @@ const routes = [
     component: () => import('../views/EditDocument.vue'),
     meta: { requiresAuth: true }
   },
+  {
+    path: '/alias_list',
+    name: 'AliasList',
+    component: () => import('../views/AliasList.vue'),
+    meta: { requiresAuth: true }
+  },
   
 ]
 
