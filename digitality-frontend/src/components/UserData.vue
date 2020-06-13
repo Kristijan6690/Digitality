@@ -27,7 +27,6 @@ export default {
       localStorage.setItem("user",JSON.stringify(this.user))
       let archives = await app.getArchives(this.user.email,this.user.archive_ids)
       localStorage.setItem('userArchives',JSON.stringify(archives))
-      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
     }
   }
 }

@@ -227,7 +227,8 @@ def delete_shared_archive():
 def add_alias():
 
     doc = request.get_json()
-    mongo.db.users.update({'email': doc['user_email']},{'$set':{'oib': doc['user_oib'],'iban': doc['user_iban'],'postal_code': doc['user_postal_code']}})
+    alias_data = {'name': doc['name'], 'surname': doc['surname'], 'oib': doc['oib'], 'iban': doc['iban'], 'postal_code': doc['postal_code']}
+    mongo.db.users.update({'email': doc['user_email']},{'$push':{'alias_list': alias_data}})
     return "Updated"
 
 if __name__ == "__main__":

@@ -170,17 +170,17 @@
               </div>
             </div>
 
-            <!-- error confirmation during archive creation -->
-            <div class="modal fade" id="unsuccess_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+             <!-- success confirmation -->
+            <div class="modal fade" id="success_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document" >
                 
                 <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
                     <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                        Došlo je do pogreške,arhiva već postoji
+                        Arhiva uspješno kreirana
                         <hr/>
                         <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
                     </div>
-                  </div>
+                </div>
 
               </div>
             </div>
@@ -314,7 +314,7 @@ export default {
     },
 
     addingUserConfirmation(success){
-      if(success) $("#success_confirmation").modal()
+      if(success) $("#success_confirmation_adding_user").modal()
 
       else $("#unsuccess_confirmation_adding_user").modal()
 
@@ -330,7 +330,6 @@ export default {
           localStorage.setItem("user",JSON.stringify(this.user))
           let archives = await app.getArchives(this.user.email,this.user.archive_ids)
           localStorage.setItem('userArchives',JSON.stringify(archives))
-          this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
           success = true
         }
         this.shared_email = ''
