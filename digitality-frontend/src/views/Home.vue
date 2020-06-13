@@ -18,7 +18,7 @@
                                 <i class="far fa-edit"></i>
                               </div>
                               <div class="changeName" >
-                                <h5 id="changeNameHeader"> Moja_arhiva </h5> 
+                                <input v-model="naziv_arhive" id="changeNameHeader" placeholder="Moja_arhiva" /> 
                               </div>
                           </div>
                           <div class="dropdownBody body-settings" >                       
@@ -280,7 +280,8 @@ export default {
       alias_email: '',
       oib: '',
       iban: '',
-      postal_code: ''
+      postal_code: '',
+      naziv_arhive
     }
   },
 
@@ -557,7 +558,11 @@ a{
 }
 
 #changeNameHeader{
-  border-bottom: 2px solid #BEBEBE;
+  font-size:20px;
+  height: 30px;
+  border:none;
+  width:150px;
+  text-align:center;
 } 
 
 .body-settings{
@@ -777,7 +782,11 @@ height: 60px;
  ::placeholder {
   color:#00a2ff;
   margin-left: -20px;
-}   
+} 
+
+#changeNameHeader > ::placeholder{
+  color:#2c3e50;
+}
 
 .form-group > ::placeholder {
   color: #2c3e50; 
