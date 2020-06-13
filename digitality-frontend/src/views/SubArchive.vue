@@ -5,49 +5,48 @@
         <div class="row">
 
             <div class="col archive-options">       
-                   <!-- settings dropdown -->
-                      <div class="btn-group" >
-                        <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                          <div id="settingsIcon" ><i class="fas fa-cog fa-lg"></i></div>
-                        </button>
+                  <!-- settings dropdown -->
+                    <div class="btn-group" >
+                      <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <div id="settingsIcon" ><i class="fas fa-cog fa-lg"></i></div>
+                      </button>
 
-                        <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
-                          <div class="dropdownHeader" > 
-                              <h2 id="dropdownHeaderHeadline"> Postavke </h2> 
-                          </div>
-                          <div id="archiveName" >
-                              <div class="editIcon">
-                                <i class="far fa-edit"></i>
-                              </div>
-                              <div class="changeName" >
-                                <h5 id="changeNameHeader"> Moja_arhiva </h5> 
-                              </div>
-                          </div>
-                          <div class="dropdownBody body-settings" >                       
-                              <div id="pristupNaslov">
-                                <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
-                              </div>
-                                <div id="pristupPopis">  
-
-                                <UserData />
-                                <UserData />
-                                <UserData />
-
-                                <div class="userData "  >
-                                     <div class="personIcon"><i class="far fa-user"></i> </div>
-                                     <div class="mailOsobe addUserName">example@email.com</div> 
-                                     <div class="opcijaPopis addUserButton">dodaj</div>  
-                                </div>
-                              
-                              </div>
+                      <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
+                        <div class="dropdownHeader" > 
+                            <h2 id="dropdownHeaderHeadline"> Postavke </h2> 
+                        </div>
+                        <div id="archiveName" >
+                            <div class="editIcon">
+                              <i class="far fa-edit"></i>
                             </div>
-                          <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" style="margin: 5px; border-radius:5px; border:0" > Spremi </button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
+                            <div class="changeName" >
+                              <input v-model="naziv_arhive" id="changeNameHeader" style="color:#2c3e50;"/> 
+                            </div>
+                        </div>
+                        <div class="dropdownBody body-settings" >                       
+                            <div id="pristupNaslov">
+                              <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
+                            </div>
+                            <div>  
+
+                              <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
+
+                              <div class="userData "  >
+                                  <div class="personIcon"><i class="far fa-user"></i> </div>
+                                  <input v-model="alias_email" class="mailOsobe addUserName"  /> 
+                                  <button v-on:click ="add_access()" class="opcijaPopis addUserButton">dodaj</button>  
+                              </div>
+                            
+                            </div>
                           </div>
-                      </div>
+                        <div class="dropdownFooter addButtonDiv">
+                              <button type="submit" @click="closeSortDropdown" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
+                        </div>
                     </div>
+                  </div>
+
                     
+                  <!-- choose Archive (Dropdown umjesto selecta zbog veće mogućnosti customizacije -- prebaciti css u css-->                    
                   <div class="chooseArchive">
                       <i class="far fa-file fa-lg" ></i>
                       <select id="archiveSelector">
@@ -219,7 +218,8 @@ export default {
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
       searchTerm: '',
       tempDoc: '',
-      store
+      naziv_arhive: 'Moja_arhiva',
+      store,
     }
   },
 
@@ -548,6 +548,14 @@ export default {
   display:inline-block; 
   color:#888888; 
 }
+
+#changeNameHeader{
+  font-size:20px;
+  height: 30px;
+  border:none;
+  width:150px;
+  text-align:center;
+} 
 
 .editIcon{
   background-color: #00A2FF; 
