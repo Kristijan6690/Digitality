@@ -29,19 +29,16 @@
                             </div>
                             <div>  
 
-                              <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
+                              <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.email_list" />
 
                               <div class="userData "  >
                                   <div class="personIcon"><i class="far fa-user"></i> </div>
-                                  <input v-model="alias_email" class="mailOsobe addUserName"  /> 
-                                  <button v-on:click ="add_access()" class="opcijaPopis addUserButton">dodaj</button>  
+                                  <input v-model="shared_email" class="mailOsobe addUserName"  /> 
+                                  <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
                               </div>
                             
                             </div>
                           </div>
-                        <div class="dropdownFooter addButtonDiv">
-                              <button type="submit" @click="closeSortDropdown" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
-                        </div>
                     </div>
                   </div>
 
@@ -172,6 +169,37 @@
                   </div>
               </div>
             </div>
+
+             <!-- success confirmation -->
+            <div class="modal fade" id="success_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" >
+                
+                <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+                    <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                        Arhiva uspješno kreirana
+                        <hr/>
+                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- error confirmation during adding user to archive -->
+            <div class="modal fade" id="unsuccess_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" >
+                
+                <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+                    <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                        Došlo je do pogreške. Provjerite da li ste unijeli ispravan mail.
+                        <hr/>
+                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+
         <div class="row">
             <div class="col archive">
               <Document v-bind:key="card.id" v-bind:info="card" v-for="card in documentData" /> 
@@ -217,8 +245,8 @@ export default {
       documentData: '',
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
       searchTerm: '',
-      tempDoc: '',
       naziv_arhive: 'Moja_arhiva',
+      shared_email: '',
       store,
     }
   },
@@ -283,7 +311,31 @@ export default {
       this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
       this.store.documentData = ''
       this.$router.push({ name: 'Home' })
-    }
+    },
+
+    addingUserConfirmation(success){
+      if(success) $("#success_confirmation_adding_user").modal()
+
+      else $("#unsuccess_confirmation_adding_user").modal()
+
+    },
+
+    async share_arc() {
+      if(this.shared_email != ''){
+        let success = false
+        let result = await app.share_archive(this.user.email,this.shared_email)
+        if(result){
+          this.user.archive_ids.push(result[0])
+          this.user.email_list.push(result[1])
+          localStorage.setItem("user",JSON.stringify(this.user))
+          let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+          localStorage.setItem('userArchives',JSON.stringify(archives))
+          success = true
+        }
+        this.shared_email = ''
+        this.addingUserConfirmation(success);
+      }
+    },
   },
 
   async mounted() {
