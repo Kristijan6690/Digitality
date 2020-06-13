@@ -364,8 +364,10 @@ export default {
 
     async update_cur_user(){
       await app.update_user_data(this.user.email,this.oib,this.iban,this.postal_code)
-      
-      localStorage.setItem('user',JSON.parse(result))
+      this.user['oib'] = this.oib
+      this.user['iban'] = this.iban
+      this.user['postal_code'] = this.postal_code
+      localStorage.setItem('user',JSON.stringify(this.user))
     }
   },
 
