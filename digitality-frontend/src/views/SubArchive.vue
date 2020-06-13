@@ -27,27 +27,27 @@
                               <div id="pristupNaslov">
                                 <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
                               </div>
-                                <div id="pristupPopis">  
+                              <div>  
 
-                                <UserData />
-                                <UserData />
-                                <UserData />
+                                <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
 
                                 <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
-                                     <div class="mailOsobe addUserName">example@email.com</div> 
-                                     <div class="opcijaPopis addUserButton">dodaj</div>  
+                                     <input v-model="alias_email" class="mailOsobe addUserName"  /> 
+                                     <button v-on:click ="add_access()" class="opcijaPopis addUserButton">Dodaj</button>  
                                 </div>
                               
                               </div>
                             </div>
                           <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" style="margin: 5px; border-radius:5px; border:0" > Spremi </button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" > Spremi </button>
+                                <button type="submit" @click="closeSortDropdown" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Poništi</button>
                           </div>
                       </div>
                     </div>
+
                     
+                  <!-- choose Archive (Dropdown umjesto selecta zbog veće mogućnosti customizacije -- prebaciti css u css-->                    
                   <div class="chooseArchive">
                       <i class="far fa-file fa-lg" ></i>
                       <select id="archiveSelector">

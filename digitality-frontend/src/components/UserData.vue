@@ -1,7 +1,7 @@
 <template>
     <div class="userData" >
         <div class="personIcon"><i class="far fa-user"></i></div>
-        <div class="mailOsobe">example@email.com</div> 
+        <div class="mailOsobe">{{info.email}}</div> 
         <div class="opcijaPopis">ukloni</div>  
     </div>
 </template>

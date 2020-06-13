@@ -27,9 +27,7 @@
                               </div>
                               <div>  
 
-                                <UserData />
-                                <UserData />
-                                <UserData />
+                                <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
 
                                 <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
