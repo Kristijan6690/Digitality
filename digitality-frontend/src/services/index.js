@@ -152,6 +152,15 @@ let app = {
             owner_email: email_vlasnika_arhive
         })
         return response.data;
+    },
+
+    async update_user_data(eposta,oib,iban,postanski_broj){
+        await Service.post('/user/update_data', {
+            user_email: eposta,
+            user_oib: oib,
+            user_iban: iban,
+            user_postal_code: postanski_broj
+        })
     }
 };
 

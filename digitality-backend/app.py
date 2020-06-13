@@ -30,6 +30,7 @@ def register():
     doc = request.get_json()
     
     user = {
+        '_id': str(ObjectId()),
         'name': doc['name'],
         'surname': doc['surname'],
         'email': doc['email'],
@@ -220,6 +221,13 @@ def delete_alias():
     doc = request.get_json()
     #nastavak
 
+
+@app.route('/user/update_data', methods=['POST'])
+def update_user():
+
+    doc = request.get_json()
+    mongo.db.users.update({'email': doc['user_email']},{'$set':{'oib': doc['user_oib'],'iban': doc['user_iban'],'postal_code': doc['user_postal_code']}})
+    return "Updated"
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

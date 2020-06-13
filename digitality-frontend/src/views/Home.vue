@@ -202,19 +202,19 @@
                   </small>
                   <form>
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="OIB">
+                      <input v-model="oib" type="text" class="form-control" placeholder="OIB">
                     </div>
                      <div class="form-group">
-                      <input type="text" class="form-control" placeholder="IBAN">
+                      <input v-model="iban" type="text" class="form-control" placeholder="IBAN">
                     </div>
                      <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Poštanski broj">
+                      <input v-model="postal_code" type="text" class="form-control" placeholder="Poštanski broj">
                     </div>
                                  
                   </form>
                 </div>
                 <div class="modal-footer" style="text-align:center; display:block;">
-                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button v-on:click ="update_cur_user()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
                   <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:red">Odustani</button>
                 </div>
               </div>
@@ -281,7 +281,10 @@ export default {
       store,
       createArchiveName: '',
       currentArchive: '',
-      alias_email: ''
+      alias_email: '',
+      oib: '',
+      iban: '',
+      postal_code: ''
     }
   },
 
@@ -358,11 +361,18 @@ export default {
         console.log("Uspijeh")
       } else console.log("Greska")
     },
+
+    async update_cur_user(){
+      let result = await app.update_user_data(this.user.email,this.oib,this.iban,this.postal_code)
+      this.user = result
+      localStorage.setItem('user',JSON.parse(result))
+    }
   },
 
   async mounted(){
     let temp = JSON.parse(localStorage.getItem('userArchives'))
     this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
+    if(!(this.user.oib || this.user.iban || this.user.post_code)) $("#formModal").modal()
   }
 }
 
