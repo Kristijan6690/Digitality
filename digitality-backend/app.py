@@ -37,7 +37,8 @@ def register():
         'password': bcrypt.generate_password_hash(doc['password'], 8),
         'personal_archive_id': None,
         'archive_ids': None,        
-        'alias_list': []
+        'alias_list': [],
+        'email_list':[]
     }
     
     res = mongodb.register_user(user)
@@ -187,42 +188,43 @@ def sortArchives():
         return jsonify(result)
 
 
-@app.route('/alias/add', methods=['POST'])
-def add_alias():
+@app.route('/archives/share', methods=['POST'])
+def share_archive():
 
     doc = request.get_json()
-    flag1 = True
-    flag2 = False
+    flag1 = False
+    flag2 = True
 
     for user in mongo.db.users.find():
-        if(user['email'] == doc['owner_email']):
-            for alias in user['alias_list']:
-                if(alias['email'] == doc['al_email']):
-                    flag1 = False
+        if(user['email'] == doc['shared_email']):
+            share_user = user
+            flag1 = True
     
     for user in mongo.db.users.find():
-        if(user['email'] == doc['al_email']):
-            alias_user = user
-            flag2 = True
+        if(user['email'] == doc['user_email']):
+            for email in user['email_list']:
+                if(email == doc['shared_email']):
+                    flag2 = False
 
     if(flag1 and flag2):
-        alias_data = {'name': alias_user['name'],'surname':alias_user['surname'],'oib': alias_user['oib'],'iban': alias_user['iban'],'postal_code': alias_user['postal_code']}
-        mongo.db.users.update({'email': doc['owner_email']}, {'$push':{'alias_list': alias_data,'archive_ids': alias_user['personal_archive_id']}})
-        result = [alias_data,alias_user['personal_archive_id']]
-        return jsonify(result)
+        mongo.db.users.update({'email': doc['user_email']},{'$push': {'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
+        return jsonify(share_user['_id'],share_user['email'])
 
-    else: return jsonify(False)
+    else: return jsonify(False) 
 
 
-@app.route('/alias/delete', methods=['POST'])
-def delete_alias():
+@app.route('/archives/shareDelete', methods=['POST'])
+def delete_shared_archive():
 
     doc = request.get_json()
-    #nastavak
+    share_user = mongo.db.users.find_one({'email': doc['shared_email']})
+    mongo.db.users.update({'email': doc['user_email']},{'$pull':{'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
+    owner = mongo.db.users.find_one({'email': doc['user_email']})
+    return jsonify(owner['archive_ids'], owner['email_list'])
 
 
-@app.route('/user/update_data', methods=['POST'])
-def update_user():
+@app.route('/addAlias', methods=['POST'])
+def add_alias():
 
     doc = request.get_json()
     mongo.db.users.update({'email': doc['user_email']},{'$set':{'oib': doc['user_oib'],'iban': doc['user_iban'],'postal_code': doc['user_postal_code']}})

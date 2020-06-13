@@ -1,25 +1,33 @@
 <template>
     <div class="userData" >
         <div class="personIcon"><i class="far fa-user"></i></div>
-        <div class="mailOsobe">{{info.email}}</div> 
+        <div class="mailOsobe">{{info}}</div> 
         <button @click="removeUserAccess" class="opcijaPopis">ukloni</button>  
     </div>
 </template>
 
 <script>
 import store from "@/store.js";
+import { Auth } from "@/services";
+import { app } from "@/services";
 
 export default {
   data() {
     return {
-      store
+      user: Auth.getUser()
     };
   },
   props: ["info"],
 
   methods:{
-    removeUserAccess(){
-      
+    async removeUserAccess(){
+      let result = await app.delete_shared_archive(this.user.email,this.info)
+      this.user.archive_ids = result[0]
+      this.user.email_list = result[1]
+      localStorage.setItem("user",JSON.stringify(this.user))
+      let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
     }
   }
 }

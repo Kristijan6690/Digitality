@@ -27,12 +27,12 @@
                               </div>
                               <div>  
 
-                                <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
+                                <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.email_list" />
 
                                 <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
-                                     <input v-model="alias_email" class="mailOsobe addUserName"  /> 
-                                     <button v-on:click ="add_access()" class="opcijaPopis addUserButton">dodaj</button>  
+                                     <input v-model="shared_email" class="mailOsobe addUserName"  /> 
+                                     <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
                                 </div>
                               
                               </div>
@@ -211,7 +211,7 @@
                   </form>
                 </div>
                 <div class="modal-footer" style="text-align:center; display:block;">
-                  <button v-on:click ="update_cur_user()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button v-on:click ="share_arc()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
                   <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:red">Odustani</button>
                 </div>
               </div>
@@ -291,7 +291,7 @@ export default {
       store,
       createArchiveName: '',
       currentArchive: '',
-      alias_email: '',
+      shared_email: '',
       oib: '',
       iban: '',
       postal_code: '',
@@ -367,25 +367,26 @@ export default {
 
     },
 
-    async add_access() {
-      let success = false
-      let alias = await app.add_alias(this.alias_email,this.user.email)
-      if(alias){
-        this.user.alias_list.push(alias[0])
-        this.user.archive_ids.push(alias[1])
-        localStorage.setItem("user",JSON.stringify(this.user))
-        let archives = await app.getArchives(this.user.email,this.user.archive_ids)
-        localStorage.setItem('userArchives',JSON.stringify(archives))
-        this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
-        console.log("Uspjeh")
-        success=true
-      } else console.log("Greska")
-
-      this.addingUserConfirmation(success);
+    async share_arc() {
+      if(this.shared_email != ''){
+        let success = false
+        let result = await app.share_archive(this.user.email,this.shared_email)
+        if(result){
+          this.user.archive_ids.push(result[0])
+          this.user.email_list.push(result[1])
+          localStorage.setItem("user",JSON.stringify(this.user))
+          let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+          localStorage.setItem('userArchives',JSON.stringify(archives))
+          this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+          success = true
+        }
+        this.shared_email = ''
+        this.addingUserConfirmation(success);
+      }
     },
 
-    async update_cur_user(){
-      await app.update_user_data(this.user.email,this.oib,this.iban,this.postal_code)
+    async add_alias(){
+      await app.add_alias(this.user.email,this.oib,this.iban,this.postal_code)
       this.user['oib'] = this.oib
       this.user['iban'] = this.iban
       this.user['postal_code'] = this.postal_code
@@ -396,7 +397,6 @@ export default {
   async mounted(){
     let temp = JSON.parse(localStorage.getItem('userArchives'))
     this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
-    if(!(this.user.oib || this.user.iban || this.user.post_code)) $("#formModal").modal()
   }
 }
 
