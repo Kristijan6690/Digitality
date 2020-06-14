@@ -40,7 +40,7 @@ def get_default_arc():
         "poziv_na_broj":"user_input",
         
         "vrsta_usluge":"Struja",
-        "iznos":"100kn"
+        "iznos":100
     }
     
     subarchive = {
