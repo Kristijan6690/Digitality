@@ -1,11 +1,21 @@
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+
 from flask import Flask, jsonify , request, json
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
+from bson import ObjectId
+
+import datetime,jwt,os,scan_engine,re,operator
+import default_data as dflt
+import mongodb as mongodb
+
+mongodb.connect_to_db()
+mongodb.index_email()
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/Digitality?retryWrites=true&w=majority'
-
+app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
 
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
@@ -15,112 +25,65 @@ CORS(app)
 def index():
     return "Hello World"
 
-
 @app.route('/register', methods=['POST'])
-def registracija():
+def register():
+    doc = request.get_json()
     
-    ime = request.get_json()['ime']
-    prezime = request.get_json()['prezime']
-    email = request.get_json()['email']
-    password = bcrypt.generate_password_hash(request.get_json()['password'])
+    user = {
+        '_id': str(ObjectId()),
+        'name': doc['name'],
+        'surname': doc['surname'],
+        'email': doc['email'],
+        'password': bcrypt.generate_password_hash(doc['password'], 8),
+        'personal_archive_id': None,
+        'archive_ids': None,        
+        'alias_list': []
+    }
+    
+    res = mongodb.register_user(user)
+    
+    return res
 
-    mongo.db.Korisnik.insert({
-        'ime' : ime,
-        'prezime' : prezime,
-        'email' : email,
-        'password' : password
-    })
 
-    return "Poslano"
-
-
-# Dovršiti access token da vraća sve potrebne atribute uključujući authenticated
 @app.route('/login', methods=['POST'])
 def login():
-
-    access = ""
-
-    if (mongo.db.Korisnik.count() == 0):
-        access = False
-        return jsonify(access)
-
-    else:
-        email = request.get_json()['email']
-        password = request.get_json()['password']
-
-        for x in mongo.db.Korisnik.find():
-            if (x['email'] == email):
-                if bcrypt.check_password_hash(x['password'],password):
-                    access = {
-                        'ID' : str(x['_id']),
-                        'ime' : x['ime'],
-                        'prezime' : x['prezime'],
-                        'email' : x['email']
-                    }     
-                else:
-                    access = False
-
-        return jsonify(access)
-
-
-# Dovršiti da vraća arhive za određenog usera/arhive kojima ima pristup(PUBLIC)
-@app.route('/arhives')
-def getarhive():
-
-    if (mongo.db.Lista_arhiva.count()== 0):
-        provjera = False
-        return provjera
-
-    else:
-        arhive = {}
-        i = 0
+    email = request.get_json()['email']
+    password = request.get_json()['password']
+    
+    user = mongodb.get_user(email)
+    
+    if (user and user['password']) and (bcrypt.check_password_hash(user['password'], password)):
+        del user['password']
+        del user['_id']
         
-        for x in mongo.db.Lista_arhiva.find():
-            arhive[i] = {
-                'ID' : str(x['_id']),
-                'naziv' : x['naziv'].capitalize()
-            }
-            i += 1
-
-        return jsonify(arhive)
+        user['exp'] = datetime.datetime.now() + datetime.timedelta(days=7)
+        user['token'] = jwt.encode(user, os.getenv("JWT_SECRET"), algorithm='HS256').decode("utf-8")
+    
+    return jsonify(user)
 
 
-# Dovršiti da vraća dokumente za određenog usera
-@app.route('/documents', methods=['POST'])
-def getdocument():
+@app.route('/GetArchives', methods=['POST'])
+def getarhive():
+    user = mongodb.get_user(request.get_json()['email'])
+    
+    if not user:
+        return jsonify(False)
+    
+    archive_ids = user['archive_ids']
+    archives = list(mongodb.get_archives(archive_ids))
+    
+    if not archives:
+        return jsonify(False)
 
-    naziv_arhive = request.get_json()['naziv'].lower()
-    dokumenti = {}
-    i = 0
-
-    for x in mongo.db.Lista_arhiva.find():
-        if (naziv_arhive == x['naziv']):
-            if (not x['documents']):
-                dokumenti = False
-                break
-            else:
-                for y in x['documents']:    
-                    # staviti if da se nađe id korisnika
-                    dokumenti[i] = {
-                        'id' : str(y['id']),
-                        'naziv' : y['naziv_doc'].capitalize()
-                    }
-                    i += 1
-
-    return jsonify(dokumenti)
+    return jsonify(archives)
 
 
-# Proces spremanje dokumenta u bazu nakon skeniranja. Još u razradi za sada sprema samo blob i ime dokumenta u bazu
 @app.route('/send_document', methods=['POST'])
 def sendDocument():
-    docfile = request.get_json()['docfile']
-    docname = request.get_json()['docname']
-    mongo.db.test_loadImage.insert({
-        'docfile' : docfile,
-        'docname' : docname
-    })
+    doc_url = request.get_json()['doc_url']
+    doc_data = scan_engine.photo_to_dict(doc_url)
 
-    return "Poslano u bazu"
+    return jsonify(doc_data)
 
 
 @app.route('/search/lista_arhiva', methods=['POST'])
@@ -128,34 +91,142 @@ def searchArchives():
 
     searchTerm = str(request.get_json()['searchTerm'])
     searchTerm = searchTerm.lower()
-    rezultat = {}
-    i = 0
+    archive_ids = request.get_json()['archive_ids']
+    currentArchive_id = request.get_json()['currentArchive_id']
+    result = []
+    subarchives = []
+
+    for archives in mongo.db.archives.find({'_id': {'$in':archive_ids}}):
+        result.append(archives)
 
     if(searchTerm):
+        r = re.compile('^(%s)' % searchTerm)
+        for archives in mongo.db.archives.find():
+            if(archives['_id'] == currentArchive_id):
+                for sub in archives['subarchives']:
+                    if(r.match(sub['name'])):
+                        subarchives.append(sub)   
 
-        cursor = mongo.db.Lista_arhiva.find({'naziv':{'$regex':'^(%s)' % searchTerm}})
-        result = list(cursor)
-        
-        for x in result:
-            rezultat[i] = {
-                'ID' : str(x['_id']),
-                'naziv' : x['naziv'].capitalize()
-            }
-            i += 1
-            
-        return jsonify(rezultat)
+        for archives in result:
+            if(archives['_id'] == currentArchive_id):
+                archives['subarchives'] = subarchives
+
+        return jsonify(result)
 
     else:
-        for x in mongo.db.Lista_arhiva.find():
-            rezultat[i] = {
-                'ID' : str(x['_id']),
-                'naziv' : x['naziv'].capitalize()
-            }
-            i += 1  
-            
-        return jsonify(rezultat)  
+        return jsonify(result)  
 
 
+@app.route('/archives/createSubarchive', methods=['POST'])
+def createSubarchive():
+    archive_name = request.get_json()['archive_name'].lower()
+    personal_archive_id = request.get_json()['personal_archive_id']
+    subarchive_id = str(ObjectId())
+    
+    mongo.db.archives.update({'_id': personal_archive_id},{'$push':{
+        'subarchives': {
+            'subarchive_id': subarchive_id,
+            'name': archive_name,
+            'last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            'documents': []
+        }}})
+        
+    return "Dodano"
+
+
+@app.route('/archive/deleteSubarchive', methods=['POST'])
+def deleteSubarchive():
+
+    doc = request.get_json()
+    mongo.db.archives.update({'_id': doc['personal_archive_id']},{'$pull':{'subarchives':{'subarchive_id':doc['subarchive_id']}}})
+    
+    return "Izbrisano"
+
+
+@app.route('/archive/UpdateExaminationDate', methods=['POST'])
+def update_examination_date():
+
+    doc = request.get_json()
+    for archive in mongo.db.archives.find():
+        if(archive['_id'] == doc['currentArchive_id']):
+            mongo.db.archives.update({'subarchives.subarchive_id':doc['subarchive_id']},{'$set':{'subarchives.$.last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}})
+            return "Dodano"
+
+
+@app.route('/archives/SortArchives', methods=['POST'])
+def sortArchives():
+
+    if (mongo.db.archives.count() == 0):
+        provjera = False
+        return jsonify(provjera)
+
+    else:
+        doc = request.get_json()
+        result = []
+        subarchives = []
+
+        if(doc['sorttype'] == 'abecedno_uzlazno' or doc['sorttype'] == 'datum_pregleda_uzlazno'): ascORdes = False
+        else: ascORdes = True
+        if(doc['sorttype'] == 'abecedno_uzlazno' or doc['sorttype'] == 'abecedno_silazno'): sortby = "name"
+        else: sortby = "last_used"
+
+        for archives in mongo.db.archives.find({'_id': {'$in':doc['archive_ids']}}):
+            result.append(archives)
+
+        for archives in mongo.db.archives.find():
+            if(archives['_id'] == doc['currentArchive_id']):
+                for sub in archives['subarchives']:
+                    subarchives.append(sub)
+
+        subarchives.sort(key=operator.itemgetter(sortby),reverse=ascORdes)
+        
+        for archives in result:
+            if(archives['_id'] == doc['currentArchive_id']):
+                archives['subarchives'] = subarchives
+
+        return jsonify(result)
+
+
+@app.route('/alias/add', methods=['POST'])
+def add_alias():
+
+    doc = request.get_json()
+    flag1 = True
+    flag2 = False
+
+    for user in mongo.db.users.find():
+        if(user['email'] == doc['owner_email']):
+            for alias in user['alias_list']:
+                if(alias['email'] == doc['al_email']):
+                    flag1 = False
+    
+    for user in mongo.db.users.find():
+        if(user['email'] == doc['al_email']):
+            alias_user = user
+            flag2 = True
+
+    if(flag1 and flag2):
+        alias_data = {'name': alias_user['name'],'surname':alias_user['surname'],'oib': alias_user['oib'],'iban': alias_user['iban'],'postal_code': alias_user['postal_code']}
+        mongo.db.users.update({'email': doc['owner_email']}, {'$push':{'alias_list': alias_data,'archive_ids': alias_user['personal_archive_id']}})
+        result = [alias_data,alias_user['personal_archive_id']]
+        return jsonify(result)
+
+    else: return jsonify(False)
+
+
+@app.route('/alias/delete', methods=['POST'])
+def delete_alias():
+
+    doc = request.get_json()
+    #nastavak
+
+
+@app.route('/user/update_data', methods=['POST'])
+def update_user():
+
+    doc = request.get_json()
+    mongo.db.users.update({'email': doc['user_email']},{'$set':{'oib': doc['user_oib'],'iban': doc['user_iban'],'postal_code': doc['user_postal_code']}})
+    return "Updated"
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

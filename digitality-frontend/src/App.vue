@@ -40,29 +40,24 @@
 
 <script>
 import store from '@/store.js';
-import { app } from "@/services";
+import { Auth } from "@/services";
 
 export default {
   data(){
     return {
-      store
+      ...store,
+      auth: Auth.state
     }
   },
 
   methods : {
-    async logout() {
-      this.store.userData = ""
-      this.store.archiveData = ""
-      this.store.documentData = ""
-      localStorage.removeItem('userData')
-      this.$router.push({ name: 'Login' })
-    }
+    logout() {
+        Auth.logout();
+        this.$router.go();
+    },
   },
 
-  mounted() {
-    if(localStorage.getItem('userData') != null) {
-      this.store.userData = JSON.parse(localStorage.getItem('userData'))
-    }
+  mounted(){
   }
 }
 </script>

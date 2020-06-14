@@ -1,12 +1,23 @@
 <template>
   <div class="signup">
+    <div class="alert alert-danger alert-dismissible fade show" id="warningAlert">
+          <button @click="closeAlert" type="button" class="close" >&times;</button>
+          <strong>Greška!</strong> Unesene lozinke se ne podudaraju. Pokušajte opet.
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" id="successAlert">
+          <button @click="closeAlert" type="button" class="close">&times;</button>
+          <strong>Uspjeh!</strong>  Za prijavu kliknite na "Prijavite se" (iznad gumba za potvrdu registracije)
+    </div>
     <h1 class="logo">Digitality</h1>
     <h3 style="color: #00a2ff;">Registracija</h3>
+    
     <div class="container">
       <div class="row">
         <div class="col-sm"></div>
         <div class="col-sm">
           <form v-on:submit.prevent="registration">
+
             <div class="nameSurname">
               <i class="fas fa-user"></i>
               <input
@@ -14,9 +25,23 @@
                 v-model="name"
                 class="form-control placeholderEmail"
                 aria-describedby="emailHelp"
-                placeholder=" ime i prezime..."
+                placeholder="ime..."
+                required
               />
             </div>
+
+            <div class="nameSurname">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                v-model="surname"
+                class="form-control placeholderEmail"
+                aria-describedby="emailHelp"
+                placeholder="prezime..."
+                required
+              />
+            </div>
+
             <div class="email">
               <i class="fa fa-envelope" id="iconEmail" aria-hidden="true"></i>
               <input
@@ -25,18 +50,22 @@
                 class="form-control placeholderEmail"
                 aria-describedby="emailHelp"
                 placeholder=" e-mail..."
+                required
               />
             </div>
 
             <div class="password">
               <i class="fas fa-key"></i>
               <input
+                id="password"
                 type="password"
                 v-model="password"
                 class="form-control"
                 placeholder="lozinka..."
+                required
               />
             </div>
+
             <div class="password">
               <i class="fas fa-lock"></i>
               <input
@@ -44,28 +73,33 @@
                 v-model="confimpassword"
                 class="form-control"
                 placeholder="ponovi lozinku..."
+                required
               />
             </div>
+
             <small class="logReg">
               Imate korisnički račun?
               <router-link to="login" style="padding-left:3px;">Prijavite se</router-link>!
             </small>
+
             <button type="submit" class="btn btn-primary">Registracija</button>
           </form>
         </div>
         <div class="col-sm"></div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
-import { app } from "@/services";
+import { Auth } from "@/services";
 
 export default {
   data() {
     return {
       name: "",
+      surname: "",
       email: "",
       password: "",
       confimpassword: ""
@@ -73,14 +107,37 @@ export default {
   },
 
   methods: {
+
     async registration() {
       if (this.confimpassword == this.password) {
-        let temp = this.name.split(" ");
-        await app.registracija(temp, this.email, this.password); // moguce jos nadograditi
-        this.$router.push({ name: "Login" });
+
+        await Auth.register(this.name, this.surname, this.email, this.password); // moguce jos nadograditi
+        $('#successAlert').show();
+        this.name = '', this.surname = '', this.email = '', this.password = '', this.confimpassword = '';
+        //this.$router.push({ name: "Login" });
       } 
-      else console.log("Lozinka se ne podudara")
+      else 
+        $('#warningAlert').show();
     },
+
+    closeAlert(){
+      $('.alert').hide();
+    }
+   /*
+    check_password() {
+        let password = document.getElementById("password");
+        let retypePassword = document.getElementById("retypePassword");
+
+        if (password != retypePassword){
+          console.log('netocna lozinka')
+        } 
+      }
+    */
+  },
+
+  mounted(){
+    $('#successAlert').hide();
+    $('#warningAlert').hide();
   }
 };
 </script>
@@ -182,4 +239,30 @@ small {
   background-color: red;
   color: red;
 }
+
+
+@media screen and (min-width: 801px){
+  #warningAlert, #successAlert{
+    top: -2.5rem;
+  }
+}
+
+/*###Tablet(medium)###*/
+@media screen and (min-width : 768px) and (max-width : 800px){
+  #warningAlert, #successAlert{
+    top: -4rem;
+  }
+}
+
+/*### Smartphones (portrait and landscape)(small)### */
+@media screen and (min-width : 0px) and (max-width : 767px){
+  #warningAlert, #successAlert{
+    top: -5rem;
+  }
+
+  .signup{
+    height: 700px;
+  }
+}
+
 </style>

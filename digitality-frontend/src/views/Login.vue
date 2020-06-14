@@ -10,12 +10,12 @@
                 <form v-on:submit.prevent="login">
                   <div class="email"> 
                       <i class="fa fa-envelope" id="iconEmail" aria-hidden="true"></i>
-                      <input type="email" v-model="email" class="form-control placeholderEmail" aria-describedby="emailHelp" placeholder=" e-mail..."  />
+                      <input type="email" v-model="email" class="form-control placeholderEmail" aria-describedby="emailHelp" placeholder=" e-mail..." required />
                   </div>
 
                   <div class="password">
                       <i class="fas fa-key"></i>
-                      <input type="password" v-model="password" class="form-control"  id="hidden_password" placeholder="lozinka..."  />
+                      <input type="password" v-model="password" class="form-control"  id="hidden_password" placeholder="lozinka..." required />
                       <i class="fas fa-eye" id="password_eye" v-on:click="show_password()"></i>
 
                   </div>
@@ -40,7 +40,7 @@
 
 <script>
 import store from '@/store.js';
-import { app } from "@/services";
+import { Auth } from "@/services";
 
 export default {
   data(){
@@ -52,17 +52,14 @@ export default {
     },
   methods: {
       async login() {
-        let result = await app.login(this.email, this.password);
-        if(result){
-          this.store.userData = result;
-          localStorage.setItem('userData', JSON.stringify(result))
-          this.$router.push({ name: 'Home' })
-        } 
-        else console.log("Invalid username or password")
+        let success = await Auth.login(this.email, this.password);
+
+        if (success == true) {
+          this.$router.push({ name: 'Home'});
+        }
       },
       
       show_password() {
-        
         let x = document.getElementById("hidden_password");
         
         if (x.type === "password"){
@@ -180,23 +177,5 @@ span{
 }
 
 
-@media screen and (min-width: 1024px){
-  .login{
-    margin-top: 0% !important;
-  }
-}
 
-/*###Tablet(medium)###*/
-@media screen and (min-width : 768px) and (max-width : 1023px){
-  .login{
-    margin-top: 0px;
-  }
-}
-
-/*### Smartphones (portrait and landscape)(small)### */
-@media screen and (min-width : 0px) and (max-width : 767px){
-  .login{
-    margin-top:0%;
-  }
-}
 </style>

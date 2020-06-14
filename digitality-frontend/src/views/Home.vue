@@ -18,30 +18,27 @@
                                 <i class="far fa-edit"></i>
                               </div>
                               <div class="changeName" >
-                                <h5 id="changeNameHeader"> Moja_arhiva </h5> 
+                                <input v-model="naziv_arhive" id="changeNameHeader" style="color:#2c3e50;"/> 
                               </div>
                           </div>
                           <div class="dropdownBody body-settings" >                       
                               <div id="pristupNaslov">
                                 <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
                               </div>
-                              <div id="pristupPopis">  
+                              <div>  
 
-                                <UserData />
-                                <UserData />
-                                <UserData />
+                                <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
 
                                 <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
-                                     <div class="mailOsobe addUserName">example@email.com</div> 
-                                     <div class="opcijaPopis addUserButton">dodaj</div>  
+                                     <input v-model="alias_email" class="mailOsobe addUserName"  /> 
+                                     <button v-on:click ="add_access()" class="opcijaPopis addUserButton">dodaj</button>  
                                 </div>
                               
                               </div>
                             </div>
                           <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" style="margin: 5px; border-radius:5px; border:0" > Spremi </button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
+                                <button type="submit" @click="closeSortDropdown" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
                           </div>
                       </div>
                     </div>
@@ -49,52 +46,51 @@
                     <!-- choose Archive (Dropdown umjesto selecta zbog veće mogućnosti customizacije -- prebaciti css u css--> 
                      <div class="btn-group  dropdown" >
                        
-                       <button class="btn btn-light dropdown-toggle chooseArchive" type="button" id="dropdownMenuArchive" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #00A2FF; margin-left:0px; text-align:left; vertical-align: top;">
-                        <div style="display:inline-block; padding: 0px 5px; width:20%; vertical-align: top;"><i class="far fa-file fa-lg" ></i></div>
-                        <div style="display:inline-block; padding: 0px 10px; width:70%; overflow:hidden; text-overflow: ellipsis;  vertical-align: top;"> {{store.currentArchive}} </div>
+                       <button class="btn btn-light dropdown-toggle chooseArchive" type="button" id="dropdownMenuArchive" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <div id="fileIconDiv"><i class="far fa-file fa-lg" ></i></div>
+                        <div id="currArchiveName"> {{store.currentArchiveData.name}} </div>
                       </button>
                       <div class="dropdown-menu dropdown-menu-left menu-settings">
                           <div class="dropdownHeader"  @click.stop=''> 
-                              <h2 id="archiveHeader" style="font-size: 1.5rem; margin:5px 20px 0 20px; height:35px;"> Odaberite arhivu </h2> 
+                              <h2 id="chooseArchiveHeader"> Odaberite arhivu </h2> 
                           </div>
                   
-                          <div class="dropdownBody body-settings" style="border: solid 1px #D3D3D3; margin: 0px 40px 0 40px; padding: 0 0 0 0;">                       
+                          <div class="dropdownBody body-settings" id="chooseArchiveBody">                       
                             
-                              <div id="pristupPopis" style="padding: 5px 5px 30px 5px; ">  
+                              <div id="pristupPopis">  
                                <form id="archiveForm" name="archiveForm">
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input  v-model="store.currentArchive" checked="checked" type="radio" class="custom-control-input" id="Arhiva_1" name="Archive" value="Arhiva_1">
+                                  <input  v-model="currentArchive" checked="checked" type="radio" class="custom-control-input" id="Arhiva_1" name="Archive" value="Arhiva_1">
                                   <label for="Arhiva_1" class="custom-control-label">Arhiva_1</label>
                                 </div>
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input  v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_2" name="Archive" value="Arhiva_2">
+                                  <input  v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_2" name="Archive" value="Arhiva_2">
                                   <label for="Arhiva_2" class="custom-control-label">Arhiva_2</label>
                                 </div>
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="store.currentArchive"  type="radio" class="custom-control-input" id="Arhiva_3" name="Archive" value="Arhiva_3">
+                                  <input v-model="currentArchive"  type="radio" class="custom-control-input" id="Arhiva_3" name="Archive" value="Arhiva_3">
                                   <label for="Arhiva_3" class="custom-control-label">Arhiva_3</label>
                                 </div>
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_4" name="Archive" value="Arhiva_4">
+                                  <input v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_4" name="Archive" value="Arhiva_4">
                                   <label for="Arhiva_4" class="custom-control-label">Arhiva_4</label>
                                 </div>
                                 <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="store.currentArchive" type="radio" class="custom-control-input" id="Arhiva_5" name="Archive" value="Arhiva_5">
+                                  <input v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_5" name="Archive" value="Arhiva_5">
                                   <label for="Arhiva_5" class="custom-control-label">Arhiva_5_Dugi_Naziv</label>
                                 </div>
                                </form>
                               </div>
                             </div>
                           <div class="dropdownFooter addButtonDiv"  @click.stop=''>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonSettings" style="margin: 5px; border-radius:5px; border:0" > Dodaj </button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" style="margin: 5px;  border-radius:5px; background-color: #888888; border:0"> Poništi</button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="changeArchiveButton"> Dodaj </button>
+                                <button type="submit" class="btn btn-primary my-2 my-sm-0"  @click="closeSortDropdown" id="closeButtonArchive"> Poništi</button>
                           </div>
                       </div>
                     </div>
             
-                  
                        <!-- sort dropdown prebaciti css u css i popraviti nazive-->
-                      <div class="btn-group" >
+                      <div id ="SortDropDown" class="btn-group" >
                         <button type="button" class="btn btn-secondary sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                           <div id="sortIcon" ><i class="fas fa-sort-amount-down fa-lg"></i></div>
                         </button>
@@ -104,11 +100,11 @@
                               <h2 style="height:42px;">Organiziraj arhivu</h2> 
                           </div>
 
-                          <div class="dropdownBody" style="padding-top:10px; font-size: 15px;">              
+                          <div class="dropdownBody" id="sortArchiveBody">              
                             <div style="margin: 0 10px 0 10px">         
                                 <!-- Default inline 1 bootstrap-->
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input name="check" @click="onlyOne(this)" value="1"  checked="checked" type="checkbox" class="custom-control-input" id="defaultInline1" >
+                                <input type="radio" name="check" class="custom-control-input" id="defaultInline1" >
                                 <label class="custom-control-label" for="defaultInline1" style="padding-right:5px;">
                                   Datum pregleda silazno 
                                   <i class="fas fa-sort-amount-down"></i>       
@@ -117,7 +113,7 @@
 
                               <!-- Default inline 2-->
                               <div class="custom-control custom-checkbox custom-control-inline" id="defaultInline2Div" >
-                                <input name="check" @click="onlyOne(this)" value="2" type="checkbox" class="custom-control-input" id="defaultInline2">
+                                <input type="radio" name="check" class="custom-control-input" id="defaultInline2">
                                 <label class="custom-control-label" for="defaultInline2" style="padding-right:5px;">
                                   Abecedno silazno
                                   <i class="fas fa-sort-amount-up"></i>    
@@ -128,7 +124,7 @@
                             <div style="margin: 0 10px 0 10px">    
                               <!-- Default inline 3-->
                               <div class="custom-control custom-checkbox custom-control-inline">
-                                <input name="check" @click="onlyOne(this)" value="3" type="checkbox" class="custom-control-input" id="defaultInline3">
+                                <input type="radio" name="check" class="custom-control-input" id="defaultInline3">
                                 <label class="custom-control-label" for="defaultInline3" style="padding-right:5px;">
                                   Datum pregleda uzlazno
                                   <i class="fas fa-sort-numeric-down-alt"></i>
@@ -137,7 +133,7 @@
                               </div>
                               <!-- Default inline 4-->
                               <div class="custom-control custom-checkbox custom-control-inline"> 
-                                <input name="check" @click="onlyOne(this)" value="4" type="checkbox" class="custom-control-input" id="defaultInline4">
+                                <input type="radio" name="check" class="custom-control-input" id="defaultInline4" checked>
                                 <label class="custom-control-label" for="defaultInline4" style="padding-right:5px;">
                                   Abecedno uzlazno
                                   <i class="fas fa-sort-numeric-up-alt"></i>
@@ -147,10 +143,11 @@
                                                    
                           </div>
                           <div class="addButtonDiv">
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="sortButton"> Potvrdi </button>
+                                <button type="submit" @click="closeSortDropdown()" class="btn btn-primary my-2 my-sm-0" id="sortButton"> Potvrdi </button>
                           </div>
                       </div>
-                    </div>
+                     </div>
+                    
 
                   <form class="search">
                       <input v-model = "searchTerm" id="searchBar" type="search" placeholder="Traži..."/>
@@ -162,7 +159,7 @@
 
         <div class="row">
           <div class="col archive">
-            <ArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.archiveData" />
+            <SubArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.currentArchiveData.subarchives" />
 
             <div class="subArchivePlus" data-toggle="modal" data-target="#helpModal" style="border:none;">
                 <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
@@ -170,7 +167,8 @@
           </div>
         </div>
 
-        <!-- Modal -->
+
+        <!-- Modal za kreiranje arhive -->
           <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
@@ -178,11 +176,43 @@
                   <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Kreiraj podarhivu</h3>
                 </div>
                 <div class="modal-body">
-                  <input v-model = "createArchiveName" placeholder="Unesite ime podarhive" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
+                  <input v-model = "createArchiveName" placeholder="Unesite ime podarhive" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Unesite ime podarhive'" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
                 </div>
                 <div class="modal-footer" style="text-align:center; display:block;">
-                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#success_confirmation" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
-                  <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
+                  <button v-on:click="create_archive()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button v-on:click="add_archive_cancel()" type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal za popunjavanje podataka koji nedostaju -->
+          <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="display:block;">
+                  <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Dodatni podaci</h3>
+                </div>
+                <div class="modal-body">
+                  <small id="emailHelp" class="form-text text-muted" style="margin-bottom:10px;">
+                    Poštovani, kako bi naš sustav radio pravilno, molimo Vas da popunite sljedeće podatke:
+                  </small>
+                  <form>
+                    <div class="form-group">
+                      <input v-model="oib" type="text" class="form-control" placeholder="OIB">
+                    </div>
+                     <div class="form-group">
+                      <input v-model="iban" type="text" class="form-control" placeholder="IBAN">
+                    </div>
+                     <div class="form-group">
+                      <input v-model="postal_code" type="text" class="form-control" placeholder="Poštanski broj">
+                    </div>
+                                 
+                  </form>
+                </div>
+                <div class="modal-footer" style="text-align:center; display:block;">
+                  <button v-on:click ="update_cur_user()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:red">Odustani</button>
                 </div>
               </div>
             </div>
@@ -194,7 +224,7 @@
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Arhiva xyz uspješno kreirana
+                   Arhiva uspješno kreirana
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -203,13 +233,28 @@
         </div>
       </div>
 
-      <!-- error confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <!-- error confirmation during archive creation -->
+      <div class="modal fade" id="unsuccess_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Došlo je do greške prilikom kreiranja podarhive
+                   Došlo je do pogreške,arhiva već postoji
+                  <hr/>
+                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+              </div>
+            </div>
+
+        </div>
+      </div>
+
+      <!-- error confirmation during adding user to archive -->
+      <div class="modal fade" id="unsuccess_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" >
+          
+          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                   Došlo je do pogreške. Provjerite da li ste unijeli ispravan mail.
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -231,24 +276,32 @@
 <!-- popraviti : logo na title kartici,mobile dva subarchiva u jednom redu,settings email overflow, search bottom padding elip, effecti elips, header vise nalik prototipu?, da dugi nazivi neidu izvan, poredak elemenata, mobile responsive, footer? active navbar, bolji način za pozicioniranje filter ikone-->
 <script>
 
-import ArchiveCard from '@/components/ArchiveCard.vue';
+import SubArchiveCard from '@/components/SubArchiveCard.vue';
 import UserData from '@/components/UserData.vue';
 import { app } from "@/services";
+import { Auth } from "@/services";
 import store from "@/store.js";
 import _ from "lodash";
 
 export default {
   data(){
     return {
+      user: Auth.getUser(),
       searchTerm: '',
       store,
-      createArchiveName: ''
+      createArchiveName: '',
+      currentArchive: '',
+      alias_email: '',
+      oib: '',
+      iban: '',
+      postal_code: '',
+      naziv_arhive: 'Moja_arhiva_promjena_naziva'
     }
   },
 
   name: 'Home',
   components: {
-    ArchiveCard,
+    SubArchiveCard,
     UserData
   },
 
@@ -261,25 +314,89 @@ export default {
   methods:{
     async searchArchives(pretraga){
       pretraga = this.searchTerm
-      this.store.archiveData = await app.getSearchArchives(pretraga)
+      let archives = await app.getSearchArchives(pretraga, this.user.archive_ids,this.store.currentArchiveData._id)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids) 
     },
 
-  //https://stackoverflow.com/questions/9709209/html-select-only-one-checkbox-in-a-group
-  onlyOne(checkbox) {
-    var checkboxes = document.getElementsByName('check')
-    checkboxes.forEach((item) => {
-        if (item !== checkbox) item.checked = false
-      })
+    async create_archive() {
+      let flag = false
+
+      if(this.createArchiveName != '') {
+        this.createArchiveName = this.createArchiveName.toLowerCase()
+        for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
+          if(this.createArchiveName == this.store.currentArchiveData.subarchives[i].name.toLowerCase()){
+            flag = true
+          }
+        }
+        if(flag) {
+          this.createArchiveName = ''
+          $("#unsuccess_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
+        }
+        else {
+          await app.createSubarchive(this.createArchiveName, this.user.personal_archive_id)
+          let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+          localStorage.setItem('userArchives',JSON.stringify(archives))
+          this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+          this.createArchiveName = ''
+          $("#success_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
+        }
+      }
+    },
+
+    add_archive_cancel() {
+      this.createArchiveName = ''
+    },
+  
+    async closeSortDropdown(){
+      let sortby = ''
+      if(document.getElementById("defaultInline1").checked) sortby = 'datum_pregleda_silazno'
+      else if(document.getElementById("defaultInline2").checked) sortby = 'abecedno_silazno'
+      else if(document.getElementById("defaultInline3").checked) sortby = 'datum_pregleda_uzlazno'
+      else if(document.getElementById("defaultInline4").checked) sortby = 'abecedno_uzlazno'
+      let archives = await app.sort_Archives(sortby,this.user.archive_ids,this.store.currentArchiveData._id)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+      $('#SortDropDown').trigger("click"); //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
+    },
+
+    addingUserConfirmation(success){
+      if(success) $("#success_confirmation").modal()
+
+      else $("#unsuccess_confirmation_adding_user").modal()
+
+    },
+
+    async add_access() {
+      let success = false
+      let alias = await app.add_alias(this.alias_email,this.user.email)
+      if(alias){
+        this.user.alias_list.push(alias[0])
+        this.user.archive_ids.push(alias[1])
+        localStorage.setItem("user",JSON.stringify(this.user))
+        let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+        localStorage.setItem('userArchives',JSON.stringify(archives))
+        this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+        console.log("Uspjeh")
+        success=true
+      } else console.log("Greska")
+
+      this.addingUserConfirmation(success);
+    },
+
+    async update_cur_user(){
+      await app.update_user_data(this.user.email,this.oib,this.iban,this.postal_code)
+      this.user['oib'] = this.oib
+      this.user['iban'] = this.iban
+      this.user['postal_code'] = this.postal_code
+      localStorage.setItem('user',JSON.stringify(this.user))
     }
-    
   },
 
-  async mounted() {
-    let result = await app.getArchives() // jos nadogradit da vuce za određenog usera
-    if (result) this.store.archiveData = result
-    else console.log("Prazan collection")
-    let datum = this.store.current_date();
-    console.log(datum)
+  async mounted(){
+    let temp = JSON.parse(localStorage.getItem('userArchives'))
+    this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
+    if(!(this.user.oib || this.user.iban || this.user.post_code)) $("#formModal").modal()
   }
 }
 
@@ -289,7 +406,7 @@ export default {
 <style scoped>
 
 
-
+/* home menu */
 .archive-options{
   height: 50px;
   text-align: center;
@@ -310,6 +427,7 @@ export default {
   /* border-bottom: 2px solid  #00A2FF;  -border za footer */
 }
 
+/* archive folders */
 .subArchivePlus{
   width:120px;
   height: 140px;
@@ -353,6 +471,7 @@ a{
   color: #2c3e50; 
 }
 
+/* choose archive dropdown */
 .chooseArchive{
   width: 150px;
   height: 30px;
@@ -363,19 +482,36 @@ a{
   border-radius: 5px;
   border: 2px solid  #00A2FF;
   padding: 3px;
+  color: #00A2FF; 
+  margin-left:0px; 
+  text-align:left;
+  /*vertical-align:top;*/
 }
 
-.settings{
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  display: block;
-  margin: 10px 5px;
-  float: left;
-  border-radius: 5px;
-  border: 2px solid  #00A2FF;
-  padding-top:3px;
-  
+#fileIconDiv{
+  display:inline-block; 
+  padding: 0px 5px; 
+  width:20%; 
+  vertical-align: top;
+}
+
+#currArchiveName{
+  display:inline-block; 
+  padding: 0px 10px; 
+  width:70%; 
+  overflow:hidden; 
+  text-overflow: ellipsis;  
+  vertical-align: top;
+}
+
+#chooseArchiveBody{
+  border: solid 1px #D3D3D3; 
+  margin: 0px 40px 0 40px; 
+  padding: 0 0 0 0;
+}
+
+#pristupPopis{
+  padding: 5px 5px 30px 5px;
 }
 
 #archiveSelection > h2 {
@@ -389,19 +525,20 @@ a{
   position: relative;
 }
 
-.search{
-  width: 180px;
+
+/* settings dropdown */
+.settings{
+  width: 30px;
   height: 30px;
   background-color: white;
   display: block;
-  margin: 10px 0 10px 0;
-  float: right;
+  margin: 10px 5px;
+  float: left;
   border-radius: 5px;
   border: 2px solid  #00A2FF;
+  padding-top:3px;
+  
 }
-
-
-/* settings dropdown */
 
 #settingsIcon{
   display:inline-block; 
@@ -446,7 +583,11 @@ a{
 }
 
 #changeNameHeader{
-  border-bottom: 2px solid #BEBEBE;
+  font-size:20px;
+  height: 30px;
+  border:none;
+  width:150px;
+  text-align:center;
 } 
 
 .body-settings{
@@ -477,6 +618,10 @@ a{
   overflow: hidden;
   text-overflow: ellipsis;
   height: 30px;
+  background:white; 
+  border-left:none; 
+  border-top:none; 
+  border-right:none;
 }
 
 .opcijaPopis{
@@ -484,15 +629,17 @@ a{
   color:#FF0000; 
   width: 75px;
   text-align: center;
+  border:none;
+  background:white;
 }
 
-#addButtonSettings{
+#addButtonSettings, #changeArchiveButton{
   margin: 5px; 
   border-radius:5px; 
-  border:0;
+  border:0; 
 }
 
-#removeButtonSettings{
+#removeButtonSettings, #closeButtonArchive{
   margin: 5px; 
   border-radius:5px; 
   border:0;
@@ -507,6 +654,10 @@ a{
   color: #888888;
   
   text-decoration: underline;
+}
+
+.fa-cog{
+  color:#00a2ff;
 }
 
 /*
@@ -584,8 +735,13 @@ h2::before{
   /* order-bottom: 2px solid  #707070; i bez before-a za full bottom border */
 }
 
+#chooseArchiveHeader{
+  font-size: 1.5rem; 
+  margin:5px 20px 0 20px; 
+  height:35px;
+}
 
-#archiveHeader::before {
+#chooseArchiveHeader::before {
   left: 5%;
   width: 90%;
 }
@@ -604,8 +760,6 @@ h2::before{
   height: 50px; 
   position: relative;
 }
-
-
 
 #sortIcon{
   display:inline-block; 
@@ -627,8 +781,19 @@ justify-content: center;
 height: 60px; 
 }
 
-
 /*     */
+
+/* search bar */
+.search{
+  width: 180px;
+  height: 30px;
+  background-color: white;
+  display: block;
+  margin: 10px 0 10px 0;
+  float: right;
+  border-radius: 5px;
+  border: 2px solid  #00A2FF;
+}
 
 #searchBar{
   width: 80%;
@@ -648,7 +813,12 @@ height: 60px;
  ::placeholder {
   color:#00a2ff;
   margin-left: -20px;
-}   
+} 
+
+.form-group > ::placeholder {
+  color: #2c3e50; 
+  margin-left: -20px;
+}  
 
 .fa-file{
   width:10%;
@@ -656,7 +826,7 @@ height: 60px;
   background-color: white;
 }
 
-
+/*
 #archiveSelector{
   width: 80%;
   height: 100%;
@@ -665,17 +835,8 @@ height: 60px;
   outline: none;
   border: 0px;
 }
+*/
 
-.fa-cog{
-  color:#00a2ff;
-}
-
-
-#addButton{
-  font-size:17.5px; 
-  width:100px;
-  border-radius: 10px;
-}
 
 @media screen and (min-width: 1024px){
  .archive-options{
@@ -711,15 +872,22 @@ height: 60px;
   width: 120px;
  }
 
+/*
 #archiveSelector{
   background-color: white;
 }
+*/
 
 #searchIcon{
   	padding-left: 3px;
 }
 
 /* sort dropdown */
+
+#sortArchiveBody{
+  padding-top:10px; 
+  font-size: 15px;
+}
 
 .sortOptions {
   width:auto;
@@ -760,5 +928,9 @@ height: 60px;
 }
 
 
+}
+
+.subArchivePlus:hover{
+  cursor: pointer;
 }
 </style>

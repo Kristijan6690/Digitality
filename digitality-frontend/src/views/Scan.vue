@@ -1,16 +1,22 @@
 <template>
-  <div class="container" >
-    <!--
+  <div class="container">
+    
      <div class="row">
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-      </div>
-     </div>
-     -->
-     <croppa class="croppa1"
+
+        <div class="alert alert-success alert-dismissible fade show" id="successAlert">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Uspjeh!</strong> Vaša slika je uspješno učitana i trenutno se obrađuje. Bit ćete preusmjereni na rezultate. Ako ima praznih
+                                   polja znači da ih nije uspjelo prepoznati pa ćete ih popuniti ručno.
+        </div>
+        
+        <div class="alert alert-warning alert-dismissible fade show" id="warningAlert">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Greška!</strong> Došlo je do greške prilikom obrade dokumenta.
+        </div>
+      
+    </div>
+     
+     <croppa class="c1"
         v-model="myCroppa"
         :width="700"
         :height="500"
@@ -30,37 +36,10 @@
         auto-sizing
         :initial-image="'path/to/initial-image.png'"
         @new-image-drawn="onLoad()"
+        loading-start
+        loading-end
       ></croppa>
       
-    <!-- success confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" >
-          
-          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Dokument dodan u arhivu _____
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
-            </div>
-        </div>
-      </div>
-
-      <!-- error confirmation -->
-      <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" >
-          
-          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Došlo je do greške prilikom učitavanja dokumenta
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
-            </div>
-        </div>
-      </div>
 
   </div>
 </template>
@@ -69,13 +48,18 @@
 import store from "@/store.js";
 import "vue-croppa/dist/vue-croppa.css";
 import { app } from "@/services";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   data() {
     return {
+      user: localStorage.getItem('user'),
+      fullPage: true,
       myCroppa: null,
-      placeholderFontSize: 1,
-      placeholder: 'Drag and drop your file here'
+      placeholder: 'Drag and drop your file here',
+      store
+      
     };
   },
 
@@ -85,40 +69,71 @@ export default {
         this.myCroppa.generateBlob(blobData => {
           if(blobData != null) {
             resolve(blobData)
+            $('#successAlert').show();
           }
           else {
             reject("Error with getting blob")
+             $('#warningAlert').show();
           }
         })
       })
     },
 
-    async onLoad() {
-      let blobData = await this.getImageBlob()
-      let url_dokumenta = "nesto"   // osmislit od kud cemo vuci url
-      console.log(blobData,url_dokumenta)
-      await app.sendDocument(blobData,url_dokumenta)
+  //još urediti kod i funkcionalnost
+  //https://vuejsexamples.com/vue-js-component-for-full-screen-loading-indicator/
+    startLoading() {
+      let loader = this.$loading.show({
+        // Optional parameters
+        container: this.fullPage ? null : this.$refs.formContainer,
+        canCancel: true,
+        onCancel: this.onCancel,
+      });
+      // simulate AJAX
+      setTimeout(() => {
+        loader.hide()
+       },20000)                 
+      },
+      onCancel() {
+        console.log('User cancelled the loader.')
     },
 
-    myEventHandler(e) {
-      if(screen.width < 757){
+   async onLoad() {
+      this.startLoading();
+      let blobData = await this.getImageBlob()
+      let url = this.user.email + "/" + Date.now() + ".png";
+      let result = await storage.ref(url).put(blobData);
+      let url_dokumenta = await result.ref.getDownloadURL();
+      this.store.scan_doc_data = await app.sendDocument(url_dokumenta)
+      this.$router.push({ name: 'ManualScan' })
+    },
+
+                 
+  },
+
+  myEventHandler(e) {
+      if(screen.width < 757){ 
         this.placeholder = 'Choose a file';
+        console.log('manji')
       }
 
       else{
         this.placeholder = 'Drag and drop your file here';
+        console.log('veci')
       }
-    }
-
-  },
+    },
 
   created() {
     window.addEventListener("resize", this.myEventHandler);
   },
-
   destroyed() {
     window.removeEventListener("resize", this.myEventHandler);
   },
+
+
+  mounted(){
+    $('#successAlert').hide();
+    $('#warningAlert').hide();
+  }
 
 };
 
@@ -128,55 +143,50 @@ export default {
 
 <style scoped>
 
-.container {
-  display: -webkit-box;
-  justify-content: center;
-  align-items: center;
-}
 
 .croppa-container {
   /* https://kovart.github.io/dashed-border-generator/ */
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2300A2FFFF' stroke-width='6' stroke-dasharray='23' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
 }
 
+
 @media screen and (min-width: 768px){
- .croppa-container.croppa1 {
-  margin: 50px auto;
+ .row{
+   display:inline-block; 
+   height:50px; 
+   width:750px;
  }
 
- .container {
-  display: -webkit-box;
-  justify-content: center;
-  align-items: center;
+  .croppa-container.c1 {
+  width: 750px;
+  height: 550px;
+  margin: auto;
+  display: block;
   }
-}
 
+.alert-success, .alert-warning{
+  width: 750px;
+ }
+
+} 
 
 @media screen and (min-width : 0px) and (max-width : 767px){
-
-.croppa-container.croppa1 {
-  width: 100%;
-  height: 300px;
-  margin: 50px auto;
-  display: block;
+  .row{
+   display:inline-block; 
+   height:100px; 
+   width:auto;
  }
-}
 
-canvas{
-  width:20px !important;  
-}
+  .croppa-container.c1 {
+    width: 325px;
+    height: 300px;
+    display: block;
+  }
 
-.container {
-  display: -webkit-box;
-  justify-content: center;
-  align-items: center;
+.alert-success, .alert-warning{
+  width: auto;
+ }
 
-}
-
-.alert-warning {
-    color: white;
-    background-color: mediumseagreen;
-    border-color: #ffeeba;
 }
 
 </style>

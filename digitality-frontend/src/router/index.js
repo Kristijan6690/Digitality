@@ -2,9 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Croppa from 'vue-croppa'
-import store from '@/store.js';
+import Notifications from 'vue-notification'
+import Loading from 'vue-loading-overlay';
 
- Vue.use(Croppa)  
+Vue.use(Loading, {
+  color: '#00A2FF'
+});
+ 
+Vue.use(Notifications)
+
+Vue.use(Croppa)  
 
 Vue.use(VueRouter)
 
@@ -72,7 +79,7 @@ const router = new VueRouter({
 router.beforeEach( (to,from,next) => {
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if(localStorage.getItem('userData') != null) {
+    if(localStorage.getItem('user')) {
       next();
     }
     else{
