@@ -119,30 +119,18 @@ def searchArchives():
         return jsonify(result)  
 
 
-@app.route('/archives/createSubarchive', methods=['POST'])
-def createSubarchive():
-    archive_name = request.get_json()['archive_name'].lower()
-    personal_archive_id = request.get_json()['personal_archive_id']
-    subarchive_id = str(ObjectId())
-    
-    mongo.db.archives.update({'_id': personal_archive_id},{'$push':{
-        'subarchives': {
-            'subarchive_id': subarchive_id,
-            'name': archive_name,
-            'last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-            'documents': []
-        }}})
-        
-    return "Dodano"
-
-
 @app.route('/archive/deleteSubarchive', methods=['POST'])
 def deleteSubarchive():
-
     doc = request.get_json()
-    mongo.db.archives.update({'_id': doc['personal_archive_id']},{'$pull':{'subarchives':{'subarchive_id':doc['subarchive_id']}}})
     
-    return "Izbrisano"
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp)
+        
+    if user['personal_archive_id'] == doc['personal_archive_id']:
+        res = mongodb.delete_subarchive(doc['personal_archive_id'], doc['subarchive_id'])
+        return jsonify(res)
+    else:
+        return jsonify(False)
 
 
 @app.route('/archive/UpdateExaminationDate', methods=['POST'])
@@ -153,7 +141,6 @@ def update_examination_date():
         if(archive['_id'] == doc['currentArchive_id']):
             mongo.db.archives.update({'subarchives.subarchive_id':doc['subarchive_id']},{'$set':{'subarchives.$.last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}})
             return "Dodano"
-
 
 @app.route('/archives/SortArchives', methods=['POST'])
 def sortArchives():
@@ -188,47 +175,53 @@ def sortArchives():
 
         return jsonify(result)
 
+@app.route('/archives/share', methods=['POST'])
+def share_archive():
 
-@app.route('/alias/add', methods=['POST'])
-def add_alias():
     doc = request.get_json()
-    flag1 = True
-    flag2 = False
+    flag1 = False
+    flag2 = True
 
     for user in mongo.db.users.find():
-        if(user['email'] == doc['owner_email']):
-            for alias in user['alias_list']:
-                if(alias['email'] == doc['al_email']):
-                    flag1 = False
+        if(user['email'] == doc['shared_email']):
+            share_user = user
+            flag1 = True
     
     for user in mongo.db.users.find():
-        if(user['email'] == doc['al_email']):
-            alias_user = user
-            flag2 = True
+        if(user['email'] == doc['user_email']):
+            for email in user['email_list']:
+                if(email == doc['shared_email']):
+                    flag2 = False
 
     if(flag1 and flag2):
-        alias_data = {'name': alias_user['name'],'surname':alias_user['surname'],'oib': alias_user['oib'],'iban': alias_user['iban'],'postal_code': alias_user['postal_code']}
-        mongo.db.users.update({'email': doc['owner_email']}, {'$push':{'alias_list': alias_data,'archive_ids': alias_user['personal_archive_id']}})
-        result = [alias_data,alias_user['personal_archive_id']]
-        return jsonify(result)
+        mongo.db.users.update({'email': doc['user_email']},{'$push': {'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
+        return jsonify(share_user['_id'],share_user['email'])
 
-    else: 
-        return jsonify(False)
+    else: return jsonify(False) 
+
+@app.route('/archives/shareDelete', methods=['POST'])
+def delete_shared_archive():
+
+    doc = request.get_json()
+    share_user = mongo.db.users.find_one({'email': doc['shared_email']})
+    mongo.db.users.update({'email': doc['user_email']},{'$pull':{'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
+    owner = mongo.db.users.find_one({'email': doc['user_email']})
+    return jsonify(owner['archive_ids'], owner['email_list'])
 
 
-@app.route('/alias/delete', methods=['POST'])
+@app.route('/addAlias', methods=['POST'])
+def add_alias():
+    new_alias = request.get_json()
+    res = mongodb.add_alias(new_alias)
+    
+    return jsonify(res)
+
+@app.route('/deleteAlias', methods=['POST'])
 def delete_alias():
+    alias = request.get_json()
+    res = mongodb.delete_alias(alias['oib'])
 
-    doc = request.get_json()
-    #nastavak
-
-
-@app.route('/user/update_data', methods=['POST'])
-def update_user():
-
-    doc = request.get_json()
-    mongo.db.users.update({'email': doc['user_email']},{'$set':{'oib': doc['user_oib'],'iban': doc['user_iban'],'postal_code': doc['user_postal_code']}})
-    return "Updated"
+    return jsonify(res)
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
