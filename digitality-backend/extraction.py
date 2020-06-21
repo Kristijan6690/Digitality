@@ -101,8 +101,6 @@ def oib_numbers(text):
     
     if oib_list:
         oib_list = [re.findall('\d{11}', num)[0] for num in oib_list]
-    
-        oib_list = ['16962783514', '12345678901'] # TEST DATA <-----------------------------
         
         data = db.get_data_oib(oib_list) # Dohvacamo alias/izdavaca racuna na temelju oib-a
     else:

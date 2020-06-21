@@ -39,6 +39,13 @@
                             
                             </div>
                           </div>
+<<<<<<< HEAD
+=======
+                        <div class="dropdownFooter addButtonDiv">
+                          <!-- Closesortdropdown daje error -->
+                          <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
+                        </div>
+>>>>>>> b183dd4a70d3e7ff86c1be9f5a2726745532efe0
                     </div>
                   </div>
 
@@ -68,58 +75,58 @@
                               <div class="filterOptions custom-control custom-checkbox " >
                                 <input type="radio" class="custom-control-input" id="datDodavanjaVeciOd" name="selectedFilter" checked>
                                 <label for="datDodavanjaVeciOd" class="custom-control-label">Datum dodavanja veći od:</label>
-                                <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanjaVeciOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_dodavanja__greater" type="text" id="datDodavanjaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox " >
                                 <input type="radio" class="custom-control-input" id="datDodavanjaManjiOd" name="selectedFilter">
                                 <label for="datDodavanjaManjiOd" class="custom-control-label">Datum dodavanja manji od:</label>
-                                <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanjaManjiOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_dodavanja__lesser" type="text" id="datDodavanjaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="datIzdavanjaVeciOd" name="selectedFilter">
                                 <label for="datIzdavanjaVeciOd" class="custom-control-label">Datum izdavanja veći od:</label>
-                                <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanjaVeciOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_izdavanja__greater" type="text" id="datIzdavanjaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="datIzdavanjaManjiOd" name="selectedFilter">
                                 <label for="datIzdavanjaManjiOd" class="custom-control-label">Datum izdavanja manji od:</label>
-                                <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanjaManjiOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_izdavanja__lesser" type="text" id="datIzdavanjaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="datDospijecaVeciOd" name="selectedFilter">
                                 <label for="datDospijecaVeciOd" class="custom-control-label">Datum dospijeća veći od:</label>
-                                <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijecaVeciOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_dospijeca__greater" type="text" id="datDospijecaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="datDospijecaManjiOd" name="selectedFilter">
                                 <label for="datDospijecaManjiOd" class="custom-control-label">Datum dospijeća manji od:</label>
-                                <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijecaManjiOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_dospijeca__lesser" type="text" id="datDospijecaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="nazDobavljaca" name="selectedFilter">
                                 <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
-                                <input v-model ="store.filter.naziv_dobavljača" type="text" id="nazDobavljaca" name="selectedFilter"><br>
+                                <input v-model ="filter_params.naziv_dobavljaca__is" type="text" id="nazDobavljaca" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox">
                                 <input type="radio" class="custom-control-input" id="vrstaUsluge" name="selectedFilter">
                                 <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
-                                <input v-model ="store.filter.vrsta_usluge" type="text" id="vrstaUsluge" name="selectedFilter"><br>
+                                <input v-model ="filter_params.vrsta_usluge__is" type="text" id="vrstaUsluge" name="selectedFilter"><br>
                               </div>
                                <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="iznosVeciOd" name="selectedFilter">
                                 <label for="iznosVeciOd" class="custom-control-label">Iznos veći od:</label>
-                                <input v-model ="store.filter.iznos" type="text" id="iznosVeciOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.iznos__greater" type="number" id="iznosVeciOd" name="selectedFilter"><br>
                               </div>                    
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="iznosManjiOd" name="selectedFilter">
                                 <label for="iznosManjiOd" class="custom-control-label">Iznos manji od:</label>
-                                <input v-model ="store.filter.iznos" type="text" id="iznosManjiOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.iznos__lesser" type="number" id="iznosManjiOd" name="selectedFilter"><br>
                               </div>
                             
                           </div>
                           <div class="addButtonDiv">
-                                <button v-on:click = "filter_data()" type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
-                                <button v-on:click = "filter_delete()" type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
+                                <button v-on:click = "filter_documents" type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
+                                <button v-on:click = "clear_filter" type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
                           </div>
                       </div>
                     </div>
@@ -163,7 +170,7 @@
                     <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
                         Uspješno izbrisano
                         <hr/>
-                        <div v-on:click="delete_archive()" data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+                        <div v-on:click="delete_archive" data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
                     </div>
                 
                   </div>
@@ -248,6 +255,9 @@ export default {
       naziv_arhive: 'Moja_arhiva',
       shared_email: '',
       store,
+
+      alias_email: null, //da ne baca error
+      filter_params: {}
     }
   },
 
@@ -268,18 +278,32 @@ export default {
       return this.$router.go(-1);
     },
 
-    filter_delete(){
-      let varijable_filtera = Object.keys(this.store.filter)
+    clear_filter(){
+      this.filter_params = {}
+      this.extract_documents()
+    },
+    filter_documents(){
+      this.extract_documents()
+      let filtered_docs = this.documentData
+      
+      for(let i = 0; i < Object.keys(this.filter_params).length; i++){
+        let key_ = Object.keys(this.filter_params)[i]
+        let value = this.filter_params[key_]
+        
+        let [key, comparison] = key_.split("__")
 
-      for(let i = 0; i < varijable_filtera.length; i++) {
-        if(this.store.filter[varijable_filtera[i]] != '') {
-          this.store.filter[varijable_filtera[i]] = ''
+        if(comparison == 'is'){
+          filtered_docs = filtered_docs.filter((doc) => doc[key] == value)
+        }
+        else if(comparison == 'greater'){
+          filtered_docs = filtered_docs.filter((doc) => doc[key] > value)
+        }
+        else if(comparison == 'lesser'){
+          filtered_docs = filtered_docs.filter((doc) => doc[key] < value)
         }
       }
-    },
 
-    filter_data(){
-
+      this.documentData = filtered_docs
     },
 
     async searchDocuments(pretraga){
@@ -313,6 +337,7 @@ export default {
       this.$router.push({ name: 'Home' })
     },
 
+<<<<<<< HEAD
     addingUserConfirmation(success){
       if(success) $("#success_confirmation_adding_user").modal()
 
@@ -336,6 +361,15 @@ export default {
         this.addingUserConfirmation(success);
       }
     },
+=======
+    extract_documents(){
+      let subarchives = this.store.currentArchiveData.subarchives
+
+      subarchives.forEach((subarc) => {
+        if(subarc.name == this.naziv) this.documentData = subarc.documents
+      }) 
+    }
+>>>>>>> b183dd4a70d3e7ff86c1be9f5a2726745532efe0
   },
 
   async mounted() {
@@ -346,11 +380,7 @@ export default {
     }
 
     //Ispis dokumenata podarhive
-    for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
-      if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
-        this.documentData = this.store.currentArchiveData.subarchives[i].documents
-      }
-    }
+    this.extract_documents()
     if(this.documentData == '') console.log("Korisnik nema dokumenta")
     
     //Update examination date

@@ -7,12 +7,12 @@ from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from bson import ObjectId
 
-import datetime,jwt,os,scan_engine,re,operator
+import datetime, jwt, os, json, re, operator
 import default_data as dflt
 import mongodb as mongodb
+import scan_engine
 
 mongodb.connect_to_db()
-mongodb.index_email()
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
@@ -42,8 +42,7 @@ def register():
     }
     
     res = mongodb.register_user(user)
-    
-    return res
+    return jsonify(res)
 
 
 @app.route('/login', methods=['POST'])
@@ -60,6 +59,9 @@ def login():
         user['exp'] = datetime.datetime.now() + datetime.timedelta(days=7)
         user['token'] = jwt.encode(user, os.getenv("JWT_SECRET"), algorithm='HS256').decode("utf-8")
     
+    with open('current_user.json', 'w') as fp:
+        json.dump(user, fp)
+        
     return jsonify(user)
 
 
@@ -188,9 +190,14 @@ def sortArchives():
         return jsonify(result)
 
 
+<<<<<<< HEAD
 @app.route('/archives/share', methods=['POST'])
 def share_archive():
 
+=======
+@app.route('/alias/add', methods=['POST'])
+def add_alias():
+>>>>>>> b183dd4a70d3e7ff86c1be9f5a2726745532efe0
     doc = request.get_json()
     flag1 = False
     flag2 = True
@@ -210,7 +217,12 @@ def share_archive():
         mongo.db.users.update({'email': doc['user_email']},{'$push': {'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
         return jsonify(share_user['_id'],share_user['email'])
 
+<<<<<<< HEAD
     else: return jsonify(False) 
+=======
+    else: 
+        return jsonify(False)
+>>>>>>> b183dd4a70d3e7ff86c1be9f5a2726745532efe0
 
 
 @app.route('/archives/shareDelete', methods=['POST'])

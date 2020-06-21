@@ -1,22 +1,13 @@
 {
-    "_id": "1",
-    "email": "john@smith.com",
-    "personal_arhive": "7",
-    "archive_ids": ["7", "8"],
-    "alias": [
-        {
-            "ime": "John",
-            "prezime": "Smith",
-            "oib": "12345678901",
-            "iban": "HR123456789012",
-            "postal_code": "10000"
-        },
-        {
-            "ime": "Jane",
-            "prezime": "Smith",
-            "oib": "10987654321",
-            "iban": "HR210987654321",
-            "postal_code": "10000"
-        }
-    ]
+    "_id" : "5eef0ff905517feb74a1f7ed",
+    "name" : "aaa",
+    "surname" : "bbb",
+    "email" : "e@mail2.com",
+    "password" : { "$binary" : "JDJiJDA4JHYwY0lvV3FVUTEyZUFLUUI4LjF1Zk9nZDQwUTdnS2tkTXlPeHRjSDZpVkVYSjdWNW1ZOU02", "$type" : "00" },
+    "personal_archive_id" : "5eef0ff905517feb74a1f7f0",
+    "archive_ids" : [ 
+        "5eef0ff905517feb74a1f7f0"
+    ],
+    "alias_list" : []
 }
+
