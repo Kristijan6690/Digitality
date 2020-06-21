@@ -190,14 +190,9 @@ def sortArchives():
         return jsonify(result)
 
 
-<<<<<<< HEAD
 @app.route('/archives/share', methods=['POST'])
 def share_archive():
 
-=======
-@app.route('/alias/add', methods=['POST'])
-def add_alias():
->>>>>>> b183dd4a70d3e7ff86c1be9f5a2726745532efe0
     doc = request.get_json()
     flag1 = False
     flag2 = True
@@ -217,12 +212,7 @@ def add_alias():
         mongo.db.users.update({'email': doc['user_email']},{'$push': {'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
         return jsonify(share_user['_id'],share_user['email'])
 
-<<<<<<< HEAD
     else: return jsonify(False) 
-=======
-    else: 
-        return jsonify(False)
->>>>>>> b183dd4a70d3e7ff86c1be9f5a2726745532efe0
 
 
 @app.route('/archives/shareDelete', methods=['POST'])
