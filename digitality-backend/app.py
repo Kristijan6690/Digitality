@@ -7,12 +7,12 @@ from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from bson import ObjectId
 
-import datetime,jwt,os,scan_engine,re,operator
+import datetime, jwt, os, json, re, operator
 import default_data as dflt
 import mongodb as mongodb
+import scan_engine
 
 mongodb.connect_to_db()
-mongodb.index_email()
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
@@ -41,8 +41,7 @@ def register():
     }
     
     res = mongodb.register_user(user)
-    
-    return res
+    return jsonify(res)
 
 
 @app.route('/login', methods=['POST'])
@@ -59,6 +58,9 @@ def login():
         user['exp'] = datetime.datetime.now() + datetime.timedelta(days=7)
         user['token'] = jwt.encode(user, os.getenv("JWT_SECRET"), algorithm='HS256').decode("utf-8")
     
+    with open('current_user.json', 'w') as fp:
+        json.dump(user, fp)
+        
     return jsonify(user)
 
 
@@ -189,7 +191,6 @@ def sortArchives():
 
 @app.route('/alias/add', methods=['POST'])
 def add_alias():
-
     doc = request.get_json()
     flag1 = True
     flag2 = False
@@ -211,7 +212,8 @@ def add_alias():
         result = [alias_data,alias_user['personal_archive_id']]
         return jsonify(result)
 
-    else: return jsonify(False)
+    else: 
+        return jsonify(False)
 
 
 @app.route('/alias/delete', methods=['POST'])

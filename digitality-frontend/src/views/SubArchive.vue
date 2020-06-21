@@ -249,12 +249,6 @@ export default {
       this.extract_documents()
     },
     filter_documents(){
-      let type_converter = {
-        value: null, 
-        get iznos(){return parseInt(this.value)},
-        get datum(){}
-      }
-
       this.extract_documents()
       let filtered_docs = this.documentData
       

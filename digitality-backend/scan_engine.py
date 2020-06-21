@@ -5,15 +5,6 @@ import data_analyse as da
 
 from datetime import datetime
 
-"""
-    find and replace - mongodb.py update_document()
-        
-    Test data:
-        if __name__=... u svakom file-u 
-
-        extraction.py -> oib_numbers(text)
-"""
-
 # SCAN IMG
 def photo_to_dict(photo):
     scanned_text = scan.scan_image(photo)
@@ -39,22 +30,28 @@ def photo_to_dict(photo):
     return final_dict
 
 # ADD DOC
-def add_meta_data():
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp) 
-    
-    date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    return {'user': user['email'], 'date': date}
-
 def add_to_database(archive, document):
-    document['meta_data'] = add_meta_data()
-    
     db.create_document(archive, document)
     update_company(document)
 
 def update_company(document):
-    company_data = db.get_company(db.connect_to_db(), document['oib_dobavljaca'])
-    update_company_iban(document['iban_primatelja'], company_data)
+    company_data = db.get_company(document['oib_dobavljaca'])
+    
+    if company_data:
+        update_company_iban(document['iban_primatelja'], company_data)
+        return
+    
+    # Ako ne postoji na bazi, stvori novi
+    company_data = {
+        'naziv': document['naziv_dobavljaca'],
+        'oib': document['oib_dobavljaca'],
+
+        'usluga':  document['vrsta_usluge'],
+        'iban': [[1, document['iban_primatelja']]]           
+    }
+    
+    db.add_new_company(company_data)
+    
 
 
 # TESTING 
