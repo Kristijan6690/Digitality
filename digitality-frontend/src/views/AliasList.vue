@@ -7,9 +7,9 @@
                     <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
                 </div>         
             </div>
-            <form action="/action_page.php">
+            <form >
 
-                <RemoveAlias v-bind:key="card.id" v-bind:info="card" v-for="card in store.currentArchiveData.alias" />
+                <RemoveAlias v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
                 
                 <div class="row main"  >
                     
@@ -34,7 +34,7 @@
                         <input v-model="PostanskiBroj" type="text" id="PostanskiBroj" name="Alias" required>
                     </div> 
                     <div class="button">
-                        <button style="border:none;"><i class="fa fa-plus" aria-hidden="true" style="color:#00A2FF"></i></button>
+                        <button @click="addUserAlias" type="button" style="border:none;"><i class="fa fa-plus" aria-hidden="true" style="color:#00A2FF"></i></button>
                     </div> 
 
                 </div>
@@ -103,16 +103,19 @@
 
 import store from '@/store.js';
 import RemoveAlias from '@/components/RemoveAlias.vue'
+import { Auth } from "@/services";
+import { app } from "@/services";
 
 export default {
   data(){
     return {
+      user: Auth.getUser(),
       store,
-      Ime,
-      Prezime,
-      OIB,
-      IBAN,
-      PostanskiBroj
+      Ime: '',
+      Prezime: '',
+      OIB: '',
+      IBAN: '',
+      PostanskiBroj: ''
 
     }
   },
@@ -122,9 +125,14 @@ export default {
   },
 
   methods:{
-    
+
+    async addUserAlias(){
+      
+       await app.add_alias(this.user.email, this.Ime, this.Prezime, this.OIB, this.IBAN, this.PostanskiBroj)
+       this.Ime = '', this.Prezime = '', this.OIB = '', this.IBAN = '', this.PostanskiBroj = ''
   }
   
+ }
 }
 </script>
 

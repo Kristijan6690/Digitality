@@ -3,7 +3,7 @@
                     
         <div class="data">
             <label for="Ime">Ime:</label>
-            <input v-model="Ime" type="text" id="Ime" name="Alias" readonly>
+            <input {{info.name}} type="text" id="Ime" name="Alias" readonly>
         </div>
         <div class="data">
             <label for="Prezime">Prezime:</label>
@@ -35,11 +35,11 @@ export default {
   data() {
     return {
       store,
-      Ime,
-      Prezime,
-      OIB,
-      IBAN,
-      PostanskiBroj
+      Ime: '',
+      Prezime: '',
+      OIB: '',
+      IBAN: '',
+      PostanskiBroj: ''
     };
   },
   props: ["info"],

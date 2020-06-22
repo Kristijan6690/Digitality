@@ -58,7 +58,7 @@
                           <div class="dropdownBody body-settings" id="chooseArchiveBody">                       
                             
                               <div id="pristupPopis">
-                                <SelectedArchive v-bind:key="card.id" v-bind:info="card" v-for="card in store.userArchives" />
+                                <SelectedArchive v-bind:key="card.id" v-bind:info="card" v-for="card in userArchiveList" />
                               </div>
                             </div>
                           <div class="dropdownFooter addButtonDiv">
@@ -309,7 +309,8 @@ export default {
       oib: '',
       iban: '',
       postal_code: '',
-      naziv_arhive: 'Moja_arhiva_promjena_naziva'
+      naziv_arhive: 'Moja_arhiva_promjena_naziva',
+      userArchiveList:  JSON.parse(localStorage.getItem('userArchives'))
     }
   },
 
