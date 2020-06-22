@@ -215,13 +215,28 @@
             </div>
           </div>
 
-        <!-- success confirmation -->
+        <!-- create archive success confirmation -->
       <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
                    Arhiva uspješno kreirana
+                  <hr/>
+                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+              </div>
+          </div>
+
+        </div>
+      </div>
+
+        <!-- add user alias success confirmation -->
+      <div class="modal fade" id="alias_success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" >
+          
+          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                   Alias uspješno dodan
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -361,7 +376,7 @@ export default {
     },
 
     addingUserConfirmation(success){
-      if(success) $("#success_confirmation").modal()
+      if(success) $("#alias_success_confirmation").modal()
 
       else $("#unsuccess_confirmation_adding_user").modal()
 

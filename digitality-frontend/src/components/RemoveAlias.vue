@@ -21,7 +21,7 @@
             <label for="PostanskBroj">Poštanski broj:</label>
             <input v-model="PostanskiBroj" type="text" id="PostanskiBroj" name="Alias" readonly>
         </div> 
-        <div style="display:inline-block">
+        <div class="button" style="display:block; text-align:center;">
             <button style="border:none;"><i class="fa fa-window-close" aria-hidden="true" style="color:red;"></i></button>
         </div> 
 
@@ -34,7 +34,12 @@ import store from "@/store.js";
 export default {
   data() {
     return {
-      store
+      store,
+      Ime,
+      Prezime,
+      OIB,
+      IBAN,
+      PostanskiBroj
     };
   },
   props: ["info"],
@@ -55,7 +60,7 @@ export default {
 }
 
 
-input, #billTypeDropdown{
+input{
     display:inline-block;
     width:55%;
     border-radius: 5px;
@@ -69,20 +74,35 @@ label{
     color:black;
     display:inline-block;
     margin-bottom: 0px;
-    text-align:left;
+    width: 45%;
 
 }
 
 .data{
     display:inline-block;
     margin-bottom: .5rem; 
-    width:170px;  
+    width:170px; 
+     
 }
 
 .dataLong{
     display:inline-block;
     margin-bottom: .5rem; 
     width:350px;  
+}
+
+@media screen and (min-width : 0px) and (max-width : 767px){
+.dataLong{
+    display:inline-block;
+    margin-bottom: .5rem; 
+    width:340px;  
+}
+
+.button{
+    display:block; 
+    width:100%;
+}
+
 }
 
 </style>

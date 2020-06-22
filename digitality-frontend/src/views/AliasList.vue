@@ -1,18 +1,15 @@
 <template>
   <div class="home">
       <div class="container">
-            <div class="row">
-                <!-- mjesto za header ako ce ici -->
-            </div>
-            <div class="row">
+            <div class="row" style="margin-bottom:0px;">
                  <div class="col heading">        
-                    <div  id="headlineDiv" ><h1 id="headline">Popis aliasa</h1></div>
+                    <div  id="headlineDiv"><h1 id="headline">Popis aliasa</h1></div>
                     <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
                 </div>         
             </div>
             <form action="/action_page.php">
 
-                <RemoveAlias />
+                <RemoveAlias v-bind:key="card.id" v-bind:info="card" v-for="card in store.currentArchiveData.alias" />
                 
                 <div class="row main"  >
                     
@@ -36,7 +33,7 @@
                         <label for="PostanskBroj">Poštanski broj:</label>
                         <input v-model="PostanskiBroj" type="text" id="PostanskiBroj" name="Alias" required>
                     </div> 
-                    <div style="display:inline-block">
+                    <div class="button">
                         <button style="border:none;"><i class="fa fa-plus" aria-hidden="true" style="color:#00A2FF"></i></button>
                     </div> 
 
@@ -73,7 +70,7 @@
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Dokument dodan u arhivu _____
+                   Alias uspiješno dodan na vaš popis
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -89,7 +86,7 @@
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Došlo je do greške prilikom učitavanja dokumenta
+                   Došlo je do greške prilikom kreiranja aliasa.
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -110,7 +107,13 @@ import RemoveAlias from '@/components/RemoveAlias.vue'
 export default {
   data(){
     return {
-      store
+      store,
+      Ime,
+      Prezime,
+      OIB,
+      IBAN,
+      PostanskiBroj
+
     }
   },
   name: 'Home',
@@ -127,33 +130,6 @@ export default {
 
 <style scoped>
 
-/* clickable icon in input field: https://stackoverflow.com/questions/6933941/clickable-icon-inside-input-field */
-.input-with-icon {
-  position: relative;
-  width: 25rem;
-  box-sizing: border-box;
-}
-
-.input-with-icon .form-control {
-    height: 100%;
-    width: 70%;
-    padding-right: 5%;
-    box-sizing: border-box;
-}
-
-.input-with-icon .icon {
-  position: absolute;
-  right: 0.3rem;
-  top: 0.3rem;
-  width: 2.6rem;
-  height: 20px;
-  border-radius: 0.3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
-/* */
 
 .row{
     margin-right: 0px;
@@ -165,20 +141,7 @@ export default {
   width:100%;
   margin:auto;
 }
-.box{
-  vertical-align: top;
-  display: inline-block;
-  box-sizing: border-box;
-  height: 170px;
-}
 
-.one {
-  width: 50%;
-}
-
-.two { 
-  width: 50%;
-}
 
 .archive-options{
   height: 50px;
@@ -215,6 +178,8 @@ label{
     display:inline-block;
     margin-bottom: 0px;
     text-align:left;
+    width: 45%;
+    text-align: center;
 
 }
 
@@ -234,68 +199,6 @@ a{
   color: #2c3e50; 
 }
 
-.chooseArchive{
-  width: 150px;
-  height: 30px;
-  background-color: white;
-  display: block;
-  margin: 10px 0 10px 0;
-  float: left;
-  border-radius: 5px;
-  border: 2px solid  #00A2FF;
-}
-
-.settings{
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  display: block;
-  margin: 10px 5px;
-  float: left;
-  border-radius: 5px;
-  border: 2px solid  #00A2FF;
-  padding-top:3px;
-  
-}
-
-.search{
-  width: 180px;
-  height: 30px;
-  background-color: white;
-  display: block;
-  margin: 10px 0 10px 0;
-  float: right;
-  border-radius: 5px;
-  border: 2px solid  #00A2FF;
-}
-
-
-.filter{
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  display: block;
-  margin : 10px 5px  10px 5px; 
-  float: right;
-  border-radius: 5px;
-  border: 2px solid  #00A2FF;
-  padding-top: 4px;
-  color:#00A2FF;
-  
-}
-
-#searchBar{
-  width: 80%;
-  height: 100%;
-  color:#00a2ff;
-  outline: none;
-  border: 0px;
-}
-
-#searchIcon{ 
-  color:#00A2FF;
-  padding-left: 7.5px;
-}
 
  ::placeholder {
   color: #7B7C73;
@@ -307,19 +210,6 @@ a{
   float: right;
 }
 
-
-#archiveSelector{
-  width: 80%;
-  height: 100%;
-  color:#00a2ff;
-  border: 0px;
-  outline: none;
-  border: 0px;
-}
-
-.fa-cog{
-  color:#00a2ff;
-}
 
 
 .heading{
@@ -349,21 +239,11 @@ a{
   text-align:center; 
 }
 
-.datumDospijeca{
-    padding-top: 12px;
-}
 
-.addButtonDiv{
-display: flex; 
-align-items: center; 
-justify-content: center; 
-height: 75px; 
-background-color: #f6f6f2;
-}
-
-#addButton{
-  font-size:20px; 
-  width:150px;
+#button{
+  display:inline-block; 
+  width:340px;
+  
 }
 
 
@@ -380,94 +260,15 @@ background-color: #f6f6f2;
   opacity: 1; 
 }
 
-/*   exchange icon positioning */
-
-/* enable absolute positioning */
-.inner-addon { 
-    position: relative; 
-}
-
-/* style icon */
-.inner-addon .fas {
-  position: absolute;
-  padding: 5px;
-  pointer-events: none;
-}
-
-/* align icon */
-.right-addon .fas { right: 0px;}
-
-/* add padding  */
-.right-addon input { padding-right: 30px; }
-
-/* y@media screen and (min-width: 1024px){} */
-
-@media screen and (min-width : 992px) and (max-width : 1200px){
- input{
-    display:inline-block;
-    width:65%;
-    border-radius: 5px;
-    border: 1px solid  #00A2FF;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-label{
-    color:black;
-    display:inline-block;
-    width:35%;
-    margin-bottom: 0px;
-    text-align:left;
-    font-size: 15px;
-}
-}
-
-@media screen and (min-width : 768px) and (max-width : 991px){
-  input,  #billTypeDropdown{
-    display:inline-block;
-    width:55%;
-    border-radius: 5px;
-    border: 1px solid  #00A2FF;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-label{
-    color:black;
-    display:inline-block;
-    width:45%;
-    margin-bottom: 0px;
-    text-align:left;
-    font-size: 15px;
-}
-
-}
 
 /*### Smartphones (portrait and landscape)(small)### */
 @media screen and (min-width : 0px) and (max-width : 767px){
+
+.row{
+  margin-bottom: 20px;
+}
  
-.box{
-    display: block;
-    height: auto;
-  }
-
-.one {
-    width: 100%;
-}
-
-.two {
-    width: 100%;
-}
-
-br {
-    display:none; 
-} 
-
-.datumDospijeca{
-    padding-top: 0px;
-}
-
-input, #billTypeDropdown{
+input{
     display:inline-block;
     width:55%;
     border-radius: 5px;
@@ -481,7 +282,6 @@ label{
     display:inline-block;
     width:45%;
     margin-bottom: 0px;
-    text-align:left;
     font-size: 15px;
 }
 
@@ -490,9 +290,6 @@ label{
     padding-left: 0px;
 }
 
-.addButtonDiv{
-   background-color: #EEEEEE;
-}
 
 #headline{
   font-size:30px;
@@ -503,35 +300,17 @@ label{
   height: 100px;
 }
 
-
-/* clickable icon in input field: https://stackoverflow.com/questions/6933941/clickable-icon-inside-input-field */
-.input-with-icon {
-  position: relative;
-  box-sizing: border-box;
-  text-align: left;
-  width: 100%;
+.dataLong{
+    display:inline-block;
+    margin-bottom: .5rem; 
+    width:340px;  
 }
 
-.input-with-icon .form-control {
-    height: 100%;
-    width: 55%;
-    box-sizing: border-box;
-    
+.button{
+  display:block; 
+  width:100%;
+  
 }
-
-.input-with-icon .icon {
-  position: absolute;
-  right: 0.3rem;
-  top: 0.3rem;
-  width: 2.6rem;
-  height: 20px;
-  border-radius: 0.3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
-/* */
 
 }
 </style>
