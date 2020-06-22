@@ -5,7 +5,8 @@ def get_subarchive(name):
     cur_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     
     return {
-        'subarchive_id': str(ObjectId()),
+        #'subarchive_id': str(ObjectId()),
+        'subarchive_id': 4,
         'name': name,
         'last_used': cur_date,
         'documents': []
@@ -21,7 +22,8 @@ def get_default_arc():
             "viewed_on": cur_date
         },
         
-        "id_dokumenta": str(ObjectId()),
+        #"id_dokumenta": str(ObjectId()),
+        "id_dokumenta": 3,
         
         "naziv_dobavljaca": "primjer",
         "oib_dobavljaca": "16942983514",
@@ -44,14 +46,16 @@ def get_default_arc():
     }
     
     subarchive = {
-        'subarchive_id': str(ObjectId()),
+        #'subarchive_id': str(ObjectId()),
+        'subarchive_id': 2,
         'name': "primjer",
         'last_used': cur_date,
         'documents': [example_dict]
     }
     
     return {
-        '_id' : str(ObjectId()),
+        #'_id' : str(ObjectId()),
+        '_id' : 1,
         'name' : 'Example archive',
         'subarchives' : [subarchive],
     }

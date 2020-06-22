@@ -29,7 +29,6 @@ def photo_to_dict(photo):
     
     return final_dict
 
-# ADD DOC
 def add_to_database(archive, document):
     db.create_document(archive, document)
     update_company(document)

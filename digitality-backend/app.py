@@ -8,6 +8,7 @@ from flask_bcrypt import Bcrypt
 from bson import ObjectId
 
 import datetime, jwt, os, json, re, operator
+import current_user as current
 import default_data as dflt
 import mongodb as mongodb
 import scan_engine
@@ -58,13 +59,12 @@ def login():
         user['exp'] = datetime.datetime.now() + datetime.timedelta(days=7)
         user['token'] = jwt.encode(user, os.getenv("JWT_SECRET"), algorithm='HS256').decode("utf-8")
     
-    with open('current_user.json', 'w') as fp:
-        json.dump(user, fp)
+    current.user = user 
         
     return jsonify(user)
 
 
-@app.route('/GetArchives', methods=['POST'])
+@app.route('/GetArchives', methods=['GET'])
 def getarhive():
     user = mongodb.get_user(request.get_json()['email'])
     
@@ -88,43 +88,32 @@ def sendDocument():
     return jsonify(doc_data)
 
 
-@app.route('/search/lista_arhiva', methods=['POST'])
+@app.route('/search/lista_arhiva', methods=['GET'])
 def searchArchives():
-
-    searchTerm = str(request.get_json()['searchTerm'])
-    searchTerm = searchTerm.lower()
-    archive_ids = request.get_json()['archive_ids']
-    currentArchive_id = request.get_json()['currentArchive_id']
-    result = []
-    subarchives = []
-
-    for archives in mongo.db.archives.find({'_id': {'$in':archive_ids}}):
-        result.append(archives)
-
-    if(searchTerm):
-        r = re.compile('^(%s)' % searchTerm)
-        for archives in mongo.db.archives.find():
-            if(archives['_id'] == currentArchive_id):
-                for sub in archives['subarchives']:
-                    if(r.match(sub['name'])):
-                        subarchives.append(sub)   
-
-        for archives in result:
-            if(archives['_id'] == currentArchive_id):
-                archives['subarchives'] = subarchives
-
+    result = mongodb.get_archives( request.get_json()['archive_ids'] )
+    searchTerm = str(request.get_json()['searchTerm']).lower()
+    
+    if not searchTerm:
         return jsonify(result)
+    
+    currentArchive_id = request.get_json()['currentArchive_id']
+    cur_arc = mongodb.get_one_archive(currentArchive_id)
+    
+    regex = re.compile('^(%s)' % searchTerm)
+    subarchives = [sub_arc for sub_arc in cur_arc['subarchives'] if regex.match(sub_arc['name']) ] 
+    
+    for archives in result:
+        if archives['_id'] == currentArchive_id:
+            archives['subarchives'] = subarchives
 
-    else:
-        return jsonify(result)  
+    return jsonify(result)
+    
 
-
-@app.route('/archive/deleteSubarchive', methods=['POST'])
+@app.route('/archive/deleteSubarchive', methods=['DELETE'])
 def deleteSubarchive():
     doc = request.get_json()
-    
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)
+
+    user = current.user
         
     if user['personal_archive_id'] == doc['personal_archive_id']:
         res = mongodb.delete_subarchive(doc['personal_archive_id'], doc['subarchive_id'])
@@ -139,8 +128,12 @@ def update_examination_date():
     doc = request.get_json()
     for archive in mongo.db.archives.find():
         if(archive['_id'] == doc['currentArchive_id']):
-            mongo.db.archives.update({'subarchives.subarchive_id':doc['subarchive_id']},{'$set':{'subarchives.$.last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}})
+            mongo.db.archives.update(
+                {'subarchives.subarchive_id':doc['subarchive_id']},
+                {'$set':{'subarchives.$.last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}}
+            )
             return "Dodano"
+
 
 @app.route('/archives/SortArchives', methods=['POST'])
 def sortArchives():
@@ -175,6 +168,7 @@ def sortArchives():
 
         return jsonify(result)
 
+
 @app.route('/archives/share', methods=['POST'])
 def share_archive():
 
@@ -199,6 +193,7 @@ def share_archive():
 
     else: return jsonify(False) 
 
+
 @app.route('/archives/shareDelete', methods=['POST'])
 def delete_shared_archive():
 
@@ -209,14 +204,15 @@ def delete_shared_archive():
     return jsonify(owner['archive_ids'], owner['email_list'])
 
 
-@app.route('/addAlias', methods=['POST'])
+@app.route('/addAlias', methods=['PUT'])
 def add_alias():
     new_alias = request.get_json()
     res = mongodb.add_alias(new_alias)
     
     return jsonify(res)
 
-@app.route('/deleteAlias', methods=['POST'])
+
+@app.route('/deleteAlias', methods=['DELETE'])
 def delete_alias():
     alias = request.get_json()
     res = mongodb.delete_alias(alias['oib'])

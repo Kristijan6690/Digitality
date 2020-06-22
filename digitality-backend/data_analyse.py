@@ -1,4 +1,5 @@
 import mongodb as db
+import current_user as current
 import json
 
 # IBAN ##########################################
@@ -58,10 +59,9 @@ def update_company_iban(iban, company_data):
     return company_data
 
 def compare_user_iban(iban_list):
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)   
+    user = current.user
     
-    aliases = user['alias']
+    aliases = user['alias_list']
     alias_ibans = [alias['iban'] for alias in aliases]
 
     for index, iban in enumerate(iban_list):
@@ -124,10 +124,9 @@ def check_pc_dict(p_codes):
     return result
 
 def check_user_pc(p_codes):
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)   
+    user = current.user 
     
-    aliases = user['alias']
+    aliases = user['alias_list']
     alias_codes = [alias['postal_code'] for alias in aliases]
 
     for index, p_code in enumerate(p_codes):
@@ -163,9 +162,8 @@ def get_data_oib(oib_list):
 
 
 def get_cur_alias():
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)   
-    return user['alias']  
+    user = current.user  
+    return user['alias_list']  
 
 # TEST
 def test_update_iban(test_company):
