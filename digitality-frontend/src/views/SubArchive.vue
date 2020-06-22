@@ -29,23 +29,20 @@
                             </div>
                             <div>  
 
-                              <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.email_list" />
+                              <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
 
                               <div class="userData "  >
                                   <div class="personIcon"><i class="far fa-user"></i> </div>
-                                  <input v-model="shared_email" class="mailOsobe addUserName"  /> 
-                                  <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
+                                  <input v-model="alias_email" class="mailOsobe addUserName"  /> 
+                                  <button v-on:click ="add_access()" class="opcijaPopis addUserButton">dodaj</button>  
                               </div>
                             
                             </div>
                           </div>
-<<<<<<< HEAD
-=======
                         <div class="dropdownFooter addButtonDiv">
                           <!-- Closesortdropdown daje error -->
                           <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
                         </div>
->>>>>>> b183dd4a70d3e7ff86c1be9f5a2726745532efe0
                     </div>
                   </div>
 
@@ -176,37 +173,6 @@
                   </div>
               </div>
             </div>
-
-             <!-- success confirmation -->
-            <div class="modal fade" id="success_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document" >
-                
-                <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-                    <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                        Arhiva uspješno kreirana
-                        <hr/>
-                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-                    </div>
-                </div>
-
-              </div>
-            </div>
-
-            <!-- error confirmation during adding user to archive -->
-            <div class="modal fade" id="unsuccess_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document" >
-                
-                <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-                    <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                        Došlo je do pogreške. Provjerite da li ste unijeli ispravan mail.
-                        <hr/>
-                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-                    </div>
-                  </div>
-
-              </div>
-            </div>
-
         <div class="row">
             <div class="col archive">
               <Document v-bind:key="card.id" v-bind:info="card" v-for="card in documentData" /> 
@@ -252,8 +218,8 @@ export default {
       documentData: '',
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
       searchTerm: '',
+      tempDoc: '',
       naziv_arhive: 'Moja_arhiva',
-      shared_email: '',
       store,
 
       alias_email: null, //da ne baca error

@@ -119,23 +119,6 @@ def searchArchives():
         return jsonify(result)  
 
 
-@app.route('/archives/createSubarchive', methods=['POST'])
-def createSubarchive():
-    archive_name = request.get_json()['archive_name'].lower()
-    personal_archive_id = request.get_json()['personal_archive_id']
-    subarchive_id = str(ObjectId())
-    
-    mongo.db.archives.update({'_id': personal_archive_id},{'$push':{
-        'subarchives': {
-            'subarchive_id': subarchive_id,
-            'name': archive_name,
-            'last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-            'documents': []
-        }}})
-        
-    return "Dodano"
-
-
 @app.route('/archive/deleteSubarchive', methods=['POST'])
 def deleteSubarchive():
     doc = request.get_json()
@@ -158,7 +141,6 @@ def update_examination_date():
         if(archive['_id'] == doc['currentArchive_id']):
             mongo.db.archives.update({'subarchives.subarchive_id':doc['subarchive_id']},{'$set':{'subarchives.$.last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}})
             return "Dodano"
-
 
 @app.route('/archives/SortArchives', methods=['POST'])
 def sortArchives():
@@ -193,7 +175,6 @@ def sortArchives():
 
         return jsonify(result)
 
-
 @app.route('/archives/share', methods=['POST'])
 def share_archive():
 
@@ -217,7 +198,6 @@ def share_archive():
         return jsonify(share_user['_id'],share_user['email'])
 
     else: return jsonify(False) 
-
 
 @app.route('/archives/shareDelete', methods=['POST'])
 def delete_shared_archive():
