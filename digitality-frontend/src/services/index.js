@@ -88,7 +88,7 @@ let Auth = {
 
 let app = {
     async getArchives(eposta,dostupne_arhive_korisniku) {
-        let response = await Service.post('/GetArchives', {
+        let response = await Service.get('/GetArchives', {
             email: eposta,
             archive_ids: dostupne_arhive_korisniku
         });
@@ -106,7 +106,7 @@ let app = {
     },
 
     async getSearchArchives(pretraga,dostupne_arhive_korisniku,id_trenutne_arhive){
-        let response = await Service.post('/search/lista_arhiva',{
+        let response = await Service.get('/search/lista_arhiva',{
             searchTerm : pretraga,
             archive_ids: dostupne_arhive_korisniku,
             currentArchive_id: id_trenutne_arhive
@@ -123,7 +123,7 @@ let app = {
     },
 
     async deleteSubarchive(id_korisnikove_arhive,id_podarhive){
-        await Service.post('/archive/deleteSubarchive', {
+        await Service.delete('/archive/deleteSubarchive', {
             personal_archive_id : id_korisnikove_arhive,
             subarchive_id : id_podarhive
         })
@@ -145,21 +145,30 @@ let app = {
         return response.data;
     },
 
-    //parametri:EMAIL(ili ime,prezime),OIB,IBAN,POSTCODE,trenutna arhiva
-    async add_alias(al_eposta,email_vlasnika_arhive){
-        let response = await Service.post('/alias/add', {
-            al_email: al_eposta,
-            owner_email: email_vlasnika_arhive
+    async share_archive(eposta_korisnika,eposta_share){
+        let response = await Service.post('/archives/share', {
+            user_email: eposta_korisnika,
+            shared_email: eposta_share
         })
         return response.data;
     },
 
-    async update_user_data(eposta,oib,iban,postanski_broj){
-        await Service.post('/user/update_data', {
-            user_email: eposta,
-            user_oib: oib,
-            user_iban: iban,
-            user_postal_code: postanski_broj
+    async delete_shared_archive(eposta_korisnika,eposta_share){
+        let response = await Service.post('/archives/shareDelete', {
+            user_email: eposta_korisnika,
+            shared_email: eposta_share
+        })
+        return response.data
+    },
+
+    async add_alias(eposta_korisnika,ime,prezime,oib,iban,postanski_broj){
+        await Service.put('/addAlias', {
+            user_email: eposta_korisnika,
+            name: ime,
+            surname: prezime,
+            oib: oib,
+            iban: iban,
+            postal_code: postanski_broj
         })
     }
 };

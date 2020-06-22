@@ -27,12 +27,12 @@
                               </div>
                               <div>  
 
-                                <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
+                                <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.email_list" />
 
                                 <div class="userData "  >
                                      <div class="personIcon"><i class="far fa-user"></i> </div>
-                                     <input v-model="alias_email" class="mailOsobe addUserName"  /> 
-                                     <button v-on:click ="add_access()" class="opcijaPopis addUserButton">dodaj</button>  
+                                     <input v-model="shared_email" class="mailOsobe addUserName"  /> 
+                                     <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
                                 </div>
                               
                               </div>
@@ -52,39 +52,18 @@
                       </button>
                       <div class="dropdown-menu dropdown-menu-left menu-settings">
                           <div class="dropdownHeader"  @click.stop=''> 
-                              <h2 id="chooseArchiveHeader"> Odaberite arhivu </h2> 
+                              <h2 id="chooseArchiveHeader"> Odaberi arhivu </h2> 
                           </div>
                   
                           <div class="dropdownBody body-settings" id="chooseArchiveBody">                       
                             
-                              <div id="pristupPopis">  
-                               <form id="archiveForm" name="archiveForm">
-                                <div class="filterOptions custom-control custom-radio " >
-                                  <input  v-model="currentArchive" checked="checked" type="radio" class="custom-control-input" id="Arhiva_1" name="Archive" value="Arhiva_1">
-                                  <label for="Arhiva_1" class="custom-control-label">Arhiva_1</label>
-                                </div>
-                                <div class="filterOptions custom-control custom-radio " >
-                                  <input  v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_2" name="Archive" value="Arhiva_2">
-                                  <label for="Arhiva_2" class="custom-control-label">Arhiva_2</label>
-                                </div>
-                                <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="currentArchive"  type="radio" class="custom-control-input" id="Arhiva_3" name="Archive" value="Arhiva_3">
-                                  <label for="Arhiva_3" class="custom-control-label">Arhiva_3</label>
-                                </div>
-                                <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_4" name="Archive" value="Arhiva_4">
-                                  <label for="Arhiva_4" class="custom-control-label">Arhiva_4</label>
-                                </div>
-                                <div class="filterOptions custom-control custom-radio " >
-                                  <input v-model="currentArchive" type="radio" class="custom-control-input" id="Arhiva_5" name="Archive" value="Arhiva_5">
-                                  <label for="Arhiva_5" class="custom-control-label">Arhiva_5_Dugi_Naziv</label>
-                                </div>
-                               </form>
+                              <div id="pristupPopis">
+                                <SelectedArchive v-bind:key="card.id" v-bind:info="card" v-for="card in userArchiveList" />
                               </div>
                             </div>
-                          <div class="dropdownFooter addButtonDiv"  @click.stop=''>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0" id="changeArchiveButton"> Dodaj </button>
-                                <button type="submit" class="btn btn-primary my-2 my-sm-0"  @click="closeSortDropdown" id="closeButtonArchive"> Poništi</button>
+                          <div class="dropdownFooter addButtonDiv">
+                                <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal" data-target="#createArchiveModal" id="createArchiveButton"> Dodaj </button>
+                                <button type="button" class="btn btn-primary my-2 my-sm-0"  @click="closeSortDropdown" id="closeButtonArchive"> Poništi</button>
                           </div>
                       </div>
                     </div>
@@ -161,25 +140,25 @@
           <div class="col archive">
             <SubArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.currentArchiveData.subarchives" />
 
-            <div class="subArchivePlus" data-toggle="modal" data-target="#helpModal" style="border:none;">
+            <div class="subArchivePlus" data-toggle="modal" data-target="#createSubArchiveModal" style="border:none;">
                 <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
                 <div class="folderName">Dodaj podarhivu</div>
           </div>
         </div>
 
 
-        <!-- Modal za kreiranje arhive -->
-          <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <!-- Modal za kreiranje podarhive -->
+          <div class="modal fade" id="createSubArchiveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header" style="display:block;">
                   <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Kreiraj podarhivu</h3>
                 </div>
                 <div class="modal-body">
-                  <input v-model = "createArchiveName" placeholder="Unesite ime podarhive" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Unesite ime podarhive'" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
+                  <input v-model = "createSubArchiveName" placeholder="Unesite ime podarhive" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Unesite ime podarhive'" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
                 </div>
                 <div class="modal-footer" style="text-align:center; display:block;">
-                  <button v-on:click="create_archive()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button v-on:click="create_subArchive()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
                   <button v-on:click="add_archive_cancel()" type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
                 </div>
               </div>
@@ -211,20 +190,53 @@
                   </form>
                 </div>
                 <div class="modal-footer" style="text-align:center; display:block;">
-                  <button v-on:click ="update_cur_user()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button v-on:click ="share_arc()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
                   <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:red">Odustani</button>
                 </div>
               </div>
             </div>
           </div>
 
-        <!-- success confirmation -->
+        <!-- Modal za kreiranje arhive -->
+          <div class="modal fade" id="createArchiveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="display:block;">
+                  <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Kreiraj arhivu</h3>
+                </div>
+                <div class="modal-body">
+                  <input v-model = "createArchiveName" placeholder="Unesite ime podarhive" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Unesite ime arhive'" style="border:none; color:#00A2FF; padding: 0 10px 0 10px; text-align:center;" />
+                </div>
+                <div class="modal-footer" style="text-align:center; display:block;">
+                  <button type="button" class="btn btn-secondary"  data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
+                  <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:#00A2FF">Odustani</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- create archive success confirmation -->
       <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
                    Arhiva uspješno kreirana
+                  <hr/>
+                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+              </div>
+          </div>
+
+        </div>
+      </div>
+
+        <!-- add user alias success confirmation -->
+      <div class="modal fade" id="alias_success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" >
+          
+          <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
+              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                   Alias uspješno dodan
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -278,6 +290,7 @@
 
 import SubArchiveCard from '@/components/SubArchiveCard.vue';
 import UserData from '@/components/UserData.vue';
+import SelectedArchive from '@/components/SelectedArchive.vue'
 import { app } from "@/services";
 import { Auth } from "@/services";
 import store from "@/store.js";
@@ -289,20 +302,23 @@ export default {
       user: Auth.getUser(),
       searchTerm: '',
       store,
+      createSubArchiveName: '',
       createArchiveName: '',
       currentArchive: '',
-      alias_email: '',
+      shared_email: '',
       oib: '',
       iban: '',
       postal_code: '',
-      naziv_arhive: 'Moja_arhiva_promjena_naziva'
+      naziv_arhive: 'Moja_arhiva_promjena_naziva',
+      userArchiveList:  JSON.parse(localStorage.getItem('userArchives'))
     }
   },
 
   name: 'Home',
   components: {
     SubArchiveCard,
-    UserData
+    UserData,
+    SelectedArchive
   },
 
   watch: {
@@ -319,33 +335,33 @@ export default {
       this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids) 
     },
 
-    async create_archive() {
+    async create_subArchive() {
       let flag = false
 
-      if(this.createArchiveName != '') {
-        this.createArchiveName = this.createArchiveName.toLowerCase()
+      if(this.createSubArchiveName != '') {
+        this.createSubArchiveName = this.createSubArchiveName.toLowerCase()
         for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
-          if(this.createArchiveName == this.store.currentArchiveData.subarchives[i].name.toLowerCase()){
+          if(this.createSubArchiveName == this.store.currentArchiveData.subarchives[i].name.toLowerCase()){
             flag = true
           }
         }
         if(flag) {
-          this.createArchiveName = ''
+          this.createSubArchiveName = ''
           $("#unsuccess_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
         }
         else {
-          await app.createSubarchive(this.createArchiveName, this.user.personal_archive_id)
+          await app.createSubarchive(this.createSubArchiveName, this.user.personal_archive_id)
           let archives = await app.getArchives(this.user.email,this.user.archive_ids)
           localStorage.setItem('userArchives',JSON.stringify(archives))
           this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
-          this.createArchiveName = ''
+          this.createSubArchiveName = ''
           $("#success_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
         }
       }
     },
 
     add_archive_cancel() {
-      this.createArchiveName = ''
+      this.createSubArchiveName = ''
     },
   
     async closeSortDropdown(){
@@ -361,31 +377,31 @@ export default {
     },
 
     addingUserConfirmation(success){
-      if(success) $("#success_confirmation").modal()
+      if(success) $("#alias_success_confirmation").modal()
 
       else $("#unsuccess_confirmation_adding_user").modal()
 
     },
 
-    async add_access() {
-      let success = false
-      let alias = await app.add_alias(this.alias_email,this.user.email)
-      if(alias){
-        this.user.alias_list.push(alias[0])
-        this.user.archive_ids.push(alias[1])
-        localStorage.setItem("user",JSON.stringify(this.user))
-        let archives = await app.getArchives(this.user.email,this.user.archive_ids)
-        localStorage.setItem('userArchives',JSON.stringify(archives))
-        this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
-        console.log("Uspjeh")
-        success=true
-      } else console.log("Greska")
-
-      this.addingUserConfirmation(success);
+    async share_arc() {
+      if(this.shared_email != ''){
+        let success = false
+        let result = await app.share_archive(this.user.email,this.shared_email)
+        if(result){
+          this.user.archive_ids.push(result[0])
+          this.user.email_list.push(result[1])
+          localStorage.setItem("user",JSON.stringify(this.user))
+          let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+          localStorage.setItem('userArchives',JSON.stringify(archives))
+          success = true
+        }
+        this.shared_email = ''
+        this.addingUserConfirmation(success);
+      }
     },
 
-    async update_cur_user(){
-      await app.update_user_data(this.user.email,this.oib,this.iban,this.postal_code)
+    async add_alias(){
+      await app.add_alias(this.user.email,this.oib,this.iban,this.postal_code)
       this.user['oib'] = this.oib
       this.user['iban'] = this.iban
       this.user['postal_code'] = this.postal_code
@@ -396,7 +412,6 @@ export default {
   async mounted(){
     let temp = JSON.parse(localStorage.getItem('userArchives'))
     this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
-    if(!(this.user.oib || this.user.iban || this.user.post_code)) $("#formModal").modal()
   }
 }
 
@@ -633,7 +648,7 @@ a{
   background:white;
 }
 
-#addButtonSettings, #changeArchiveButton{
+#addButtonSettings, #createArchiveButton{
   margin: 5px; 
   border-radius:5px; 
   border:0; 
