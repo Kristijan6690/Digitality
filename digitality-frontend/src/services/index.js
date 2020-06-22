@@ -161,9 +161,8 @@ let app = {
         return response.data
     },
 
-    async add_alias(eposta_korisnika,ime,prezime,oib,iban,postanski_broj){
+    async add_alias(ime,prezime,oib,iban,postanski_broj){
         await Service.post('/addAlias', {
-            user_email: eposta_korisnika,
             name: ime,
             surname: prezime,
             oib: oib,

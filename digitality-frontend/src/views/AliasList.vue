@@ -103,20 +103,19 @@
 
 import store from '@/store.js';
 import RemoveAlias from '@/components/RemoveAlias.vue'
-import { Auth } from "@/services";
 import { app } from "@/services";
+import { Auth } from "@/services";
 
 export default {
   data(){
     return {
-      user: Auth.getUser(),
       store,
+      user: Auth.getUser(),
       Ime: '',
       Prezime: '',
       OIB: '',
       IBAN: '',
       PostanskiBroj: ''
-
     }
   },
   name: 'Home',
@@ -125,14 +124,11 @@ export default {
   },
 
   methods:{
-
     async addUserAlias(){
-      
-       await app.add_alias(this.user.email, this.Ime, this.Prezime, this.OIB, this.IBAN, this.PostanskiBroj)
-       this.Ime = '', this.Prezime = '', this.OIB = '', this.IBAN = '', this.PostanskiBroj = ''
+      //await app.add_alias(this.Ime, this.Prezime, this.OIB, this.IBAN, this.PostanskiBroj)
+      this.Ime = '', this.Prezime = '', this.OIB = '', this.IBAN = '', this.PostanskiBroj = ''
+    }
   }
-  
- }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="filterOptions custom-control custom-radio " >
-        <input  v-model="currentArchive" checked="checked" type="radio" class="custom-control-input" id="Arhiva_1" name="Archive" value="Arhiva_1">
+        <input checked="checked" type="radio" class="custom-control-input" id="Arhiva_1" name="Archive" value="Arhiva_1">
         <label for="Arhiva_1" class="custom-control-label"> {{info.name}} </label> 
     </div>
 </template>
