@@ -337,31 +337,6 @@ export default {
       this.$router.push({ name: 'Home' })
     },
 
-<<<<<<< HEAD
-    addingUserConfirmation(success){
-      if(success) $("#success_confirmation_adding_user").modal()
-
-      else $("#unsuccess_confirmation_adding_user").modal()
-
-    },
-
-    async share_arc() {
-      if(this.shared_email != ''){
-        let success = false
-        let result = await app.share_archive(this.user.email,this.shared_email)
-        if(result){
-          this.user.archive_ids.push(result[0])
-          this.user.email_list.push(result[1])
-          localStorage.setItem("user",JSON.stringify(this.user))
-          let archives = await app.getArchives(this.user.email,this.user.archive_ids)
-          localStorage.setItem('userArchives',JSON.stringify(archives))
-          success = true
-        }
-        this.shared_email = ''
-        this.addingUserConfirmation(success);
-      }
-    },
-=======
     extract_documents(){
       let subarchives = this.store.currentArchiveData.subarchives
 
@@ -369,7 +344,6 @@ export default {
         if(subarc.name == this.naziv) this.documentData = subarc.documents
       }) 
     }
->>>>>>> b183dd4a70d3e7ff86c1be9f5a2726745532efe0
   },
 
   async mounted() {

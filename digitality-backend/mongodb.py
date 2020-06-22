@@ -11,8 +11,8 @@ db = None
 
 def connect_to_db():
     try:
-        #cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
-        cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
+        cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
+        #cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
         
         global db
         db = cluster["digitality_production"]
@@ -119,6 +119,22 @@ def update_subarchive(arc_id, document):
     
     return True  
 
+def delete_subarchive(arc_id, subarc_id):
+    collection = db["archives"]
+    
+    filter = {'_id': arc_id}
+    update = {
+        '$pull':{'subarchives':{'subarchive_id': subarc_id}}
+    }
+    
+    try:
+        collection.update(filter, update)
+    except:
+        print("delete_subarchive() - failed to delete subarchive")
+        return False
+    
+    return True
+
 
 # Documents #########################################################
 def create_document(arc_id, document):
@@ -204,7 +220,10 @@ def delete_user(user):
     
     return True
 
-def add_alias(user, alias):
+def add_alias(alias):
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp)
+
     collection = db["users"]
     
     try:
@@ -218,7 +237,10 @@ def add_alias(user, alias):
     
     return True
 
-def delete_alias(user, alias_oib):
+def delete_alias(alias_oib):
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp)
+
     collection = db["users"]
     
     try:

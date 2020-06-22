@@ -37,8 +37,7 @@ def register():
         'password': bcrypt.generate_password_hash(doc['password'], 8),
         'personal_archive_id': None,
         'archive_ids': None,        
-        'alias_list': [],
-        'email_list':[]
+        'alias_list': []
     }
     
     res = mongodb.register_user(user)
@@ -139,11 +138,16 @@ def createSubarchive():
 
 @app.route('/archive/deleteSubarchive', methods=['POST'])
 def deleteSubarchive():
-
     doc = request.get_json()
-    mongo.db.archives.update({'_id': doc['personal_archive_id']},{'$pull':{'subarchives':{'subarchive_id':doc['subarchive_id']}}})
     
-    return "Izbrisano"
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp)
+        
+    if user['personal_archive_id'] == doc['personal_archive_id']:
+        res = mongodb.delete_subarchive(doc['personal_archive_id'], doc['subarchive_id'])
+        return jsonify(res)
+    else:
+        return jsonify(False)
 
 
 @app.route('/archive/UpdateExaminationDate', methods=['POST'])
@@ -227,11 +231,19 @@ def delete_shared_archive():
 
 @app.route('/addAlias', methods=['POST'])
 def add_alias():
+    new_alias = request.get_json()
+    res = mongodb.add_alias(new_alias)
+    
+    return jsonify(res)
 
-    doc = request.get_json()
-    alias_data = {'name': doc['name'], 'surname': doc['surname'], 'oib': doc['oib'], 'iban': doc['iban'], 'postal_code': doc['postal_code']}
-    mongo.db.users.update({'email': doc['user_email']},{'$push':{'alias_list': alias_data}})
-    return "Updated"
+
+@app.route('/deleteAlias', methods=['POST'])
+def delete_alias():
+    alias = request.get_json()
+    res = mongodb.delete_alias(alias['oib'])
+
+    return jsonify(res)
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
