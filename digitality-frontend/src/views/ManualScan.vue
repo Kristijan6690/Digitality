@@ -10,7 +10,7 @@
                     <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
                 </div>         
             </div>
-            <form action="/action_page.php">
+            <form v-on:submit.prevent="add_to_database()" action="/action_page.php">
                 <div class="row main" >
                         <div class="box one archive">
                             <div class="data">
@@ -88,7 +88,8 @@
         
                 </div>
                 <div class="row addButtonDiv">
-                    <button v-on:click ="add_to_database()" type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" >Dodaj</button>
+                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" >Dodaj</button>
+                    <button v-on:click="delete_doc_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" >Isprazni</button>
                 </div> 
             </form>
 
@@ -172,7 +173,7 @@ export default {
   data(){
     return {
       vrstaUsluge: 'Odaberite vrstu usluge',
-      scan_doc_data: JSON.parse(localStorage.getItem('scan_doc_data')),
+      scan_doc_data: {},
       user: Auth.getUser(),
     }
   },
@@ -190,12 +191,20 @@ export default {
 
     async add_to_database(){
       await app.add_document_to_database(this.user.personal_archive_id,this.scan_doc_data)
-      localStorage.removeItem('scan_doc_data');
-      this.$router.push({ name: 'Home' });
+      if(localStorage.getItem('scan_doc_data')) localStorage.removeItem('scan_doc_data')
+      this.$router.push({ name: 'Home' })
+    },
+
+    delete_doc_data(){
+      this.scan_doc_data = {}
+      if(localStorage.getItem('scan_doc_data')) localStorage.removeItem('scan_doc_data')
     }
   },
-  mounted(){  
-    console.log(this.scan_doc_data)
+
+  mounted(){
+    if(localStorage.getItem('scan_doc_data')){
+      this.scan_doc_data = JSON.parse(localStorage.getItem('scan_doc_data'))
+    }
   }
 }
 </script>
