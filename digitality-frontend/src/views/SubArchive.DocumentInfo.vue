@@ -156,10 +156,12 @@ export default {
     this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
     for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
       for(let j = 0; j < this.store.currentArchiveData.subarchives[i].documents.length; j++){
-        if(this.document_id == this.store.currentArchiveData.subarchives[i].documents[j].id_dokumenta) this.current_document = this.store.currentArchiveData.subarchives[i].documents[j]
+        if(this.document_id == this.store.currentArchiveData.subarchives[i].documents[j].id_dokumenta){
+          this.current_document = this.store.currentArchiveData.subarchives[i].documents[j]
+          break;
+        }
       }
     }
-    console.log(this.current_document)
   }
 }
 </script>
