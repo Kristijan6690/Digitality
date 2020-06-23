@@ -13,8 +13,8 @@ db = None
 
 def connect_to_db():
     try:
-        cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
-        #cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
+        #cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
+        cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
         
         global db
         db = cluster["digitality_production"]
@@ -120,6 +120,16 @@ def update_subarchive(arc_id, document):
         return False
     
     return True  
+
+def update_examination_time(ids):
+    arc = get_one_archive(ids['cur_arc'])
+    if not arc: return False
+    index, subarchive = get_subarchive(arc, ids['sub_arc'])
+    
+    subarchive['last_used'] =  datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    arc['subarchives'][index] = subarchive
+    
+    return update_subarchive(ids['cur_arc'], arc['subarchives'])
 
 def delete_subarchive(arc_id, subarc_id):
     collection = db["archives"]

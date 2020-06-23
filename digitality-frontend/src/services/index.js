@@ -87,8 +87,8 @@ let Auth = {
 }
 
 let app = {
-    async getArchives(eposta,dostupne_arhive_korisniku) {
-        let response = await Service.get('/GetArchives', {
+    async getArchives(eposta, dostupne_arhive_korisniku) {
+        let response = await Service.post('/GetArchives', {
             email: eposta,
             archive_ids: dostupne_arhive_korisniku
         });
@@ -106,7 +106,7 @@ let app = {
     },
 
     async getSearchArchives(pretraga,dostupne_arhive_korisniku,id_trenutne_arhive){
-        let response = await Service.get('/search/lista_arhiva',{
+        let response = await Service.post('/search/lista_arhiva',{
             searchTerm : pretraga,
             archive_ids: dostupne_arhive_korisniku,
             currentArchive_id: id_trenutne_arhive
@@ -115,24 +115,23 @@ let app = {
     },
 
     async createSubarchive(naziv, id_korisnikove_arhive){
-        
         await Service.post('/archives/createSubarchive', {
             archive_name : naziv,
             personal_archive_id : id_korisnikove_arhive
         })
     },
 
-    async deleteSubarchive(id_korisnikove_arhive,id_podarhive){
+    async deleteSubarchive(id_korisnikove_arhive, id_podarhive){
         await Service.delete('/archive/deleteSubarchive', {
             personal_archive_id : id_korisnikove_arhive,
             subarchive_id : id_podarhive
         })
     },
 
-    async update_exDate(id_trenutne_arhive,id_podarhive){
+    async update_exDate(id_trenutne_arhive, naziv_podarhive){
         await Service.post('/archive/UpdateExaminationDate',{
-            currentArchive_id: id_trenutne_arhive,
-            subarchive_id: id_podarhive
+            cur_arc: id_trenutne_arhive,
+            sub_arc: naziv_podarhive
         })
     },
 

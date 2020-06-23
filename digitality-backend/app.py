@@ -16,11 +16,13 @@ import scan_engine
 mongodb.connect_to_db()
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
+#app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
+
 
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
 def index():
@@ -64,8 +66,9 @@ def login():
     return jsonify(user)
 
 
-@app.route('/GetArchives', methods=['GET'])
+@app.route('/GetArchives', methods=['POST'])
 def getarhive():
+    print(request.get_json(['email']))
     user = mongodb.get_user(request.get_json()['email'])
     
     if not user:
@@ -88,7 +91,7 @@ def sendDocument():
     return jsonify(doc_data)
 
 
-@app.route('/search/lista_arhiva', methods=['GET'])
+@app.route('/search/lista_arhiva', methods=['POST'])
 def searchArchives():
     result = mongodb.get_archives( request.get_json()['archive_ids'] )
     searchTerm = str(request.get_json()['searchTerm']).lower()
@@ -124,15 +127,9 @@ def deleteSubarchive():
 
 @app.route('/archive/UpdateExaminationDate', methods=['POST'])
 def update_examination_date():
-
-    doc = request.get_json()
-    for archive in mongo.db.archives.find():
-        if(archive['_id'] == doc['currentArchive_id']):
-            mongo.db.archives.update(
-                {'subarchives.subarchive_id':doc['subarchive_id']},
-                {'$set':{'subarchives.$.last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}}
-            )
-            return "Dodano"
+    res = mongodb.update_examination_time(request.get_json())
+    
+    return jsonify(res)
 
 
 @app.route('/archives/SortArchives', methods=['POST'])
