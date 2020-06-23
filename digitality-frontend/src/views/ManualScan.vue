@@ -191,6 +191,7 @@ export default {
     async add_to_database(){
       await app.add_document_to_database(this.user.personal_archive_id,this.scan_doc_data)
       localStorage.removeItem('scan_doc_data');
+      this.$router.push({ name: 'Home' });
     }
   },
   mounted(){  
