@@ -50,8 +50,8 @@
                         <div id="fileIconDiv"><i class="far fa-file fa-lg" ></i></div>
                         <div id="currArchiveName"> {{store.currentArchiveData.name}} </div>
                       </button>
-                      <div class="dropdown-menu dropdown-menu-left menu-settings">
-                          <div class="dropdownHeader"  @click.stop=''> 
+                      <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
+                          <div class="dropdownHeader"> 
                               <h2 id="chooseArchiveHeader"> Odaberi arhivu </h2> 
                           </div>
                   

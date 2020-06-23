@@ -139,12 +139,26 @@
 
 <script>
 import store from "@/store.js";
+import { Auth } from "@/services";
 
 export default {
   data(){
-      return {
-          store
+    return {
+      store,
+      document_id : this.$route.params.id,
+      user: Auth.getUser(),
+      current_document : ''
+    }
+  },
+
+  mounted(){
+    let temp = JSON.parse(localStorage.getItem('userArchives'))
+    this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
+    for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
+      for(let j = 0; j < this.store.currentArchiveData.subarchives[i].documents.length; j++){
+        if(this.document_id == this.store.currentArchiveData.subarchives[i].documents[j].id_dokumenta) current_document = this.store.currentArchiveData.subarchives[i].documents[j]
       }
+    }
   }
 }
 </script>

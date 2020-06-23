@@ -37,7 +37,8 @@ def register():
         'password': bcrypt.generate_password_hash(doc['password'], 8),
         'personal_archive_id': None,
         'archive_ids': None,        
-        'alias_list': []
+        'alias_list': [],
+        'email_list': []
     }
     
     res = mongodb.register_user(user)

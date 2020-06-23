@@ -386,7 +386,7 @@ export default {
       if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
         subarchive_id = this.store.currentArchiveData.subarchives[i].subarchive_id
         await app.update_exDate(this.store.currentArchiveData._id,subarchive_id)
-      }  
+      }
     }
 
     //https://www.npmjs.com/package/vue-notification
