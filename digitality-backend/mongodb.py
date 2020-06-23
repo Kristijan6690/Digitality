@@ -6,13 +6,15 @@ import json
 from bson import ObjectId
 
 import default_data as dflt
+import current_user as current 
 
+# CONNECTION ########################################################
 db = None
 
 def connect_to_db():
     try:
-        cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
-        #cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
+        #cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
+        cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
         
         global db
         db = cluster["digitality_production"]
@@ -56,6 +58,7 @@ def update_company(company_data):
     
     return True
 
+
 # ARCHIVE ###########################################################
 def get_archives(archive_ids):
     collection = db["archives"]
@@ -63,7 +66,7 @@ def get_archives(archive_ids):
     filter = {'_id': {'$in':archive_ids}}
     
     try:
-        arc = collection.find(filter)
+        arc = list(collection.find(filter))
     except:
         print("get_archives() - failed to get archives!")
         arc = None
@@ -97,7 +100,6 @@ def delete_archive(arc_id):
     
 
 # SUBARCHIVE ########################################################
-
 def get_subarchive(arc, subarchive_name):
     for index, subarchive in enumerate(arc['subarchives']):
         if subarchive_name == subarchive['name']:
@@ -119,6 +121,16 @@ def update_subarchive(arc_id, document):
     
     return True  
 
+def update_examination_time(ids):
+    arc = get_one_archive(ids['cur_arc'])
+    if not arc: return False
+    index, subarchive = get_subarchive(arc, ids['sub_arc'])
+    
+    subarchive['last_used'] =  datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    arc['subarchives'][index] = subarchive
+    
+    return update_subarchive(ids['cur_arc'], arc['subarchives'])
+
 def delete_subarchive(arc_id, subarc_id):
     collection = db["archives"]
     
@@ -136,9 +148,10 @@ def delete_subarchive(arc_id, subarc_id):
     return True
 
 
-# Documents #########################################################
+# DOCUMENTS #########################################################
 def create_document(arc_id, document):
     arc = get_one_archive(arc_id)
+    if not arc: return False
     index, subarchive = get_subarchive(arc, document['naziv_dobavljaca'])
     
     subarchive['documents'].append(document)
@@ -151,11 +164,12 @@ def create_document(arc_id, document):
 
 def update_document(arc_id, document):
     arc = get_one_archive(arc_id)
+    if not arc: return False
     index, subarchive = get_subarchive(arc, document['naziv_dobavljaca'])
     
     # FIND AND REPLACE DOC IN LIST
     for idx, doc in enumerate(subarchive['documents']):
-        if doc['_id'] == document['_id']:
+        if doc['id_dokumenta'] == document['id_dokumenta']:
             subarchive['documents'][idx] = document
             break
       
@@ -165,6 +179,7 @@ def update_document(arc_id, document):
 
 def delete_document(arc_id, document):
     arc = get_one_archive(arc_id)
+    if not arc: return False
     index, subarchive = get_subarchive(arc, document['naziv_dobavljaca'])
     
     filtered_subarchive = [cur_doc for cur_doc in subarchive['documents'] if cur_doc['id_dokumenta'] != document['id_dokumenta']]
@@ -208,27 +223,30 @@ def get_user(email):
 
     return collection.find_one({'email': email})
 
-def delete_user(user):
+def delete_user(email):
     collection = db["users"]
+    user = get_user(email)
     
     try:
         collection.delete_one({'email': user['email']})
-        delete_archive(user['personal_archive_id'])
     except:
         print("Failed to delete user!")
         return False
     
+    try:
+        delete_archive(user['personal_archive_id'])
+    except:
+        print("Failed to delete personal archive of deleted user!")
+    
     return True
 
-def add_alias(alias):
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)
+def add_alias(alias, email): #<----------------------------------------------
 
     collection = db["users"]
     
     try:
         collection.update_one(
-            {'email': user['email']},
+            {'email': email},
             {'$push': {'alias_list': alias}}
         )
     except:
@@ -237,15 +255,12 @@ def add_alias(alias):
     
     return True
 
-def delete_alias(alias_oib):
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)
-
+def delete_alias(alias_oib, email): #<----------------------------------------------
     collection = db["users"]
     
     try:
         collection.update_one(
-            {'email': user['email']},
+            {'email': email},
             {'$pull': {'alias_list': {'oib': alias_oib }}}
         )
     except:
@@ -255,8 +270,7 @@ def delete_alias(alias_oib):
     return True
         
 
-
-# TESTING
+# TESTING ###########################################################
 def test_add_new_doc(test_archive_id):
     document = {
         'meta_data': {
@@ -282,7 +296,12 @@ def test_add_new_doc(test_archive_id):
         'vrsta_usluge': 'Struja',
         'iznos': '100kn'
     }
-    create_document(test_archive_id, document)
+    
+    res = create_document(test_archive_id, document)
+    if res:
+        print("test_add_new_doc - success")
+    else:
+        print("test_add_new_doc - fail")
     
 def test_update_doc(test_archive_id):
     document = {
@@ -309,14 +328,19 @@ def test_update_doc(test_archive_id):
         'vrsta_usluge': 'Struja',
         'iznos': '900kn'
     }
-    update_document(test_archive_id, document)
-        
-def test_get_data():
-    oib = ['16962783514', '12345678901']
-    print("Data:", get_data_oib(oib))
+    
+    res = update_document(test_archive_id, document)
+    if res:
+        print("test_update_doc - success")
+    else:
+        print("test_update_doc - fail")    
 
 def test_delete_arc(test_archive_id):
-    delete_archive(test_archive_id)
+    res = delete_archive(test_archive_id)
+    if res:
+        print("test_delete_arc - success")
+    else:
+        print("test_delete_arc - fail")
 
 def test_delete_doc(test_archive_id, id_dokumenta):
     document = {
@@ -324,24 +348,29 @@ def test_delete_doc(test_archive_id, id_dokumenta):
         'naziv_dobavljaca': 'primjer'
     }
     
-    delete_document(test_archive_id, document)
-
-def test_delete_user():
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp) 
+    res = delete_document(test_archive_id, document)
+    if res:
+        print("test_delete_doc - success")
+    else:
+        print("test_delete_doc - fail")
+            
+def test_delete_user(test_email):
+    res = delete_user(test_email)
+    if res:
+        print("test_delete_user - success")
+    else:
+        print("test_delete_user - fail")
         
-    delete_user(user)
+def test_update_user(): #<----------------------------------------------
 
-def test_update_user():
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp) 
+
+    res = update_user(user)
+    if res:
+        print("test_update_user - success")
+    else:
+        print("test_update_user - fail")
         
-    update_user(user)
-
-def test_add_alias():
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)
-
+def test_add_alias(test_email):
     alias = {
         'ime': 'John',
         'prezime': 'Smith',
@@ -350,12 +379,13 @@ def test_add_alias():
         'postal_code': '10000',
     }
           
-    add_alias(user, alias)
+    res = add_alias(alias, test_email)
+    if res:
+        print("test_add_alias - success")
+    else:
+        print("test_add_alias - fail")
 
-def test_delete_alias():
-    with open('current_user.json', 'r') as fp:
-        user = json.load(fp)
-
+def test_delete_alias(test_email):
     alias = {
         "ime" : "John",
         "prezime" : "Smith",
@@ -364,22 +394,32 @@ def test_delete_alias():
         "postal_code" : "10000"
     }
     
-    delete_alias(user, alias['oib'])
+    res = delete_alias(alias['oib'], test_email)
+    if res:
+        print("test_delete_alias - success")
+    else:
+        print("test_delete_alias - fail")
         
 
 if __name__ == "__main__":
     connect_to_db()
     
-    test_archive_id = '5eedf7ed594dfad0afab86c6'
-    id_dokumenta = '5edfa361c509ffb1cf2ea928'
+    test_archive_id = 1
+    id_dokumenta = 3
+    test_email = "e@mail2.com"
     
-    #test_add_new_doc(test_archive_id)
-    #test_update_doc(test_archive_id)
+    # Add
+    test_add_alias(test_email)
+    test_add_new_doc(test_archive_id)
     
-    #test_delete_arc(test_archive_id)
-    #test_delete_doc(test_archive_id, id_dokumenta)
-    
-    #test_delete_user()
+    # Update
     #test_update_user()
-    #test_add_alias()
-    test_delete_alias()
+    test_update_doc(test_archive_id)
+    
+    # Delete
+    test_delete_doc(test_archive_id, id_dokumenta)
+    test_delete_arc(test_archive_id)
+    
+    test_delete_alias(test_email)
+    test_delete_user(test_email)
+    

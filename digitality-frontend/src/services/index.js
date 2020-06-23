@@ -87,7 +87,7 @@ let Auth = {
 }
 
 let app = {
-    async getArchives(eposta,dostupne_arhive_korisniku) {
+    async getArchives(eposta, dostupne_arhive_korisniku) {
         let response = await Service.post('/GetArchives', {
             email: eposta,
             archive_ids: dostupne_arhive_korisniku
@@ -115,24 +115,23 @@ let app = {
     },
 
     async createSubarchive(naziv, id_korisnikove_arhive){
-        
         await Service.post('/archives/createSubarchive', {
             archive_name : naziv,
             personal_archive_id : id_korisnikove_arhive
         })
     },
 
-    async deleteSubarchive(id_korisnikove_arhive,id_podarhive){
-        await Service.post('/archive/deleteSubarchive', {
+    async deleteSubarchive(id_korisnikove_arhive, id_podarhive){
+        await Service.delete('/archive/deleteSubarchive', {
             personal_archive_id : id_korisnikove_arhive,
             subarchive_id : id_podarhive
         })
     },
 
-    async update_exDate(id_trenutne_arhive,id_podarhive){
+    async update_exDate(id_trenutne_arhive, naziv_podarhive){
         await Service.post('/archive/UpdateExaminationDate',{
-            currentArchive_id: id_trenutne_arhive,
-            subarchive_id: id_podarhive
+            cur_arc: id_trenutne_arhive,
+            sub_arc: naziv_podarhive
         })
     },
 
@@ -161,8 +160,9 @@ let app = {
         return response.data
     },
 
-    async add_alias(ime,prezime,oib,iban,postanski_broj){
-        await Service.post('/addAlias', {
+    async add_alias(eposta_korisnika,ime,prezime,oib,iban,postanski_broj){
+        await Service.put('/addAlias', {
+            user_email: eposta_korisnika,
             name: ime,
             surname: prezime,
             oib: oib,

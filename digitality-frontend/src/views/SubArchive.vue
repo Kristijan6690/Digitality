@@ -381,7 +381,6 @@ export default {
     if(this.documentData == '') console.log("Korisnik nema dokumenta")
     
     //Update examination date
-    let subarchive_id
     for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
       if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
         subarchive_id = this.store.currentArchiveData.subarchives[i].subarchive_id
