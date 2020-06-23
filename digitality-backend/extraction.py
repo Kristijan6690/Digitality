@@ -102,7 +102,7 @@ def oib_numbers(text):
     if oib_list:
         oib_list = [re.findall('\d{11}', num)[0] for num in oib_list]
         
-        data = db.get_data_oib(oib_list) # Dohvacamo alias/izdavaca racuna na temelju oib-a
+        data = da.get_data_oib(oib_list) # Dohvacamo alias/izdavaca racuna na temelju oib-a
     else:
         data =  (None, None)
 

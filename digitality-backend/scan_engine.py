@@ -27,6 +27,8 @@ def photo_to_dict(photo):
     del company_data['iban']
     final_dict.update(company_data)
     
+    final_dict['photo'] = photo
+    
     return final_dict
 
 def add_to_database(archive, document):

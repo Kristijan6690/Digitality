@@ -50,6 +50,10 @@ let Auth = {
               
     },
 
+    async current_user(user){
+        await Service.put('/current_user', user)
+    },
+
     logout() {
         localStorage.removeItem('user');
         localStorage.removeItem('userArchives')
