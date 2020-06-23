@@ -16,65 +16,65 @@
                         <div class="box one archive">
                             <div class="data">
                                 <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input type="text" id="nazDobavljaca" name="nazDobavljaca" disabled><br>
+                                <input type="text" v-model="this.current_document.naziv_dobavljaca" id="nazDobavljaca" name="nazDobavljaca" disabled><br>
                             </div>
                             <div class="data">
                                 <label for="nazKupca">Naziv kupca:</label>
-                                <input type="text" id="nazKupca" name="nazKupca" disabled ><br><br>
+                                <input type="text" v-model="this.current_document.naziv_kupca" id="nazKupca" name="nazKupca" disabled ><br><br>
                             </div>
                             <div class="data">
                                 <label for="brojRacuna">Broj računa:</label>
-                                <input type="text" id="brojRacuna" name="brojRacuna" disabled ><br><br>
+                                <input type="text" v-model="this.current_document.broj_racuna" id="brojRacuna" name="brojRacuna" disabled ><br><br>
                             </div>
                             <div class="data">
                                 <label for="datIzdavanja">Datum izdavanja:</label>
-                                <input type="text" id="datIzdavanja" name="datIzdavanja" disabled ><br>
+                                <input type="text" v-model="this.current_document.datum_izdavanja" id="datIzdavanja" name="datIzdavanja" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
-                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" disabled ><br>
+                                <input type="text" v-model="this.current_document.mjesto_izdavanja" id="mjestoIzdavanja" name="mjestoIzdavanja" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="vrstaUsluge" >Vrsta usluge:</label>
-                                <input type="text" id="vrstaUsluge" name="vrstaUsluge" disabled ><br>
+                                <input type="text" v-model="this.current_document.vrsta_usluge" id="vrstaUsluge" name="vrstaUsluge" disabled ><br>
                             </div>
                             <div class="data">
-                                <label for="kolicina">Količina:</label>
-                                <input type="text" id="kolicina" name="kolicina" disabled ><br>
+                                <label for="kolicina">Neto iznos:</label>
+                                <input type="text" v-model="this.current_document.neto_iznos" id="kolicina" name="kolicina" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="pozNaBroj">Poziv na broj:</label>
-                                <input type="text" id="pozNaBroj" name="pozNaBroj" disabled ><br>
+                                <input type="text" v-model="this.current_document.poziv_na_broj" id="pozNaBroj" name="pozNaBroj" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="IBANplatitelja">IBAN platitelja:</label>
-                                <input type="text" id="IBANplatitelja" name="IBANplatitelja" disabled ><br>
+                                <input type="text" v-model="this.current_document.iban_platitelja" id="IBANplatitelja" name="IBANplatitelja" disabled ><br>
                             </div>
                         </div>
                         <div class="box two archive">
                              <div class="data">
                                 <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input type="text" id="OIBdobavljaca" name="OIBdobavljaca"  disabled ><br>
+                                <input type="text" v-model="this.current_document.oib_dobavljaca" id="OIBdobavljaca" name="OIBdobavljaca"  disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="OIBkupca">OIB kupca:</label>
-                                <input type="text" id="OIBkupca" name="OIBkupca"  disabled ><br><br><br><br>
+                                <input type="text" v-model="this.current_document.oib_kupca" id="OIBkupca" name="OIBkupca"  disabled ><br><br><br><br>
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
-                                <input type="text" id="datDospijeca" name="datDospijeca"  disabled ><br><br><br><br>
+                                <input type="text" v-model="this.current_document.datum_dospijeca" id="datDospijeca" name="datDospijeca"  disabled ><br><br><br><br>
                             </div>
                             <div class="data">
                                 <label for="pdv">PDV:</label>
-                                <input type="text" id="pdv" name="pdv"  disabled ><br>
+                                <input type="text" v-model="this.current_document.pdv" id="pdv" name="pdv"  disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="iznos">Iznos:</label>
-                                <input type="text" id="iznos" name="iznos"  disabled ><br>
+                                <input type="text" v-model="this.current_document.iznos" id="iznos" name="iznos"  disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="IBANprimatelja">IBAN primatelja:</label>
-                                <input type="text" id="IBANprimatelja" name="IBANprimatelja"  disabled ><br>
+                                <input type="text" v-model="this.current_document.iban_primatelja" id="IBANprimatelja" name="IBANprimatelja"  disabled ><br>
                             </div> 
                         </div>
         
@@ -156,9 +156,10 @@ export default {
     this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
     for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
       for(let j = 0; j < this.store.currentArchiveData.subarchives[i].documents.length; j++){
-        if(this.document_id == this.store.currentArchiveData.subarchives[i].documents[j].id_dokumenta) current_document = this.store.currentArchiveData.subarchives[i].documents[j]
+        if(this.document_id == this.store.currentArchiveData.subarchives[i].documents[j].id_dokumenta) this.current_document = this.store.currentArchiveData.subarchives[i].documents[j]
       }
     }
+    console.log(this.current_document)
   }
 }
 </script>
@@ -218,6 +219,7 @@ input{
     border: 1px solid  #00A2FF;
     padding-left: 10px;
     padding-right: 10px;
+    color:black;
 }
 
 label{
