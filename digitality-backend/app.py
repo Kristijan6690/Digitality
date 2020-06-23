@@ -77,7 +77,6 @@ def login():
 
 @app.route('/GetArchives', methods=['POST'])
 def getarhive():
-    print(request.get_json(['email']))
     user = mongodb.get_user(request.get_json()['email'])
     
     if not user:
@@ -121,10 +120,9 @@ def searchArchives():
     return jsonify(result)
     
 
-@app.route('/archive/deleteSubarchive', methods=['DELETE'])
+@app.route('/archive/deleteSubarchive', methods=['PATCH'])
 def deleteSubarchive():
     doc = request.get_json()
-
     user = current.user
         
     if user['personal_archive_id'] == doc['personal_archive_id']:

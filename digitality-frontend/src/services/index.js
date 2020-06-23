@@ -126,7 +126,7 @@ let app = {
     },
 
     async deleteSubarchive(id_korisnikove_arhive, id_podarhive){
-        await Service.delete('/archive/deleteSubarchive', {
+        await Service.patch('/archive/deleteSubarchive', {
             personal_archive_id : id_korisnikove_arhive,
             subarchive_id : id_podarhive
         })
