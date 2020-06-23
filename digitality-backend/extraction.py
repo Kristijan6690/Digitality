@@ -12,12 +12,11 @@ def build_amounts_dict(total, pdv):
     return {'iznos': total, 'pdv': pdv, 'neto': neto}    
 
 def extract_pdv(text):
-    pdv = re.search('(\d{2}%)', text).group()
-
-    if pdv:
+    try:
+        pdv = re.search('(\d{2}%)', text).group()
         return int(pdv[:-1])
-    else:
-        return 25 
+    except AttributeError:
+        return 25
 
 def amounts_extraction(text):
     results = re.findall('(\d{2,3}(\.|,)\d\d)', text)
@@ -102,7 +101,7 @@ def oib_numbers(text):
     if oib_list:
         oib_list = [re.findall('\d{11}', num)[0] for num in oib_list]
         
-        data = db.get_data_oib(oib_list) # Dohvacamo alias/izdavaca racuna na temelju oib-a
+        data = da.get_data_oib(oib_list) # Dohvacamo alias/izdavaca racuna na temelju oib-a
     else:
         data =  (None, None)
 
@@ -120,8 +119,10 @@ if __name__ == "__main__":
     #print("Payment dates", payment_dates(text))
     #print("IBAN:", iban_numbers(text))
     
-    user, company = oib_numbers(text)
-    print("User:", user)
-    print("Company:", company)
+    #user, company = oib_numbers(text)
+    #print("User:", user)
+    #print("Company:", company)
+    
+    print(extract_pdv("asdsad"))
     
     print("\n\n ###########################################################\n")

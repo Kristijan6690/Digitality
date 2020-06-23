@@ -28,6 +28,14 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def index():
     return "Hello World"
 
+@app.route('/current_user', methods=['PUT'])
+def current_user():
+    try:
+        current.user = request.get_json()
+        return jsonify(True)
+    except:
+        return jsonify(False)
+
 @app.route('/register', methods=['POST'])
 def register():
     doc = request.get_json()

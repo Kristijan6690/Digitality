@@ -48,6 +48,7 @@
 import store from "@/store.js";
 import "vue-croppa/dist/vue-croppa.css";
 import { app } from "@/services";
+import { Auth } from "@/services";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
@@ -133,6 +134,9 @@ export default {
   mounted(){
     $('#successAlert').hide();
     $('#warningAlert').hide();
+
+    let user = Auth.getUser()
+    if(user) Auth.current_user(user)
   }
 
 };
