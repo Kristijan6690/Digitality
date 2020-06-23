@@ -383,7 +383,7 @@ export default {
     //Update examination date
     for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
       if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
-        subarchive_id = this.store.currentArchiveData.subarchives[i].subarchive_id
+        let subarchive_id = this.store.currentArchiveData.subarchives[i].subarchive_id
         await app.update_exDate(this.store.currentArchiveData._id,subarchive_id)
       }
     }

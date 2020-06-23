@@ -16,8 +16,8 @@ import scan_engine
 mongodb.connect_to_db()
 
 app = Flask(__name__)
-#app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
-app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
+#app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
 
 
 mongo = PyMongo(app)
@@ -111,7 +111,23 @@ def searchArchives():
             archives['subarchives'] = subarchives
 
     return jsonify(result)
+
+
+@app.route('/archives/createSubarchive', methods=['POST'])
+def createSubarchive():
+    archive_name = request.get_json()['archive_name'].lower()
+    personal_archive_id = request.get_json()['personal_archive_id']
+    subarchive_id = str(ObjectId())
     
+    mongo.db.archives.update({'_id': personal_archive_id},{'$push':{
+        'subarchives': {
+            'subarchive_id': subarchive_id,
+            'name': archive_name,
+            'last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            'documents': []
+        }}})
+        
+    return "Dodano"
 
 @app.route('/archive/deleteSubarchive', methods=['DELETE'])
 def deleteSubarchive():
