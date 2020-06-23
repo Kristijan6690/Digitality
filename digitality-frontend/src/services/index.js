@@ -173,6 +173,10 @@ let app = {
             iban: iban,
             postal_code: postanski_broj
         })
+    },
+
+    async delete_alias(alias){
+        await Service.delete('/deleteAlias', alias['oib'])
     }
 };
 
