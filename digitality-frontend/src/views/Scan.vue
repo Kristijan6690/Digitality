@@ -104,7 +104,8 @@ export default {
       let url = this.user.email + "/" + Date.now() + ".png";
       let result = await storage.ref(url).put(blobData);
       let url_dokumenta = await result.ref.getDownloadURL();
-      this.store.scan_doc_data = await app.sendDocument(url_dokumenta)
+      let temp = await app.sendDocument(url_dokumenta);
+      localStorage.setItem('scan_doc_data',JSON.stringify(temp))
       this.$router.push({ name: 'ManualScan' })
     },
 

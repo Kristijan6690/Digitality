@@ -1,6 +1,5 @@
 export default {
   currentArchiveData: '',
-  scan_doc_data: '',
   
   filter: {
     datum_dodavanja: '',

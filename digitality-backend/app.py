@@ -240,5 +240,13 @@ def delete_alias():
     return jsonify(res)
 
 
+@app.route('/addDocumentToDatabase', methods=['POST'])
+def add_doc_to_database():
+    doc = request.get_json()
+    scan_engine.add_to_database(doc['personal_archive_id'],doc['document'])
+
+    return "Dodano"
+
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

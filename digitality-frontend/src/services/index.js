@@ -56,7 +56,8 @@ let Auth = {
 
     logout() {
         localStorage.removeItem('user');
-        localStorage.removeItem('userArchives')
+        localStorage.removeItem('userArchives');
+        localStorage.removeItem('scan_doc_data');
     },
 
     getToken() {
@@ -177,6 +178,13 @@ let app = {
 
     async delete_alias(alias){
         await Service.delete('/deleteAlias', alias['oib'])
+    },
+
+    async add_document_to_database(id_korisnikove_arhive,dokument){
+        await Service.post('/addDocumentToDatabase',{
+            personal_archive_id: id_korisnikove_arhive,
+            document: dokument
+        })
     }
 };
 
