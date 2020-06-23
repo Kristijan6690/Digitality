@@ -184,7 +184,6 @@ export default {
       let temp = this.store.scan_doc_data.datum_izdavanja;
       this.store.scan_doc_data.datum_izdavanja = this.store.scan_doc_data.datum_dospijeca
       this.store.scan_doc_data.datum_dospijeca = temp;
-      console.log('adsasddas')
     }
   },
   mounted(){

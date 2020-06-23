@@ -165,38 +165,6 @@
             </div>
           </div>
 
-          <!-- Modal za popunjavanje podataka koji nedostaju -->
-          <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header" style="display:block;">
-                  <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Dodatni podaci</h3>
-                </div>
-                <div class="modal-body">
-                  <small id="emailHelp" class="form-text text-muted" style="margin-bottom:10px;">
-                    Poštovani, kako bi naš sustav radio pravilno, molimo Vas da popunite sljedeće podatke:
-                  </small>
-                  <form>
-                    <div class="form-group">
-                      <input v-model="oib" type="text" class="form-control" placeholder="OIB">
-                    </div>
-                     <div class="form-group">
-                      <input v-model="iban" type="text" class="form-control" placeholder="IBAN">
-                    </div>
-                     <div class="form-group">
-                      <input v-model="postal_code" type="text" class="form-control" placeholder="Poštanski broj">
-                    </div>
-                                 
-                  </form>
-                </div>
-                <div class="modal-footer" style="text-align:center; display:block;">
-                  <button v-on:click ="share_arc()" type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" style="background-color:#00A2FF">Dodaj</button>
-                  <button type="button" class="btn btn-secondary"  data-dismiss="modal" style="background-color:red">Odustani</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
         <!-- Modal za kreiranje arhive -->
           <div class="modal fade" id="createArchiveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -230,13 +198,13 @@
         </div>
       </div>
 
-        <!-- add user alias success confirmation -->
-      <div class="modal fade" id="alias_success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <!-- add user success confirmation -->
+      <div class="modal fade" id="adding_user_success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Alias uspješno dodan
+                   Pristup dozvoljen
                   <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
@@ -377,7 +345,7 @@ export default {
     },
 
     addingUserConfirmation(success){
-      if(success) $("#alias_success_confirmation").modal()
+      if(success) $("#adding_user_success_confirmation").modal()
 
       else $("#unsuccess_confirmation_adding_user").modal()
 
