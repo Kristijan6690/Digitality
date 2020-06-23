@@ -18,7 +18,7 @@
                                 <i class="far fa-edit"></i>
                               </div>
                               <div class="changeName" >
-                                <input v-model="naziv_arhive" id="changeNameHeader" style="color:#2c3e50;"/> 
+                                <input v-model="store.currentArchiveData.name" id="changeNameHeader" style="color:#2c3e50;"/> 
                               </div>
                           </div>
                           <div class="dropdownBody body-settings" >                       
@@ -38,7 +38,8 @@
                               </div>
                             </div>
                           <div class="dropdownFooter addButtonDiv">
-                                <button type="submit" @click="closeSortDropdown" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
+                                <button type="submit" @click="changeArchiveName()" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Spremi</button>
+                                <button type="submit" @click="closeShareDropDown()" class="btn btn-primary my-2 my-sm-0" id="closeShareDropdownButton" > Zatvori</button>
                           </div>
                       </div>
                     </div>
@@ -277,7 +278,6 @@ export default {
       oib: '',
       iban: '',
       postal_code: '',
-      naziv_arhive: 'Moja_arhiva_promjena_naziva',
       userArchiveList:  JSON.parse(localStorage.getItem('userArchives'))
     }
   },
@@ -301,6 +301,17 @@ export default {
       let archives = await app.getSearchArchives(pretraga, this.user.archive_ids,this.store.currentArchiveData._id)
       localStorage.setItem('userArchives',JSON.stringify(archives))
       this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids) 
+    },
+
+    async changeArchiveName(){
+      await app.changeArchiveName(this.store.currentArchiveData._id,this.store.currentArchiveData.name)
+      let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      $('#closeShareDropdownButton').trigger("click");
+    },
+
+    closeShareDropDown(){
+      $('#closeShareDropdownButton').trigger("click");
     },
 
     async create_subArchive() {

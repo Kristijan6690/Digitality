@@ -185,6 +185,13 @@ let app = {
             personal_archive_id: id_korisnikove_arhive,
             document: dokument
         })
+    },
+
+    async changeArchiveName(id_trenutne_arhive,naziv_trenutne_arhive){
+        await Service.post('/changeArchiveName',{
+            archive_id: id_trenutne_arhive,
+            archive_name: naziv_trenutne_arhive
+        })
     }
 };
 

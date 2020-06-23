@@ -248,5 +248,13 @@ def add_doc_to_database():
     return "Dodano"
 
 
+@app.route('/changeArchiveName', methods=['POST'])
+def change_archive_name():
+    doc = request.get_json()
+    mongo.db.archives.update_one({'_id': doc['archive_id']},{'$set':{'name': doc['archive_name']}})
+
+    return "Uspijeh"
+
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
