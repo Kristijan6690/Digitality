@@ -127,7 +127,7 @@ def check_user_pc(p_codes):
     user = current.user 
     
     aliases = user['alias_list']
-    alias_codes = [alias['postal_code'] for alias in aliases]
+    alias_codes = [alias['postanski_broj'] for alias in aliases]
 
     for index, p_code in enumerate(p_codes):
         if p_code in alias_codes:

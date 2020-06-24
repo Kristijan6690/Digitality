@@ -1,5 +1,6 @@
 import axios from "axios";
 import $router from '@/router'
+import $store from '@/store'
 
 let Service = axios.create({
     baseURL: "http://localhost:5000/"
@@ -165,19 +166,22 @@ let app = {
         return response.data
     },
 
-    async add_alias(eposta_korisnika,ime,prezime,oib,iban,postanski_broj){
-        await Service.put('/addAlias', {
-            user_email: eposta_korisnika,
-            name: ime,
-            surname: prezime,
-            oib: oib,
-            iban: iban,
-            postal_code: postanski_broj
-        })
+    async add_alias(alias){
+        await Service.put('/addAlias', alias)
+        
+        let user = Auth.getUser()
+        user.alias_list.push(alias)
+
+        localStorage.setItem('user', JSON.stringify(user));
     },
 
-    async delete_alias(alias){
-        await Service.delete('/deleteAlias', alias['oib'])
+    async delete_alias(alias_oib){
+        await Service.patch('/deleteAlias', {'oib': alias_oib})
+        
+        let user = Auth.getUser()
+        user.alias_list = user.alias_list.filter(alias => alias.oib != alias_oib)
+
+        localStorage.setItem('user', JSON.stringify(user));
     },
 
     async add_document_to_database(id_korisnikove_arhive,dokument){

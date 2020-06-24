@@ -22,6 +22,7 @@ def amounts_extraction(text):
     results = re.findall('(\d{2,3}(\.|,)\d\d)', text)
     results = [res[0] for res in results]
 
+    total = None
     if results:
         results = [float(elem.replace(',', '.')) for elem in results]
         total = max(results)
@@ -89,9 +90,9 @@ def filter_data(data):
         new_user = { 'naziv_kupca': None, 'oib_kupca': None, 'iban_platitelja': None}
     
     if company_data: # company
-        new_company = {'naziv_dobavljaca': company_data['naziv'], 'oib_dobavljaca': company_data['oib'], 'iban': company_data['iban']}
+        new_company = {'naziv_dobavljaca': company_data['naziv'], 'oib_dobavljaca': company_data['oib'], 'iban': company_data['iban'], 'vrsta_usluge': company_data['usluga']}
     else:
-        new_company = {'naziv_dobavljaca': None, 'oib_dobavljaca': None,'iban': None}
+        new_company = {'naziv_dobavljaca': None, 'oib_dobavljaca': None,'iban': None, 'vrsta_usluge': None}
         
     return (new_user, new_company)
 

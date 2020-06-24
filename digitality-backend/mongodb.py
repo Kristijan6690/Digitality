@@ -259,6 +259,8 @@ def delete_alias(alias_oib): #<----------------------------------------------
     collection = db["users"]
     email = current.user['email']
     
+    print(email, alias_oib)
+    
     try:
         collection.update_one(
             {'email': email},

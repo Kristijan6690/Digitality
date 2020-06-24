@@ -3,26 +3,26 @@
                     
         <div class="data">
             <label for="Ime">Ime:</label>
-            <input {{info.name}} type="text" id="Ime" name="Alias" readonly>
+            <input v-model="info.ime" type="text" id="Ime" name="Alias" readonly>
         </div>
         <div class="data">
             <label for="Prezime">Prezime:</label>
-            <input v-model="Prezime" type="text" id="Prezime" name="Alias" readonly>
+            <input v-model="info.prezime" type="text" id="Prezime" name="Alias" readonly>
         </div> 
         <div class="data">
             <label for="OIB">OIB:</label>
-            <input v-model="OIB" type="text" id="OIB" name="Alias" readonly>
+            <input v-model="info.oib" type="text" id="OIB" name="Alias" readonly>
         </div> 
         <div class="data">
             <label for="IBAN">IBAN:</label>
-            <input v-model="IBAN" type="text" id="IBAN" name="Alias" readonly>
+            <input v-model="info.iban" type="text" id="IBAN" name="Alias" readonly>
         </div> 
         <div class="dataLong">
             <label for="PostanskBroj">Poštanski broj:</label>
-            <input v-model="PostanskiBroj" type="text" id="PostanskiBroj" name="Alias" readonly>
+            <input v-model="info.postanski_broj" type="text" id="PostanskiBroj" name="Alias" readonly>
         </div> 
         <div class="button" style="display:block; text-align:center;">
-            <button style="border:none;"><i class="fa fa-window-close" aria-hidden="true" style="color:red;"></i></button>
+            <button style="border:none;" v-on:click="delete_alias"><i class="fa fa-window-close" aria-hidden="true" style="color:red;"></i></button>
         </div> 
 
     </div>
@@ -30,22 +30,21 @@
 
 <script>
 import store from "@/store.js";
+import { app } from "@/services";
 
 export default {
   data() {
     return {
       store,
-      Ime: '',
-      Prezime: '',
-      OIB: '',
-      IBAN: '',
-      PostanskiBroj: ''
     };
   },
   props: ["info"],
 
   methods:{
-    
+    async delete_alias(){
+        await app.delete_alias(this.info.oib)
+        
+    }
   }
 }
 </script>

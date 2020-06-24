@@ -232,9 +232,10 @@ def add_alias():
     return jsonify(res)
 
 
-@app.route('/deleteAlias', methods=['DELETE'])
+@app.route('/deleteAlias', methods=['PATCH'])
 def delete_alias():
     alias = request.get_json()
+    print(alias)
     res = mongodb.delete_alias(alias['oib'])
 
     return jsonify(res)
@@ -243,7 +244,7 @@ def delete_alias():
 @app.route('/addDocumentToDatabase', methods=['POST'])
 def add_doc_to_database():
     doc = request.get_json()
-    scan_engine.add_to_database(doc['personal_archive_id'],doc['document'])
+    scan_engine.add_to_database(doc['personal_archive_id'], doc['document'])
 
     return "Dodano"
 

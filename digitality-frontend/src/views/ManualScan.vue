@@ -42,7 +42,7 @@
                             </div>
                             <div class="data">
                                 <label for="netoIznos">Neto iznos:</label>
-                                <input v-model="scan_doc_data.neto_iznos" type="text" id="netoIznos" name="neto_iznos" required><br>
+                                <input v-model="scan_doc_data.neto" type="text" id="netoIznos" name="neto_iznos" required><br>
                             </div>
                             <div class="data">
                                 <label for="pozNaBroj">Poziv na broj:</label>
@@ -185,6 +185,8 @@ export default {
 
     async add_to_database(){
       await app.add_document_to_database(this.user.personal_archive_id,this.scan_doc_data)
+      
+      
       if(localStorage.getItem('scan_doc_data')) localStorage.removeItem('scan_doc_data')
       this.$router.push({ name: 'Home' })
     },

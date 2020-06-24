@@ -7,31 +7,31 @@
                     <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
                 </div>         
             </div>
+            
+            <RemoveAlias v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
+            
             <form >
-
-                <RemoveAlias v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
-                
                 <div class="row main"  >
                     
                     <div class="data">
                         <label for="Ime">Ime:</label>
-                        <input v-model="Ime" type="text" id="Ime" name="Alias" required>
+                        <input v-model="alias.ime" type="text" id="Ime" name="Alias" required>
                     </div>
                     <div class="data">
                         <label for="Prezime">Prezime:</label>
-                        <input v-model="Prezime" type="text" id="Prezime" name="Alias" required>
+                        <input v-model="alias.prezime" type="text" id="Prezime" name="Alias" required>
                     </div> 
                     <div class="data">
                         <label for="OIB">OIB:</label>
-                        <input v-model="OIB" type="text" id="OIB" name="Alias" required>
+                        <input v-model="alias.oib" type="text" id="OIB" name="Alias" required>
                     </div> 
                     <div class="data">
                         <label for="IBAN">IBAN:</label>
-                        <input v-model="IBAN" type="text" id="IBAN" name="Alias" required>
+                        <input v-model="alias.iban" type="text" id="IBAN" name="Alias" required>
                     </div> 
                     <div class="dataLong">
                         <label for="PostanskBroj">Poštanski broj:</label>
-                        <input v-model="PostanskiBroj" type="text" id="PostanskiBroj" name="Alias" required>
+                        <input v-model="alias.postanski_broj" type="text" id="PostanskiBroj" name="Alias" required>
                     </div> 
                     <div class="button">
                         <button @click="addUserAlias" type="button" style="border:none;"><i class="fa fa-plus" aria-hidden="true" style="color:#00A2FF"></i></button>
@@ -111,11 +111,7 @@ export default {
     return {
       store,
       user: Auth.getUser(),
-      Ime: '',
-      Prezime: '',
-      OIB: '',
-      IBAN: '',
-      PostanskiBroj: ''
+      alias: {}
     }
   },
   name: 'Home',
@@ -125,8 +121,8 @@ export default {
 
   methods:{
     async addUserAlias(){
-      //await app.add_alias(this.Ime, this.Prezime, this.OIB, this.IBAN, this.PostanskiBroj)
-      this.Ime = '', this.Prezime = '', this.OIB = '', this.IBAN = '', this.PostanskiBroj = ''
+      await app.add_alias(this.alias)
+      this.alias = {}
     }
   }
 }
