@@ -45,7 +45,7 @@
                     </div>
 
                     <!-- choose Archive (Dropdown umjesto selecta zbog veće mogućnosti customizacije -- prebaciti css u css--> 
-                     <div class="btn-group  dropdown" >
+                     <div class="btn-group  dropdown">
                        
                        <button class="btn btn-light dropdown-toggle chooseArchive" type="button" id="dropdownMenuArchive" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <div id="fileIconDiv"><i class="far fa-file fa-lg" ></i></div>
@@ -480,7 +480,7 @@ a{
   border: 2px solid  #00A2FF;
   padding: 3px;
   color: #00A2FF; 
-  margin-left:0px; 
+  margin-left:0px !important; 
   text-align:left;
   /*vertical-align:top;*/
 }
@@ -520,6 +520,10 @@ a{
 #archiveSelection {
   height: 50px; 
   position: relative;
+}
+
+.dropdown{
+  margin-left:0px !important;
 }
 
 

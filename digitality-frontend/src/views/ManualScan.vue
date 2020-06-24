@@ -38,17 +38,11 @@
                             </div>
                             <div class="data">
                                 <label for="vrstaUsluge">Vrsta usluge:</label>
-                                      <select v-model="scan_doc_data.vrsta_usluge" id="billTypeDropdown">
-                                        <option disabled value="">Odaberite vrstu usluge</option>
-                                        <option> Internet </option>
-                                        <option> Struja</option>
-                                        <option> Voda </option>
-                                      </select> 
-                                <br>
+                                <input v-model="scan_doc_data.vrsta_usluge" type="text" id="vrsta_usluge" name="vrsta_usluge" required><br>
                             </div>
                             <div class="data">
-                                <label for="kolicina">Količina:</label>
-                                <input v-model="scan_doc_data.kolicina" type="text" id="kolicina" name="kolicina" required><br>
+                                <label for="netoIznos">Neto iznos:</label>
+                                <input v-model="scan_doc_data.neto_iznos" type="text" id="netoIznos" name="neto_iznos" required><br>
                             </div>
                             <div class="data">
                                 <label for="pozNaBroj">Poziv na broj:</label>
@@ -88,8 +82,8 @@
         
                 </div>
                 <div class="row addButtonDiv">
-                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" >Dodaj</button>
-                    <button v-on:click="delete_doc_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" >Isprazni</button>
+                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Dodaj</button>
+                    <button v-on:click="delete_doc_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Isprazni</button>
                 </div> 
             </form>
 

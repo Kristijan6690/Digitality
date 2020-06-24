@@ -1,11 +1,11 @@
 <template>
   <router-link v-bind:to="'/SubArchive.DocumentInfo/' + info.id_dokumenta">
     <div class="document">
-      <div class="documentName"></div>
+      <div class="documentName">{{info.iban_platitelja}}</div>
       <div class="documentPicDiv">
         <img src='/Images/align-justify.png'/>
       </div>
-      <div class="documentDate">{{info.datum_dodavanja.slice(0,-3)}}</div>
+      <div class="documentDate">{{info.datum_dospijeca.slice(0,-3)}}</div>
     </div>
   </router-link>
 </template>

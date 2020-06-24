@@ -39,8 +39,8 @@
                                 <input type="text" id="vrstaUsluge" name="vrstaUsluge" placeholder="internet / struja / mobilni operater..."><br>
                             </div>
                             <div class="data">
-                                <label for="kolicina">Količina:</label>
-                                <input type="text" id="kolicina" name="kolicina"><br>
+                                <label for="Neto iznos">Količina:</label>
+                                <input type="text" id="netoIznos" name="netoIznos"><br>
                             </div>
                             <div class="data">
                                 <label for="pozNaBroj">Poziv na broj:</label>

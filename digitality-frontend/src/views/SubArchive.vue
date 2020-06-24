@@ -388,6 +388,8 @@ export default {
       }
     }
 
+    console.log(this.documentData)
+
     //https://www.npmjs.com/package/vue-notification
     this.$notify({
         group: 'notify',

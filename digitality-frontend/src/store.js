@@ -7,7 +7,7 @@ export default {
     datum_izdavanja: '',
     datum_dospijeća: '',
     vrsta_usluge: '',
-    kolicina: '',
+    neto_iznos: '',
     iznos: '',
   },
 
