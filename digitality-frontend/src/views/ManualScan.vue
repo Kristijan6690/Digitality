@@ -38,7 +38,7 @@
                             </div>
                             <div class="data">
                                 <label for="vrstaUsluge">Vrsta usluge:</label>
-                                      <select v-model="vrstaUsluge" id="billTypeDropdown">
+                                      <select v-model="scan_doc_data.vrsta_usluge" id="billTypeDropdown">
                                         <option disabled value="">Odaberite vrstu usluge</option>
                                         <option> Internet </option>
                                         <option> Struja</option>

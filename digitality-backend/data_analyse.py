@@ -72,6 +72,8 @@ def compare_user_iban(iban_list):
     return iban_list    
 
 def check_iban(iban_list, company_data):
+    
+    
     # Edge case handling
     if not iban_list:
         try:
@@ -153,17 +155,19 @@ def get_data_oib(oib_list):
         if not company_data:
             company_data = db.get_company(oib)       
         elif not user_data:
-            user_data = get_cur_alias()[0]
+            user_data = get_cur_alias(oib)
             
         if user_data and company_data:
             break
             
     return (user_data, company_data)
 
-
-def get_cur_alias():
-    user = current.user  
-    return user['alias_list']  
+def get_cur_alias(oib):
+    user = current.user
+    if not user['alias_list']: return None
+    
+    for alias in user['alias_list']:
+        if alias['oib'] == oib: return alias
 
 # TEST
 def test_update_iban(test_company):
@@ -176,11 +180,42 @@ def test_check_iban(test_company):
 def test_check_postal_code():
     p_codes = [10110, 51304]
     print(check_postal_code(p_codes))
-     
+
+def test_get_data_oib():
+    oib_list = ['81793146560', '07125893001']
+    
+    res = get_data_oib(oib_list)
+    print(res)
+
 if __name__ == "__main__":
-    test_company = db.get_company(db.connect_to_db(), '16962783514')
+    db.connect_to_db()
+    current.user = {
+        "_id" : "5ef3105d512a224fb6bc77b7",
+        "name" : "aaa",
+        "surname" : "bbb",
+        "email" : "e@mail.com",
+        "password" : { "$binary" : "JDJiJDA4JFVLTmRTeVYwV1phYzA3NkV0M1FOZE93RkdtbkVOQmM0b1NmSjdGTVMxQ0IvR0k3N08yWXpD", "$type" : "00" },
+        "personal_archive_id" : "5ef3105e512a224fb6bc77ba",
+        "archive_ids" : [ 
+            "5ef3105e512a224fb6bc77ba"
+        ],
+        "alias_list" : [ 
+            {
+                "ime" : "John",
+                "prezime" : "Smith",
+                "oib" : "07125893001",
+                "iban" : "HR123456789012",
+                "postal_code" : "10000"
+            }
+        ],
+        "email_list" : []
+    }
+    
+    #test_company = db.get_company(db.connect_to_db(), '16962783514')
     
     #test_update_iban(test_company)
     #test_check_iban(test_company)
     
     #test_check_postal_code()
+    
+    test_get_data_oib()
