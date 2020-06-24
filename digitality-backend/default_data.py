@@ -15,12 +15,6 @@ def get_default_arc():
     cur_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     
     example_dict = {
-        "meta_data":{
-            "added_by":"primjer@doe.com",
-            "created_on": cur_date,
-            "viewed_on": cur_date
-        },
-        
         "id_dokumenta": str(ObjectId()),
         
         "naziv_dobavljaca": "primjer",

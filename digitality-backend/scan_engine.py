@@ -32,6 +32,8 @@ def photo_to_dict(photo):
     return final_dict
 
 def add_to_database(archive, document):
+    document['datum_dodavanja'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    
     db.create_document(archive, document)
     update_company(document)
 
@@ -39,7 +41,7 @@ def update_company(document):
     company_data = db.get_company(document['oib_dobavljaca'])
     
     if company_data:
-        update_company_iban(document['iban_primatelja'], company_data)
+        da.update_company_iban(document['iban_primatelja'], company_data)
         return
     
     # Ako ne postoji na bazi, stvori novi

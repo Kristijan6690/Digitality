@@ -71,7 +71,6 @@ def login():
         user['token'] = jwt.encode(user, os.getenv("JWT_SECRET"), algorithm='HS256').decode("utf-8")
     
     current.user = user
-    print(current.user)
         
     return jsonify(user)
 
