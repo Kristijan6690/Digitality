@@ -203,7 +203,7 @@ export default {
 
     async get_company_data(){
       let result = await app.getCompanyData(this.scan_doc_data.oib_dobavljaca)
-      console.log(result)
+      console.log(result) //nastavak....
     },
 
     get_clinet_data(){
