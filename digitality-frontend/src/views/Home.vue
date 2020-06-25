@@ -45,26 +45,26 @@
                     </div>
 
                     <!-- choose Archive (Dropdown umjesto selecta zbog veće mogućnosti customizacije -- prebaciti css u css--> 
-                     <div class="btn-group  dropdown">
-                       
+                    <div class="btn-group  dropdown">   
                        <button class="btn btn-light dropdown-toggle chooseArchive" type="button" id="dropdownMenuArchive" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <div id="fileIconDiv"><i class="far fa-file fa-lg" ></i></div>
                         <div id="currArchiveName"> {{store.currentArchiveData.name}} </div>
                       </button>
+
                       <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
                           <div class="dropdownHeader"> 
                               <h2 id="chooseArchiveHeader"> Odaberi arhivu </h2> 
                           </div>
                   
                           <div class="dropdownBody body-settings" id="chooseArchiveBody">                       
-                            
-                              <div id="pristupPopis">
-                                <SelectedArchive v-bind:key="card.id" v-bind:info="card" v-for="card in userArchiveList" />
-                              </div>
+                            <div id="pristupPopis">
+                              <SelectedArchive v-bind:key="card.id" v-bind:info="card" v-for="card in userArchiveList" />
                             </div>
+                          </div>
+
                           <div class="dropdownFooter addButtonDiv">
-                                <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal" data-target="#createArchiveModal" id="createArchiveButton"> Dodaj </button>
-                                <button type="button" class="btn btn-primary my-2 my-sm-0"  @click="closeShareDropDown()" id="closeButtonArchive"> Poništi</button>
+                            <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal" data-target="#createArchiveModal" id="createArchiveButton"> Dodaj </button>
+                            <button type="button" class="btn btn-primary my-2 my-sm-0"  @click="closeShareDropDown()" id="closeButtonArchive"> Poništi</button>
                           </div>
                       </div>
                     </div>
