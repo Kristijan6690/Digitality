@@ -108,7 +108,7 @@ let app = {
         return response.data
     },
 
-    async getSearchArchives(pretraga,dostupne_arhive_korisniku,id_trenutne_arhive){
+    async getSearchArchives(pretraga, dostupne_arhive_korisniku, id_trenutne_arhive){
         let response = await Service.post('/search/lista_arhiva',{
             searchTerm : pretraga,
             archive_ids: dostupne_arhive_korisniku,
@@ -147,11 +147,8 @@ let app = {
         return response.data;
     },
 
-    async share_archive(eposta_korisnika,eposta_share){
-        let response = await Service.post('/archives/share', {
-            user_email: eposta_korisnika,
-            shared_email: eposta_share
-        })
+    async share_archive(eposta_share){
+        let response = await Service.post('/archives/share', {email: eposta_share})
         return response.data;
     },
 

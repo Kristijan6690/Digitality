@@ -17,8 +17,8 @@ import scan_engine
 mongodb.connect_to_db()
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
-#app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
+#app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
 
 
 mongo = PyMongo(app)
@@ -49,13 +49,13 @@ def token_required(f):
             data = jwt.decode(token, os.getenv("JWT_SECRET"))
             user = mongodb.get_user(data['sub'])
             
-            del user['password']
-            del user['_id']
-            
             if not user:
                 raise RuntimeError('User not found')
             elif not current.user:
                 current.user = user
+                
+            del user['password']
+            del user['_id']                
                 
             return f(user, *args, **kwargs)
         
@@ -99,16 +99,15 @@ def login():
     if (user and user['password']) and (bcrypt.check_password_hash(user['password'], password)):
         del user['password']
         del user['_id']
-        
 
         token_data = {
             'sub': user['email'],
             'iat': datetime.datetime.utcnow(),
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)
         }
+        
         user['token'] = jwt.encode(token_data, os.getenv("JWT_SECRET"), algorithm='HS256').decode("utf-8")
     
-        
     return jsonify(user)
 
 
@@ -150,7 +149,9 @@ def searchArchives(cur_user):
     cur_arc = mongodb.get_one_archive(currentArchive_id)
     
     regex = re.compile('^(%s)' % searchTerm)
-    subarchives = [sub_arc for sub_arc in cur_arc['subarchives'] if regex.match(sub_arc['name']) ] 
+    subarchives = [sub_arc for sub_arc in cur_arc['subarchives'] if regex.match(sub_arc['name'].lower()) ] 
+    
+    print(subarchives)
     
     for archives in result:
         if archives['_id'] == currentArchive_id:
@@ -234,27 +235,24 @@ def sortArchives(cur_user):
 @app.route('/archives/share', methods=['POST'])
 @token_required
 def share_archive(cur_user):
+    new_email = request.get_json()['email']
 
-    doc = request.get_json()
-    flag1 = False
-    flag2 = True
+    if new_email in cur_user['email_list']: return jsonify(False)
 
-    for user in mongo.db.users.find():
-        if(user['email'] == doc['shared_email']):
-            share_user = user
-            flag1 = True
+    new_user = mongodb.get_user(new_email)
+    if not new_user: return jsonify(False)
     
-    for user in mongo.db.users.find():
-        if(user['email'] == doc['user_email']):
-            for email in user['email_list']:
-                if(email == doc['shared_email']):
-                    flag2 = False
+    mongo.db.users.update_one(
+        {'email': new_email},
+        {'$push': {'archive_ids': cur_user['personal_archive_id']} }
+    )
 
-    if(flag1 and flag2):
-        mongo.db.users.update({'email': doc['user_email']},{'$push': {'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
-        return jsonify(share_user['_id'],share_user['email'])
+    mongo.db.users.update_one(
+        {'email': cur_user['email']},
+        {'$push': {'email_list': new_user['email']} }
+    ) 
 
-    else: return jsonify(False) 
+    return jsonify(new_user['_id'], new_user['email'])
 
 
 @app.route('/archives/shareDelete', methods=['POST'])

@@ -300,6 +300,7 @@ export default {
       pretraga = this.searchTerm
       let archives = await app.getSearchArchives(pretraga, this.user.archive_ids,this.store.currentArchiveData._id)
       localStorage.setItem('userArchives',JSON.stringify(archives))
+      
       this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids) 
     },
 
@@ -365,7 +366,7 @@ export default {
     async share_arc() {
       if(this.shared_email != ''){
         let success = false
-        let result = await app.share_archive(this.user.email,this.shared_email)
+        let result = await app.share_archive(this.shared_email)
         if(result){
           this.user.archive_ids.push(result[0])
           this.user.email_list.push(result[1])
