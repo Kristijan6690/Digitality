@@ -103,7 +103,7 @@ def check_iban(iban_list, company_data):
 def get_pc_dict():
     try:
         with open('postal_codes.json', 'r') as fp:
-            data = json.load(fp)        
+            data = json.load(fp)
     except FileNotFoundError:
         data = None
         
@@ -163,7 +163,7 @@ def get_data_oib(oib_list):
 def get_cur_alias(oib):
     user = current.user
     if not user['alias_list']: return None
-    
+
     for alias in user['alias_list']:
         if alias['oib'] == oib: return alias
 

@@ -13,8 +13,8 @@ db = None
 
 def connect_to_db():
     try:
-        cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
-        #cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
+        #cluster = MongoClient("mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority")
+        cluster = MongoClient("mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority")
         
         global db
         db = cluster["digitality_production"]
@@ -240,9 +240,8 @@ def delete_user(email):
     
     return True
 
-def add_alias(alias): #<----------------------------------------------
+def add_alias(alias, email): #<----------------------------------------------
     collection = db["users"]
-    email = current.user['email']
     
     try:
         collection.update_one(
@@ -255,11 +254,8 @@ def add_alias(alias): #<----------------------------------------------
     
     return True
 
-def delete_alias(alias_oib): #<----------------------------------------------
+def delete_alias(alias_oib, email): 
     collection = db["users"]
-    email = current.user['email']
-    
-    print(email, alias_oib)
     
     try:
         collection.update_one(

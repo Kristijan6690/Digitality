@@ -1,6 +1,5 @@
 import axios from "axios";
 import $router from '@/router'
-import $store from '@/store'
 
 let Service = axios.create({
     baseURL: "http://localhost:5000/"
@@ -16,7 +15,8 @@ Service.interceptors.request.use((request) => {
     return request;
 });
 
-Service.interceptors.response.use( (response) => {return response},
+Service.interceptors.response.use( 
+    (response) => {return response},
     (error) => {
         if (error.response.status == 401) {
             Auth.logout();
@@ -49,10 +49,6 @@ let Auth = {
         console.log("Failed to login!")
         return false
               
-    },
-
-    async current_user(user){
-        await Service.put('/current_user', user)
     },
 
     logout() {
@@ -98,6 +94,7 @@ let app = {
             email: eposta,
             archive_ids: dostupne_arhive_korisniku
         });
+
         if (response.data){
             return response.data;
         }
@@ -111,7 +108,7 @@ let app = {
         return response.data
     },
 
-    async getSearchArchives(pretraga,dostupne_arhive_korisniku,id_trenutne_arhive){
+    async getSearchArchives(pretraga, dostupne_arhive_korisniku, id_trenutne_arhive){
         let response = await Service.post('/search/lista_arhiva',{
             searchTerm : pretraga,
             archive_ids: dostupne_arhive_korisniku,
@@ -150,11 +147,8 @@ let app = {
         return response.data;
     },
 
-    async share_archive(eposta_korisnika,eposta_share){
-        let response = await Service.post('/archives/share', {
-            user_email: eposta_korisnika,
-            shared_email: eposta_share
-        })
+    async share_archive(eposta_share){
+        let response = await Service.post('/archives/share', {email: eposta_share})
         return response.data;
     },
 

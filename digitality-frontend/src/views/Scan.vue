@@ -135,9 +135,6 @@ export default {
   mounted(){
     $('#successAlert').hide();
     $('#warningAlert').hide();
-
-    let user = Auth.getUser()
-    if(user) Auth.current_user(user)
   }
 
 };
