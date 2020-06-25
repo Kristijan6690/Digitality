@@ -64,7 +64,7 @@
                             </div>
                           <div class="dropdownFooter addButtonDiv">
                                 <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal" data-target="#createArchiveModal" id="createArchiveButton"> Dodaj </button>
-                                <button type="button" class="btn btn-primary my-2 my-sm-0"  @click="closeSortDropdown" id="closeButtonArchive"> Poništi</button>
+                                <button type="button" class="btn btn-primary my-2 my-sm-0"  @click="closeShareDropDown()" id="closeButtonArchive"> Poništi</button>
                           </div>
                       </div>
                     </div>

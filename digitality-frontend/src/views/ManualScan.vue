@@ -29,7 +29,7 @@
                                 <label for="datIzdavanja">Datum izdavanja:</label>
                                <!--  <div><i  @click="exchangeData()" class="fas fa-exchange-alt"></i></div> -->
                                 <input v-model="scan_doc_data.datum_izdavanja" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required >
-                                 <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
+                                <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
                                 
                             </div>
                             <div class="data">
@@ -54,13 +54,15 @@
                             </div>
                         </div>
                         <div class="box two archive">
-                             <div class="data">
+                            <div class="data inner-addon right-addon input-with-icon" >
                                 <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input v-model="scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" required><br>
+                                <input v-model="scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" style="height:28px;" required><br>
+                                <div  @click="get_company_data()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
                             </div>
-                            <div class="data">
+                            <div class="data inner-addon right-addon input-with-icon" >
                                 <label for="OIBkupca">OIB kupca:</label>
-                                <input v-model="scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" required><br><br><br><br>
+                                <input v-model="scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" style="height:28px;" required><br><br><br><br>
+                                <div  @click="get_clinet_data()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
@@ -160,6 +162,7 @@
 <!-- popraviti :  label value,mobile responsive, footer?, hovere na sve-->
 <script>
 
+import store from "@/store.js";
 import { app } from "@/services";
 import { Auth } from "@/services";
 
@@ -169,6 +172,7 @@ export default {
       vrstaUsluge: 'Odaberite vrstu usluge',
       scan_doc_data: {},
       user: Auth.getUser(),
+      store
     }
   },
   name: 'Home',
@@ -185,8 +189,9 @@ export default {
 
     async add_to_database(){
       await app.add_document_to_database(this.user.personal_archive_id,this.scan_doc_data)
-      
-      
+      let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
       if(localStorage.getItem('scan_doc_data')) localStorage.removeItem('scan_doc_data')
       this.$router.push({ name: 'Home' })
     },
@@ -194,6 +199,24 @@ export default {
     delete_doc_data(){
       this.scan_doc_data = {}
       if(localStorage.getItem('scan_doc_data')) localStorage.removeItem('scan_doc_data')
+    },
+
+    async get_company_data(){
+      let result = await app.getCompanyData(this.scan_doc_data.oib_dobavljaca)
+      console.log(result) //nastavak....
+    },
+
+    get_clinet_data(){
+      let result = this.user.alias_list.filter(alias => alias.oib == this.scan_doc_data.oib_kupca)
+      if(result != ''){
+        this.scan_doc_data.naziv_kupca = result[0].ime + " " + result[0].prezime
+        this.scan_doc_data.iban_platitelja = result[0].iban
+      }
+      else{
+        console.log("Kupac ne postoji")
+        this.scan_doc_data.naziv_kupca = ''
+        this.scan_doc_data.iban_platitelja = ''
+      }
     }
   },
 
