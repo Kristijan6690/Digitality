@@ -29,7 +29,7 @@
                                 <label for="datIzdavanja">Datum izdavanja:</label>
                                <!--  <div><i  @click="exchangeData()" class="fas fa-exchange-alt"></i></div> -->
                                 <input v-model="scan_doc_data.datum_izdavanja" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required >
-                                 <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
+                                <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
                                 
                             </div>
                             <div class="data">
@@ -54,13 +54,15 @@
                             </div>
                         </div>
                         <div class="box two archive">
-                             <div class="data">
+                            <div class="data inner-addon right-addon input-with-icon" >
                                 <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input v-model="scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" required><br>
+                                <input v-model="scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" style="height:28px;" required><br>
+                                <div  @click="funkcija1()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
                             </div>
-                            <div class="data">
+                            <div class="data inner-addon right-addon input-with-icon" >
                                 <label for="OIBkupca">OIB kupca:</label>
-                                <input v-model="scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" required><br><br><br><br>
+                                <input v-model="scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" style="height:28px;" required><br><br><br><br>
+                                <div  @click="funkcija2()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
