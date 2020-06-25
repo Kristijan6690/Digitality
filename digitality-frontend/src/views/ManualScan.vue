@@ -29,7 +29,7 @@
                                 <label for="datIzdavanja">Datum izdavanja:</label>
                                <!--  <div><i  @click="exchangeData()" class="fas fa-exchange-alt"></i></div> -->
                                 <input v-model="scan_doc_data.datum_izdavanja" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required >
-                                 <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
+                                <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
                                 
                             </div>
                             <div class="data">
@@ -54,13 +54,15 @@
                             </div>
                         </div>
                         <div class="box two archive">
-                             <div class="data">
+                            <div class="data inner-addon right-addon input-with-icon" >
                                 <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input v-model="scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" required><br>
+                                <input v-model="scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" style="height:28px;" required><br>
+                                <div  @click="get_company_data()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
                             </div>
-                            <div class="data">
+                            <div class="data inner-addon right-addon input-with-icon" >
                                 <label for="OIBkupca">OIB kupca:</label>
-                                <input v-model="scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" required><br><br><br><br>
+                                <input v-model="scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" style="height:28px;" required><br><br><br><br>
+                                <div  @click="get_clinet_data()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
                             </div>
                             <div class="data datumDospijeca">
                                 <label for="datDospijeca">Datum dospijeća:</label>
@@ -84,8 +86,6 @@
                 <div class="row addButtonDiv">
                     <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Dodaj</button>
                     <button v-on:click="delete_doc_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Isprazni</button>
-                    <button v-on:click="get_company_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="asdasda" style="margin:5px">TESTCOMPANYOIB</button>
-                    <button v-on:click="get_clinet_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="dasda" style="margin:5px">GetclinetINFO</button>
                 </div> 
             </form>
 
@@ -212,7 +212,11 @@ export default {
         this.scan_doc_data.naziv_kupca = result[0].ime + " " + result[0].prezime
         this.scan_doc_data.iban_platitelja = result[0].iban
       }
-      else console.log("Kupac ne postoji")
+      else{
+        console.log("Kupac ne postoji")
+        this.scan_doc_data.naziv_kupca = ''
+        this.scan_doc_data.iban_platitelja = ''
+      }
     }
   },
 
