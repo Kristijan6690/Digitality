@@ -32,6 +32,7 @@ def get_default_arc():
         
         "broj_racuna":"user_input",
         "poziv_na_broj":"user_input",
+        "photo":"",
         
         "vrsta_usluge":"Struja",
         "iznos":100

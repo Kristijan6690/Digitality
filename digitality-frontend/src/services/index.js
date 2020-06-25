@@ -196,6 +196,13 @@ let app = {
             archive_id: id_trenutne_arhive,
             archive_name: naziv_trenutne_arhive
         })
+    },
+
+    async getCompanyData(oib){
+        let response = await Service.post('/getCompanyData', {
+            oib: oib
+        })
+        return response.data
     }
 };
 

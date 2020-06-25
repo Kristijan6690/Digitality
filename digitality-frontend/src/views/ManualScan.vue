@@ -84,6 +84,8 @@
                 <div class="row addButtonDiv">
                     <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Dodaj</button>
                     <button v-on:click="delete_doc_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Isprazni</button>
+                    <button v-on:click="get_company_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="asdasda" style="margin:5px">TESTCOMPANYOIB</button>
+                    <button v-on:click="get_clinet_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="dasda" style="margin:5px">GetclinetINFO</button>
                 </div> 
             </form>
 
@@ -160,6 +162,7 @@
 <!-- popraviti :  label value,mobile responsive, footer?, hovere na sve-->
 <script>
 
+import store from "@/store.js";
 import { app } from "@/services";
 import { Auth } from "@/services";
 
@@ -169,6 +172,7 @@ export default {
       vrstaUsluge: 'Odaberite vrstu usluge',
       scan_doc_data: {},
       user: Auth.getUser(),
+      store
     }
   },
   name: 'Home',
@@ -185,8 +189,9 @@ export default {
 
     async add_to_database(){
       await app.add_document_to_database(this.user.personal_archive_id,this.scan_doc_data)
-      
-      
+      let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
       if(localStorage.getItem('scan_doc_data')) localStorage.removeItem('scan_doc_data')
       this.$router.push({ name: 'Home' })
     },
@@ -194,6 +199,20 @@ export default {
     delete_doc_data(){
       this.scan_doc_data = {}
       if(localStorage.getItem('scan_doc_data')) localStorage.removeItem('scan_doc_data')
+    },
+
+    async get_company_data(){
+      let result = await app.getCompanyData(this.scan_doc_data.oib_dobavljaca)
+      console.log(result)
+    },
+
+    get_clinet_data(){
+      let result = this.user.alias_list.filter(alias => alias.oib == this.scan_doc_data.oib_kupca)
+      if(result != ''){
+        this.scan_doc_data.naziv_kupca = result[0].ime + " " + result[0].prezime
+        this.scan_doc_data.iban_platitelja = result[0].iban
+      }
+      else console.log("Kupac ne postoji")
     }
   },
 

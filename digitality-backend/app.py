@@ -16,8 +16,8 @@ import scan_engine
 mongodb.connect_to_db()
 
 app = Flask(__name__)
-#app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
-app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
+#app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
 
 
 mongo = PyMongo(app)
@@ -255,6 +255,16 @@ def change_archive_name():
     mongo.db.archives.update_one({'_id': doc['archive_id']},{'$set':{'name': doc['archive_name']}})
 
     return "Uspijeh"
+
+
+@app.route('/getCompanyData', methods=['POST'])
+def get_company_data():
+    oib = request.get_json()
+    print(oib)
+    companyData = mongodb.get_company(oib)
+    print(companyData)
+
+    return jsonify(companyData)
 
 
 if __name__ == "__main__":
