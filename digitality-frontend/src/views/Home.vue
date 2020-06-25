@@ -391,9 +391,6 @@ export default {
   async mounted(){
     let temp = JSON.parse(localStorage.getItem('userArchives'))
     this.store.currentArchiveData = this.store.get_users_arhive(temp, this.user.archive_ids)
-
-    let user = Auth.getUser()
-    if(user) Auth.current_user(user)
   }
 }
 

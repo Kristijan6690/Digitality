@@ -240,9 +240,8 @@ def delete_user(email):
     
     return True
 
-def add_alias(alias): #<----------------------------------------------
+def add_alias(alias, email): #<----------------------------------------------
     collection = db["users"]
-    email = current.user['email']
     
     try:
         collection.update_one(
@@ -255,11 +254,8 @@ def add_alias(alias): #<----------------------------------------------
     
     return True
 
-def delete_alias(alias_oib): #<----------------------------------------------
+def delete_alias(alias_oib, email): 
     collection = db["users"]
-    email = current.user['email']
-    
-    print(email, alias_oib)
     
     try:
         collection.update_one(

@@ -1,6 +1,5 @@
 import axios from "axios";
 import $router from '@/router'
-import $store from '@/store'
 
 let Service = axios.create({
     baseURL: "http://localhost:5000/"
@@ -16,7 +15,8 @@ Service.interceptors.request.use((request) => {
     return request;
 });
 
-Service.interceptors.response.use( (response) => {return response},
+Service.interceptors.response.use( 
+    (response) => {return response},
     (error) => {
         if (error.response.status == 401) {
             Auth.logout();
@@ -49,10 +49,6 @@ let Auth = {
         console.log("Failed to login!")
         return false
               
-    },
-
-    async current_user(user){
-        await Service.put('/current_user', user)
     },
 
     logout() {
@@ -98,6 +94,7 @@ let app = {
             email: eposta,
             archive_ids: dostupne_arhive_korisniku
         });
+
         if (response.data){
             return response.data;
         }
