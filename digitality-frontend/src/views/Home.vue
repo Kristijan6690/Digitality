@@ -63,8 +63,7 @@
                               </div>
                             </div>
                           <div class="dropdownFooter addButtonDiv">
-                                <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal" data-target="#createArchiveModal" id="createArchiveButton"> Dodaj </button>
-                                <button type="button" class="btn btn-primary my-2 my-sm-0"  @click="closeShareDropDown()" id="closeButtonArchive"> Poništi</button>
+                                <button type="button" class="btn btn-primary my-2 my-sm-0" @click="closeButtonArchive()" id="closeButtonArchive"> Zatvori</button>
                           </div>
                       </div>
                     </div>
@@ -300,7 +299,6 @@ export default {
       pretraga = this.searchTerm
       let archives = await app.getSearchArchives(pretraga, this.user.archive_ids,this.store.currentArchiveData._id)
       localStorage.setItem('userArchives',JSON.stringify(archives))
-      
       this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids) 
     },
 
@@ -313,6 +311,9 @@ export default {
 
     closeShareDropDown(){
       $('#closeShareDropdownButton').trigger("click");
+    },
+    closeButtonArchive(){
+      $('#closeButtonArchive').trigger("click");
     },
 
     async create_subArchive() {
@@ -368,11 +369,8 @@ export default {
         let success = false
         let result = await app.share_archive(this.shared_email)
         if(result){
-          this.user.archive_ids.push(result[0])
-          this.user.email_list.push(result[1])
+          this.user.email_list.push(result)
           localStorage.setItem("user",JSON.stringify(this.user))
-          let archives = await app.getArchives(this.user.email,this.user.archive_ids)
-          localStorage.setItem('userArchives',JSON.stringify(archives))
           success = true
         }
         this.shared_email = ''
@@ -392,6 +390,9 @@ export default {
   async mounted(){
     let temp = JSON.parse(localStorage.getItem('userArchives'))
     this.store.currentArchiveData = this.store.get_users_arhive(temp, this.user.archive_ids)
+
+    let user = Auth.getUser()
+    if(user) Auth.current_user(user)
   }
 }
 

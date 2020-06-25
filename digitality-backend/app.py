@@ -17,8 +17,8 @@ import scan_engine
 mongodb.connect_to_db()
 
 app = Flask(__name__)
-#app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
-app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
+#app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@cluster0-5uwqu.mongodb.net/test?retryWrites=true&w=majority'
 
 
 mongo = PyMongo(app)
@@ -236,7 +236,7 @@ def sortArchives(cur_user):
 @token_required
 def share_archive(cur_user):
     new_email = request.get_json()['email']
-
+    
     if new_email in cur_user['email_list']: return jsonify(False)
 
     new_user = mongodb.get_user(new_email)
@@ -252,7 +252,7 @@ def share_archive(cur_user):
         {'$push': {'email_list': new_user['email']} }
     ) 
 
-    return jsonify(new_user['_id'], new_user['email'])
+    return jsonify(new_user['email'])
 
 
 @app.route('/archives/shareDelete', methods=['POST'])
@@ -260,10 +260,11 @@ def share_archive(cur_user):
 def delete_shared_archive(cur_user):
 
     doc = request.get_json()
-    share_user = mongo.db.users.find_one({'email': doc['shared_email']})
-    mongo.db.users.update({'email': doc['user_email']},{'$pull':{'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
     owner = mongo.db.users.find_one({'email': doc['user_email']})
-    return jsonify(owner['archive_ids'], owner['email_list'])
+    mongo.db.users.update({'email': doc['shared_email']},{'$pull':{'archive_ids': owner['personal_archive_id']}})
+    mongo.db.users.update({'email': doc['user_email']},{'$pull':{'email_list': doc['shared_email']}})
+    owner = mongo.db.users.find_one({'email': doc['user_email']})
+    return jsonify(owner['email_list'])
 
 
 @app.route('/addAlias', methods=['PUT'])

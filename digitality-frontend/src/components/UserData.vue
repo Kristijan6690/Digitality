@@ -22,11 +22,8 @@ export default {
   methods:{
     async removeUserAccess(){
       let result = await app.delete_shared_archive(this.user.email,this.info)
-      this.user.archive_ids = result[0]
-      this.user.email_list = result[1]
+      this.user.email_list = result
       localStorage.setItem("user",JSON.stringify(this.user))
-      let archives = await app.getArchives(this.user.email,this.user.archive_ids)
-      localStorage.setItem('userArchives',JSON.stringify(archives))
       location.reload();
     }
   }
