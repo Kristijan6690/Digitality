@@ -40,7 +40,7 @@
                             </div>
                           </div>
                         <div class="dropdownFooter addButtonDiv">
-                          <!-- Closesortdropdown daje error -->
+                          <button v-if="this.check_if_owner_of_archive" type="submit" @click="changeArchiveName()" class="btn btn-primary my-2 my-sm-0" id="saveButtonSettings" > Spremi</button>
                           <button @click="closeShareDropDown()" type="submit" class="btn btn-primary my-2 my-sm-0" id="closeShareDropdownButton" > Zatvori</button>
                         </div>
                     </div>
@@ -370,6 +370,41 @@ export default {
         this.addingUserConfirmation(success);
       }
     },
+
+    async searchArchives(pretraga){
+      pretraga = this.searchTerm
+      let archives = await app.getSearchArchives(pretraga, this.user.archive_ids,this.store.currentArchiveData._id)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.updateCurrentUserArchive(archives)
+    },
+
+    async changeArchiveName(){
+      await app.changeArchiveName(this.store.currentArchiveData._id,this.store.currentArchiveData.name)
+      let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      $('#closeShareDropdownButton').trigger("click");
+    },
+
+    async closeSortDropdown(){
+      let sortby = ''
+      if(document.getElementById("defaultInline1").checked) sortby = 'datum_pregleda_silazno'
+      else if(document.getElementById("defaultInline2").checked) sortby = 'abecedno_silazno'
+      else if(document.getElementById("defaultInline3").checked) sortby = 'datum_pregleda_uzlazno'
+      else if(document.getElementById("defaultInline4").checked) sortby = 'abecedno_uzlazno'
+      let archives = await app.sort_Archives(sortby,this.user.archive_ids,this.store.currentArchiveData._id)
+      localStorage.setItem('userArchives',JSON.stringify(archives))
+      this.store.updateCurrentUserArchive(archives)
+      $('#SortDropDown').trigger("click"); //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
+    },
+
+    addingUserConfirmation(success){
+      if(success) 
+        $("#adding_user_success_confirmation").modal()
+      else 
+        $("#unsuccess_confirmation_adding_user").modal()
+    },
+
+
   },
 
   computed:{
@@ -690,6 +725,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   height: 30px;
+  background:white; 
+  border-left:none; 
+  border-top:none; 
+  border-right:none;
 }
 
 .opcijaPopis{
@@ -697,20 +736,35 @@ export default {
   color:#FF0000; 
   width: 75px;
   text-align: center;
+  border:none;
+  background:white;
 }
 
-#addButtonSettings{
+#addButtonSettings, #createArchiveButton{
+  margin: 5px; 
+  border-radius:5px; 
+  border:0; 
+}
+
+#removeButtonSettings, #closeButtonArchive{
   margin: 5px; 
   border-radius:5px; 
   border:0;
+  background-color:#888888;
 }
 
-#removeButtonSettings{
-  margin: 5px; 
-  border-radius:5px; 
-  border:0;
+#saveButtonSettings{
+  background-color:#00a2ff;
+  margin:2.5px;
+  border:none;
+}
+
+#closeShareDropdownButton{
   background-color: #888888;
+  margin:2.5px;
+  border:none;
 }
+
 
 .addUserButton{
   color: #23CA00;

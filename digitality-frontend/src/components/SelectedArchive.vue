@@ -23,5 +23,9 @@ button{
   border: none;
 }
 
+.filterOptions{
+  padding-left: 0px;
+}
+
 
 </style>
