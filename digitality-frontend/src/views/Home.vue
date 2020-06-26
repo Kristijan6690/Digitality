@@ -38,7 +38,7 @@
                         </div>
                       </div>
                     <div class="dropdownFooter addButtonDiv">
-                          <button type="submit" @click="changeArchiveName()" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Spremi</button>
+                          <button v-if="this.check_if_owner_of_archive" type="submit" @click="changeArchiveName()" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Spremi</button>
                           <button type="submit" @click="closeShareDropDown()" class="btn btn-primary my-2 my-sm-0" id="closeShareDropdownButton" > Zatvori</button>
                     </div>
                 </div>
@@ -64,7 +64,9 @@
                         />
                       </div>
                     </div>
-
+                    <div class="dropdownFooter addButtonDiv">     
+                      <button type="button" class="btn btn-primary my-2 my-sm-0"  @click="closeShareDropDown()" id="closeShareDropdownButton">Zatvori</button>
+                    </div>
                 </div>
               </div>
           
@@ -139,7 +141,7 @@
         <div class="col archive">
           <SubArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.currentArchiveData.subarchives" />
 
-          <div class="subArchivePlus" data-toggle="modal" data-target="#createSubArchiveModal" style="border:none;">
+          <div v-if="this.check_if_owner_of_archive" class="subArchivePlus" data-toggle="modal" data-target="#createSubArchiveModal" style="border:none;">
             <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
             <div class="folderName">Dodaj podarhivu</div>
           </div>
@@ -296,7 +298,7 @@ export default {
       pretraga = this.searchTerm
       let archives = await app.getSearchArchives(pretraga, this.user.archive_ids,this.store.currentArchiveData._id)
       localStorage.setItem('userArchives',JSON.stringify(archives))
-      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids) 
+      this.store.updateCurrentUserArchive(archives)
     },
 
     async changeArchiveName(){
@@ -308,10 +310,6 @@ export default {
 
     closeShareDropDown(){
       $('#closeShareDropdownButton').trigger("click");
-    },
-
-    closeButtonArchive(){
-      $('#closeButtonArchive').trigger("click");
     },
 
     async create_subArchive() {
@@ -332,7 +330,7 @@ export default {
           await app.createSubarchive(this.createSubArchiveName, this.user.personal_archive_id)
           let archives = await app.getArchives(this.user.email,this.user.archive_ids)
           localStorage.setItem('userArchives',JSON.stringify(archives))
-          this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+          this.store.updateCurrentUserArchive(archives)
           this.createSubArchiveName = ''
           $("#success_confirmation").modal() //https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp?fbclid=IwAR1ptJTxChvevYy03LanxDkM-lggA5XAq1gSSXntekFr1UOBEyW0TOl1vJk
         }
@@ -351,7 +349,7 @@ export default {
       else if(document.getElementById("defaultInline4").checked) sortby = 'abecedno_uzlazno'
       let archives = await app.sort_Archives(sortby,this.user.archive_ids,this.store.currentArchiveData._id)
       localStorage.setItem('userArchives',JSON.stringify(archives))
-      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+      this.store.updateCurrentUserArchive(archives)
       $('#SortDropDown').trigger("click"); //https://stackoverflow.com/questions/10941540/how-to-hide-twitter-bootstrap-dropdown
     },
 
@@ -383,15 +381,24 @@ export default {
     },
 
     change_archive(_id){
-      this.current_archive = _id;
+      let AllUserArchives = JSON.parse(localStorage.getItem('userArchives'))
+      let curArchive = {}
+      for(let i = 0; i < AllUserArchives.length; i++) if(AllUserArchives[i]._id == _id) curArchive = AllUserArchives[i]
+      localStorage.setItem("currentUserArchive", JSON.stringify(curArchive))
+      this.store.currentArchiveData = curArchive
+    }
+  },
+
+  computed:{
+    check_if_owner_of_archive(){
+      if(this.store.currentArchiveData._id == this.user.personal_archive_id) return true
+      else return false
     }
   },
 
   async mounted(){
-    let temp = JSON.parse(localStorage.getItem('userArchives'))
-    this.store.currentArchiveData = this.store.get_users_arhive(temp, this.user.archive_ids)
-
-    this.change_archive(this.user.personal_archive_id)
+    this.store.currentArchiveData = JSON.parse(localStorage.getItem('currentUserArchive'))
+    if(!(localStorage.getItem('currentUserArchive'))) this.change_archive(this.user.personal_archive_id)
   }
 }
 

@@ -126,22 +126,42 @@
 </template>
 <!-- popraviti :  label value,mobile responsive, footer?, hovere na sve-->
 <script>
+import store from "@/store.js";
 
 export default {
   name: 'Home',
-  components: {
-    
-  },
-   data(){
-      return {
-        proba: 'valda se tu dejva preko v-modela ko te, valda nejson kako glupost naridu haha'
-      }
+  data(){
+    return {
+      document_id : this.$route.params.id,
+      proba: 'valda se tu dejva preko v-modela ko te, valda nejson kako glupost naridu haha'
+    }
   },
 
   methods:{
     go_back(){
       return this.$router.go(-1);
     },
+  },
+
+  mounted(){
+    /*
+    let archives = JSON.parse(localStorage.getItem('userArchives'))
+    this.store.updateCurrentUserArchive(archives)
+
+    let sub_arcs = this.store.currentArchiveData.subarchives
+    docs = sub_arcs.filter(sub_arc => sub_arc.documents.filter(doc =>))
+
+    for(let i = 0; i < sub_arc.length; i++){
+
+      for(let j = 0; j < sub_arc[i].documents.length; j++){
+        if(this.document_id == sub_arc[i].documents[j].id_dokumenta){
+          this.current_document = sub_arc[i].documents[j]
+          break;
+        }
+      }
+
+    }
+  */
   }
 }
 </script>

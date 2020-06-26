@@ -31,7 +31,7 @@
                         <router-link to="/manualscan" class="nav-link"> Ručno dodavanje <span class="sr-only">(current)</span></router-link>    
                     </li>
                   </ul>
-                  <router-link to="alias_list">
+                  <router-link to="/alias_list">
                     <button class="btn btn-primary my-2 my-sm-0" type="button" style="border-radius: 5px; margin: 0 5px 0 5px; padding:0 2px 0 2px;">
                       <i class="fa fa-address-card fa-2x" aria-hidden="true"></i>
                     </button> 
