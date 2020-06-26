@@ -1,139 +1,140 @@
 <template>
   <div class="home">
-      <div class="container">
-            <div class="row">
-                <!-- mjesto za header ako ce ici -->
+    <div class="container">
+      <div class="row">
+        <!-- mjesto za header ako ce ici -->
+      </div>
+      <div class="row">
+        <div class="col heading">        
+          <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
+          <button type="button" class="glowEffect" data-toggle="modal" data-target="#pictureModal" style="border:none;"><i class="fa fa-picture-o fa-2x"></i></button>
+          <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
+        </div>         
+      </div>
+      <form action="/action_page.php">
+        <div class="row main" >
+          <div class="box one archive">
+            <div class="data">
+              <label for="nazDobavljaca">Naziv dobavljača:</label>
+              <input type="text" v-model="this.current_document.naziv_dobavljaca" id="nazDobavljaca" name="nazDobavljaca" disabled><br>
             </div>
-            <div class="row">
-                 <div class="col heading">        
-                    <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
-                    <button type="button" class="glowEffect" data-toggle="modal" data-target="#pictureModal" style="border:none;"><i class="fa fa-picture-o fa-2x"></i></button>
-                    <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
-                </div>         
+            <div class="data">
+              <label for="nazKupca">Naziv kupca:</label>
+              <input type="text" v-model="this.current_document.naziv_kupca" id="nazKupca" name="nazKupca" disabled ><br><br>
             </div>
-            <form action="/action_page.php">
-                <div class="row main" >
-                        <div class="box one archive">
-                            <div class="data">
-                                <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input type="text" v-model="this.current_document.naziv_dobavljaca" id="nazDobavljaca" name="nazDobavljaca" disabled><br>
-                            </div>
-                            <div class="data">
-                                <label for="nazKupca">Naziv kupca:</label>
-                                <input type="text" v-model="this.current_document.naziv_kupca" id="nazKupca" name="nazKupca" disabled ><br><br>
-                            </div>
-                            <div class="data">
-                                <label for="brojRacuna">Broj računa:</label>
-                                <input type="text" v-model="this.current_document.broj_racuna" id="brojRacuna" name="brojRacuna" disabled ><br><br>
-                            </div>
-                            <div class="data">
-                                <label for="datIzdavanja">Datum izdavanja:</label>
-                                <input type="text" v-model="this.current_document.datum_izdavanja" id="datIzdavanja" name="datIzdavanja" disabled ><br>
-                            </div>
-                            <div class="data">
-                                <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
-                                <input type="text" v-model="this.current_document.mjesto_izdavanja" id="mjestoIzdavanja" name="mjestoIzdavanja" disabled ><br>
-                            </div>
-                            <div class="data">
-                                <label for="vrstaUsluge" >Vrsta usluge:</label>
-                                <input type="text" v-model="this.current_document.vrsta_usluge" id="vrstaUsluge" name="vrstaUsluge" disabled ><br>
-                            </div>
-                            <div class="data">
-                                <label for="kolicina">Neto iznos:</label>
-                                <input type="text" v-model="this.current_document.neto_iznos" id="kolicina" name="kolicina" disabled ><br>
-                            </div>
-                            <div class="data">
-                                <label for="pozNaBroj">Poziv na broj:</label>
-                                <input type="text" v-model="this.current_document.poziv_na_broj" id="pozNaBroj" name="pozNaBroj" disabled ><br>
-                            </div>
-                            <div class="data">
-                                <label for="IBANplatitelja">IBAN platitelja:</label>
-                                <input type="text" v-model="this.current_document.iban_platitelja" id="IBANplatitelja" name="IBANplatitelja" disabled ><br>
-                            </div>
-                        </div>
-                        <div class="box two archive">
-                             <div class="data">
-                                <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input type="text" v-model="this.current_document.oib_dobavljaca" id="OIBdobavljaca" name="OIBdobavljaca"  disabled ><br>
-                            </div>
-                            <div class="data">
-                                <label for="OIBkupca">OIB kupca:</label>
-                                <input type="text" v-model="this.current_document.oib_kupca" id="OIBkupca" name="OIBkupca"  disabled ><br><br><br><br>
-                            </div>
-                            <div class="data datumDospijeca">
-                                <label for="datDospijeca">Datum dospijeća:</label>
-                                <input type="text" v-model="this.current_document.datum_dospijeca" id="datDospijeca" name="datDospijeca"  disabled ><br><br><br><br>
-                            </div>
-                            <div class="data">
-                                <label for="pdv">PDV:</label>
-                                <input type="text" v-model="this.current_document.pdv" id="pdv" name="pdv"  disabled ><br>
-                            </div>
-                            <div class="data">
-                                <label for="iznos">Iznos:</label>
-                                <input type="text" v-model="this.current_document.iznos" id="iznos" name="iznos"  disabled ><br>
-                            </div>
-                            <div class="data">
-                                <label for="IBANprimatelja">IBAN primatelja:</label>
-                                <input type="text" v-model="this.current_document.iban_primatelja" id="IBANprimatelja" name="IBANprimatelja"  disabled ><br>
-                            </div> 
-                        </div>
-        
-                </div>
-                <div class="row addButtonDiv">
-                    <router-link to="/editdocument"><button type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button></router-link>
-                </div> 
-            </form>
+            <div class="data">
+              <label for="brojRacuna">Broj računa:</label>
+              <input type="text" v-model="this.current_document.broj_racuna" id="brojRacuna" name="brojRacuna" disabled ><br><br>
+            </div>
+            <div class="data">
+              <label for="datIzdavanja">Datum izdavanja:</label>
+              <input type="text" v-model="this.current_document.datum_izdavanja" id="datIzdavanja" name="datIzdavanja" disabled ><br>
+            </div>
+            <div class="data">
+              <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
+              <input type="text" v-model="this.current_document.mjesto_izdavanja" id="mjestoIzdavanja" name="mjestoIzdavanja" disabled ><br>
+            </div>
+            <div class="data">
+              <label for="vrstaUsluge" >Vrsta usluge:</label>
+              <input type="text" v-model="this.current_document.vrsta_usluge" id="vrstaUsluge" name="vrstaUsluge" disabled ><br>
+            </div>
+            <div class="data">
+              <label for="kolicina">Neto iznos:</label>
+              <input type="text" v-model="this.current_document.neto_iznos" id="kolicina" name="kolicina" disabled ><br>
+            </div>
+            <div class="data">
+              <label for="pozNaBroj">Poziv na broj:</label>
+              <input type="text" v-model="this.current_document.poziv_na_broj" id="pozNaBroj" name="pozNaBroj" disabled ><br>
+            </div>
+            <div class="data">
+              <label for="IBANplatitelja">IBAN platitelja:</label>
+              <input type="text" v-model="this.current_document.iban_platitelja" id="IBANplatitelja" name="IBANplatitelja" disabled ><br>
+            </div>
+          </div>
 
-            <!-- Document picture Modal -->
-              <div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-body">
-                      <img style="max-width: 100%;max-height: 100%;" src='/Images/docPicExample.jpg'/>
-                    </div>
-                    <div class="modal-footer" style="display:block;">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:#00A2FF">Zatvori</button>
-                    </div>
-                  </div>
+          <div class="box two archive">
+              <div class="data">
+                <label for="OIBdobavljaca">OIB dobavljača:</label>
+                <input type="text" v-model="this.current_document.oib_dobavljaca" id="OIBdobavljaca" name="OIBdobavljaca"  disabled ><br>
+              </div>
+              <div class="data">
+                <label for="OIBkupca">OIB kupca:</label>
+                <input type="text" v-model="this.current_document.oib_kupca" id="OIBkupca" name="OIBkupca"  disabled ><br><br><br><br>
+              </div>
+              <div class="data datumDospijeca">
+                <label for="datDospijeca">Datum dospijeća:</label>
+                <input type="text" v-model="this.current_document.datum_dospijeca" id="datDospijeca" name="datDospijeca"  disabled ><br><br><br><br>
+              </div>
+              <div class="data">
+                <label for="pdv">PDV:</label>
+                <input type="text" v-model="this.current_document.pdv" id="pdv" name="pdv"  disabled ><br>
+              </div>
+              <div class="data">
+                <label for="iznos">Iznos:</label>
+                <input type="text" v-model="this.current_document.iznos" id="iznos" name="iznos"  disabled ><br>
+              </div>
+              <div class="data">
+                <label for="IBANprimatelja">IBAN primatelja:</label>
+                <input type="text" v-model="this.current_document.iban_primatelja" id="IBANprimatelja" name="IBANprimatelja"  disabled ><br>
+              </div> 
+          </div>
+          
+        </div>
+        <div class="row addButtonDiv">
+          <router-link to="/editdocument"><button type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button></router-link>
+        </div> 
+      </form>
+
+      <!-- Document picture Modal -->
+        <div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <img style="max-width: 100%;max-height: 100%;" src='/Images/docPicExample.jpg'/>
+              </div>
+              <div class="modal-footer" style="display:block;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:#00A2FF">Zatvori</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- Help Modal -->
+          <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="display:block;">
+                  <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Pomoć</h3>
+                </div>
+                <div class="modal-body" style="border: 1px solid black; margin-left: 10px; margin-right: 10px;">
+                  <p> 
+                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus,
+                    porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus
+                    sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur. 
+                  </p>
+                  <p>
+                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus 
+                    auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget 
+                    quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna
+                  </p>
+                  <p>
+                    Vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                    Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+                      Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                  </p> 
+                </div>
+                <div class="modal-footer" style="text-align:center; display:block;">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:#00A2FF">Zatvori</button>
                 </div>
               </div>
-
-            <!-- Help Modal -->
-                <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header" style="display:block;">
-                        <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Pomoć</h3>
-                      </div>
-                      <div class="modal-body" style="border: 1px solid black; margin-left: 10px; margin-right: 10px;">
-                        <p> 
-                          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus,
-                          porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus
-                          sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur. 
-                        </p>
-                        <p>
-                          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus 
-                          auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget 
-                          quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna
-                        </p>
-                        <p>
-                          Vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-                          Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-                           Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-                        </p> 
-                      </div>
-                      <div class="modal-footer" style="text-align:center; display:block;">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:#00A2FF">Zatvori</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            <!-- footer
-            <div class="row">
-                <div class="col archive"></div>
             </div>
-            -->
+          </div>
+      <!-- footer
+      <div class="row">
+          <div class="col archive"></div>
       </div>
+      -->
+    </div>
   </div>
 </template>
 

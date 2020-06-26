@@ -1,162 +1,163 @@
 <template>
   <div class="home">
-      <div class="container">
-            <div class="row">
-                <!-- mjesto za header ako ce ici -->
-            </div>
-            <div class="row">
-                 <div class="col heading">        
-                    <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
-                    <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
-                </div>         
-            </div>
-            <form v-on:submit.prevent="add_to_database()" action="/action_page.php">
-                <div class="row main" >
-                        <div class="box one archive">
-                            <div class="data">
-                                <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input v-model="scan_doc_data.naziv_dobavljaca" type="text" id="nazDobavljaca" name="nazDobavljaca" required><br>
-                            </div>
-                            <div class="data">
-                                <label for="nazKupca">Naziv kupca:</label>
-                                <input v-model="scan_doc_data.naziv_kupca" type="text" id="nazKupca" name="nazKupca" required><br><br>
-                            </div>
-                            <div class="data">
-                                <label for="brojRacuna">Broj računa:</label>
-                                <input v-model="scan_doc_data.broj_racuna" type="text" id="brojRacuna" name="brojRacuna" required><br><br>
-                            </div>
-                            <div class="data inner-addon right-addon input-with-icon" >
-                                <label for="datIzdavanja">Datum izdavanja:</label>
-                               <!--  <div><i  @click="exchangeData()" class="fas fa-exchange-alt"></i></div> -->
-                                <input v-model="scan_doc_data.datum_izdavanja" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required >
-                                <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
-                                
-                            </div>
-                            <div class="data">
-                                <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
-                                <input v-model="scan_doc_data.mjesto_izdavanja" type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" required><br>
-                            </div>
-                            <div class="data">
-                                <label for="vrstaUsluge">Vrsta usluge:</label>
-                                <input v-model="scan_doc_data.vrsta_usluge" type="text" id="vrsta_usluge" name="vrsta_usluge" required><br>
-                            </div>
-                            <div class="data">
-                                <label for="netoIznos">Neto iznos:</label>
-                                <input v-model="scan_doc_data.neto" type="text" id="netoIznos" name="neto_iznos" required><br>
-                            </div>
-                            <div class="data">
-                                <label for="pozNaBroj">Poziv na broj:</label>
-                                <input v-model="scan_doc_data.poziv_na_broj" type="text" id="pozNaBroj" name="pozNaBroj" required><br>
-                            </div>
-                            <div class="data">
-                                <label for="IBANplatitelja">IBAN platitelja:</label>
-                                <input v-model="scan_doc_data.iban_platitelja" type="text" id="IBANplatitelja" name="IBANplatitelja" required><br>
-                            </div>
-                        </div>
-                        <div class="box two archive">
-                            <div class="data inner-addon right-addon input-with-icon" >
-                                <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input v-model="scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" style="height:28px;" required><br>
-                                <div  @click="get_company_data()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
-                            </div>
-                            <div class="data inner-addon right-addon input-with-icon" >
-                                <label for="OIBkupca">OIB kupca:</label>
-                                <input v-model="scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" style="height:28px;" required><br><br><br><br>
-                                <div  @click="get_clinet_data()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
-                            </div>
-                            <div class="data datumDospijeca">
-                                <label for="datDospijeca">Datum dospijeća:</label>
-                                <input v-model="scan_doc_data.datum_dospijeca"  type="text" id="datDospijeca" name="datDospijeca" required><br><br><br><br>
-                            </div>
-                            <div class="data">
-                                <label for="pdv">PDV:</label>
-                                <input v-model="scan_doc_data.pdv" type="text" id="pdv" name="pdv" required><br>
-                            </div>
-                            <div class="data">
-                                <label for="iznos">Iznos:</label>
-                                <input v-model="scan_doc_data.iznos" type="text" id="iznos" name="iznos" required><br>
-                            </div>
-                            <div class="data">
-                                <label for="IBANprimatelja">IBAN primatelja:</label>
-                                <input v-model="scan_doc_data.iban_primatelja" type="text" id="IBANprimatelja" name="IBANprimatelja" required><br>
-                            </div> 
-                        </div>
-        
-                </div>
-                <div class="row addButtonDiv">
-                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Dodaj</button>
-                    <button v-on:click="delete_doc_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Isprazni</button>
-                </div> 
-            </form>
+    <div class="container">
+      <div class="row">
+          <!-- mjesto za header ako ce ici -->
+      </div>
+      <div class="row">
+        <div class="col heading">        
+          <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
+          <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
+        </div>         
+      </div>
 
-            <!-- Modal -->
-                <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header" style="display:block;">
-                        <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Pomoć</h3>
-                      </div>
-                      <div class="modal-body" style="border: 1px solid black; margin-left: 10px; margin-right: 10px;">
-                        <p> 
-                          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus,
-                          porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus
-                          sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur. 
-                        </p>
-                        <p>
-                          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus 
-                          auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget 
-                          quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna
-                        </p>
-                        <p>
-                          Vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-                          Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-                           Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-                        </p> 
-                      </div>
-                      <div class="modal-footer" style="text-align:center; display:block;">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:#00A2FF">Zatvori</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            
-            <!-- footer
-            <div class="row">
-                <div class="col archive"></div>
+      <form v-on:submit.prevent="add_to_database()" action="/action_page.php">
+        <div class="row main" >
+          <div class="box one archive">
+            <div class="data">
+              <label for="nazDobavljaca">Naziv dobavljača:</label>
+              <input v-model="scan_doc_data.naziv_dobavljaca" type="text" id="nazDobavljaca" name="nazDobavljaca" required><br>
             </div>
-            -->
-<!-- success confirmation -->
+            <div class="data">
+              <label for="nazKupca">Naziv kupca:</label>
+              <input v-model="scan_doc_data.naziv_kupca" type="text" id="nazKupca" name="nazKupca" required><br><br>
+            </div>
+            <div class="data">
+              <label for="brojRacuna">Broj računa:</label>
+              <input v-model="scan_doc_data.broj_racuna" type="text" id="brojRacuna" name="brojRacuna" required><br><br>
+            </div>
+            <div class="data inner-addon right-addon input-with-icon" >
+              <label for="datIzdavanja">Datum izdavanja:</label>
+              <!--  <div><i  @click="exchangeData()" class="fas fa-exchange-alt"></i></div> -->
+              <input v-model="scan_doc_data.datum_izdavanja" type="text" class="form-control" id="datIzdavanja" name="datIzdavanja" style="height:28px;" required >
+              <div  @click="exchangeData()" class="btn icon"><span  class="fas fa-exchange-alt"> </span></div>
+            </div>
+            <div class="data">
+              <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
+              <input v-model="scan_doc_data.mjesto_izdavanja" type="text" id="mjestoIzdavanja" name="mjestoIzdavanja" required><br>
+            </div>
+            <div class="data">
+              <label for="vrstaUsluge">Vrsta usluge:</label>
+              <input v-model="scan_doc_data.vrsta_usluge" type="text" id="vrsta_usluge" name="vrsta_usluge" required><br>
+            </div>
+            <div class="data">
+              <label for="netoIznos">Neto iznos:</label>
+              <input v-model="scan_doc_data.neto" type="text" id="netoIznos" name="neto_iznos" required><br>
+            </div>
+            <div class="data">
+              <label for="pozNaBroj">Poziv na broj:</label>
+              <input v-model="scan_doc_data.poziv_na_broj" type="text" id="pozNaBroj" name="pozNaBroj" required><br>
+            </div>
+            <div class="data">
+              <label for="IBANplatitelja">IBAN platitelja:</label>
+              <input v-model="scan_doc_data.iban_platitelja" type="text" id="IBANplatitelja" name="IBANplatitelja" required><br>
+            </div>
+          </div>
+
+          <div class="box two archive">
+            <div class="data inner-addon right-addon input-with-icon" >
+              <label for="OIBdobavljaca">OIB dobavljača:</label>
+              <input v-model="scan_doc_data.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca" style="height:28px;" required><br>
+              
+              <div  @click="get_company_data()" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
+            </div>
+            <div class="data inner-addon right-addon input-with-icon" >
+              <label for="OIBkupca">OIB kupca:</label>
+              <input v-model="scan_doc_data.oib_kupca" type="text" id="OIBkupca" name="OIBkupca" style="height:28px;" required><br><br><br><br>
+              
+              <div  @click="get_user_alias" class="btn icon"><span  class="fab fa-wpforms"> </span></div>
+            </div>
+            <div class="data datumDospijeca">
+              <label for="datDospijeca">Datum dospijeća:</label>
+              <input v-model="scan_doc_data.datum_dospijeca"  type="text" id="datDospijeca" name="datDospijeca" required><br><br><br><br>
+            </div>
+            <div class="data">
+              <label for="pdv">PDV:</label>
+              <input v-model="scan_doc_data.pdv" type="text" id="pdv" name="pdv" required><br>
+            </div>
+            <div class="data">
+              <label for="iznos">Iznos:</label>
+              <input v-model="scan_doc_data.iznos" type="text" id="iznos" name="iznos" required><br>
+            </div>
+            <div class="data">
+              <label for="IBANprimatelja">IBAN primatelja:</label>
+              <input v-model="scan_doc_data.iban_primatelja" type="text" id="IBANprimatelja" name="IBANprimatelja" required><br>
+            </div> 
+          </div>
+        </div>
+
+        <div class="row addButtonDiv">
+          <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Dodaj</button>
+          <button v-on:click="delete_doc_data()" type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" style="margin:5px">Isprazni</button>
+        </div> 
+      </form>
+
+      <!-- Modal -->
+      <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style="display:block;">
+              <h3 class="'col-12 modal-title text-center'" id="exampleModalLongTitle" style="color:#000000;">Pomoć</h3>
+            </div>
+            <div class="modal-body" style="border: 1px solid black; margin-left: 10px; margin-right: 10px;">
+              <p> 
+                Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus,
+                porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus
+                sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla sed consectetur. 
+              </p>
+              <p>
+                Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus 
+                auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget 
+                quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna
+              </p>
+              <p>
+                Vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+                Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+              </p> 
+            </div>
+            <div class="modal-footer" style="text-align:center; display:block;">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:#00A2FF">Zatvori</button>
+            </div>
+          </div>
+        </div>
+      </div>
+          
+      <!-- footer
+      <div class="row">
+          <div class="col archive"></div>
+      </div>
+      -->
+      <!-- success confirmation -->
       <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
               <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Dokument dodan u arhivu _____
-                  <hr/>
+                  Dokument dodan u arhivu _____ <hr/>
                   <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
               </div>
-          
-            </div>
+          </div>
+
         </div>
       </div>
 
-      
       <!-- error confirmation -->
       <div class="modal fade" id="success_confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" >
           
           <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-              <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                   Došlo je do greške prilikom učitavanja dokumenta
-                  <hr/>
-                  <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-              </div>
-          
+            <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
+                  Došlo je do greške prilikom učitavanja dokumenta
+                <hr/>
+                <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
             </div>
+          </div>
+
         </div>
       </div>
 
-      </div>
+    </div>
   </div>
 </template>
 <!-- popraviti :  label value,mobile responsive, footer?, hovere na sve-->
@@ -203,14 +204,21 @@ export default {
 
     async get_company_data(){
       let result = await app.getCompanyData(this.scan_doc_data.oib_dobavljaca)
-      console.log(result) //nastavak....
+      console.log(result)
+
+      if(result){
+        this.scan_doc_data.iban_primatelja = result.iban[0][1]
+        this.scan_doc_data.naziv_dobavljaca = result.naziv
+        this.scan_doc_data.vrsta_usluge = result.usluga
+      }
     },
 
-    get_clinet_data(){
-      let result = this.user.alias_list.filter(alias => alias.oib == this.scan_doc_data.oib_kupca)
-      if(result != ''){
-        this.scan_doc_data.naziv_kupca = result[0].ime + " " + result[0].prezime
-        this.scan_doc_data.iban_platitelja = result[0].iban
+    get_user_alias(){
+      let result = this.user.alias_list.filter(alias => alias.oib == this.scan_doc_data.oib_kupca)[0]
+
+      if(result){
+        this.scan_doc_data.naziv_kupca = result.ime + " " + result.prezime
+        this.scan_doc_data.iban_platitelja = result.iban
       }
       else{
         console.log("Kupac ne postoji")

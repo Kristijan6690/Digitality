@@ -191,10 +191,8 @@ let app = {
         })
     },
 
-    async getCompanyData(oib){
-        let response = await Service.post('/getCompanyData', {
-            oib: oib
-        })
+    async getCompanyData(company_oib){
+        let response = await Service.post('/getCompanyData', {'company_oib': company_oib})
         return response.data
     }
 };

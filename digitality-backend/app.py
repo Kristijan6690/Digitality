@@ -291,8 +291,9 @@ def change_archive_name(cur_user):
 
 
 @app.route('/getCompanyData', methods=['POST'])
-def get_company_data():
-    oib = request.get_json()
+@token_required
+def get_company_data(cur_user):
+    oib = request.get_json()['company_oib']
     companyData = mongodb.get_company(oib)
 
     return jsonify(companyData)

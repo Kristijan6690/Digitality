@@ -154,6 +154,8 @@ def create_document(arc_id, document):
     if not arc: return False
     index, subarchive = get_subarchive(arc, document['naziv_dobavljaca'])
     
+    document['id_dokumenta'] = str(ObjectId())
+    
     subarchive['documents'].append(document)
     if index:
         arc['subarchives'][index] = subarchive
@@ -285,8 +287,7 @@ def share_archive(cur_user, new_user):
     except:
         print("share_archive() - failed to update records!")
         return False
-    
-    
+
 def remove_sharing(cur_user, foreign_email):
     collection = db["users"]
     
