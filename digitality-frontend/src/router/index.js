@@ -62,7 +62,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/editdocument',
+    path: '/editdocument/:id',
     name: 'EditDocument',
     component: () => import('../views/EditDocument.vue'),
     meta: { requiresAuth: true }

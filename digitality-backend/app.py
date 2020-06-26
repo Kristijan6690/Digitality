@@ -299,5 +299,26 @@ def get_company_data(cur_user):
     return jsonify(companyData)
 
 
+@app.route('/update_document', methods=['PATCH'])
+@token_required
+def update_document(cur_user):
+    archive_id = request.get_json()['archive_id']
+    document = request.get_json()['document']
+
+    res = mongodb.update_document(archive_id, document)
+    
+    return jsonify(res)
+
+
+@app.route('/delete_document', methods=['PATCH'])
+@token_required
+def delete_document(cur_user):
+    archive_id = request.get_json()['archive_id']
+    document = request.get_json()['document']
+
+    res = mongodb.delete_document(archive_id, document)
+    
+    return jsonify(res) 
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

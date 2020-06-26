@@ -38,7 +38,7 @@
                         </div>
                       </div>
                     <div class="dropdownFooter addButtonDiv">
-                          <button v-if="this.check_if_owner_of_archive" type="submit" @click="changeArchiveName()" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Spremi</button>
+                          <button v-if="this.check_if_owner_of_archive" type="submit" @click="changeArchiveName()" class="btn btn-primary my-2 my-sm-0" id="saveButtonSettings" > Spremi</button>
                           <button type="submit" @click="closeShareDropDown()" class="btn btn-primary my-2 my-sm-0" id="closeShareDropdownButton" > Zatvori</button>
                     </div>
                 </div>
@@ -649,8 +649,21 @@ a{
   margin: 5px; 
   border-radius:5px; 
   border:0;
-  background-color: #888888;
+  background-color:#888888;
 }
+
+#saveButtonSettings{
+  background-color:#00a2ff;
+  margin:2.5px;
+  border:none;
+}
+
+#closeShareDropdownButton{
+  background-color: #888888;
+  margin:2.5px;
+  border:none;
+}
+
 
 .addUserButton{
   color: #23CA00;

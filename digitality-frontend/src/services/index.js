@@ -195,6 +195,22 @@ let app = {
     async getCompanyData(company_oib){
         let response = await Service.post('/getCompanyData', {'company_oib': company_oib})
         return response.data
+    },
+
+    async update_document(archive_id, document){
+        let response = await Service.patch('/update_document', {
+            'archive_id': archive_id,
+            'document': document
+        })
+        return response.data        
+    },
+
+    async delete_document(archive_id, document){
+        let response = await Service.patch('/delete_document', {
+            'archive_id': archive_id,
+            'document': document
+        })
+        return response.data        
     }
 };
 

@@ -3,7 +3,6 @@
       <div class="container">
             <div class="row">
                 <!-- mjesto za header ako ce ici -->
-                <span style="background-color:red;">Kristus evo tu je ta obrazac kire mare ucitat z baze vrijedosti i kire wokhu korisnik zamejna</span>
             </div>
             <div class="row">
                  <div class="col heading">        
@@ -11,76 +10,76 @@
                     <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
                 </div>         
             </div>
-            <form action="/action_page.php">
+            <form v-on:submit.prevent="update_doc" action="/action_page.php">
                 <div class="row main" >
-                        <div class="box one archive">
-                            <div class="data">
-                                <label for="nazDobavljaca">Naziv dobavljača:</label>
-                                <input v-model="proba" type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
-                            </div>
-                            <div class="data">
-                                <label for="nazKupca">Naziv kupca:</label>
-                                <input v-model="proba" type="text" id="nazKupca" name="nazKupca"><br><br>
-                            </div>
-                            <div class="data">
-                                <label for="brojRacuna">Broj računa:</label>
-                                <input type="text" id="brojRacuna" name="brojRacuna"><br><br>
-                            </div>
-                            <div class="data">
-                                <label for="datIzdavanja">Datum izdavanja:</label>
-                                <input type="text" id="datIzdavanja" name="datIzdavanja"><br>
-                            </div>
-                            <div class="data">
-                                <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
-                                <input type="text" id="mjestoIzdavanja" name="mjestoIzdavanja"><br>
-                            </div>
-                            <div class="data">
-                                <label for="vrstaUsluge" >Vrsta usluge:</label>
-                                <input type="text" id="vrstaUsluge" name="vrstaUsluge" placeholder="internet / struja / mobilni operater..."><br>
-                            </div>
-                            <div class="data">
-                                <label for="Neto iznos">Količina:</label>
-                                <input type="text" id="netoIznos" name="netoIznos"><br>
-                            </div>
-                            <div class="data">
-                                <label for="pozNaBroj">Poziv na broj:</label>
-                                <input type="text" id="pozNaBroj" name="pozNaBroj"><br>
-                            </div>
-                            <div class="data">
-                                <label for="IBANplatitelja">IBAN platitelja:</label>
-                                <input type="text" id="IBANplatitelja" name="IBANplatitelja"><br>
-                            </div>
+                    <div class="box one archive">
+                        <div class="data">
+                            <label for="nazDobavljaca">Naziv dobavljača:</label>
+                            <input v-model="document.naziv_dobavljaca" type="text" id="nazDobavljaca" name="nazDobavljaca"><br>
                         </div>
-                        <div class="box two archive">
-                             <div class="data">
-                                <label for="OIBdobavljaca">OIB dobavljača:</label>
-                                <input type="text" id="OIBdobavljaca" name="OIBdobavljaca"><br>
-                            </div>
-                            <div class="data">
-                                <label for="OIBkupca">OIB kupca:</label>
-                                <input type="text" id="OIBkupca" name="OIBkupca"><br><br><br><br>
-                            </div>
-                            <div class="data datumDospijeca">
-                                <label for="datDospijeca">Datum dospijeća:</label>
-                                <input type="text" id="datDospijeca" name="datDospijeca"><br><br><br><br>
-                            </div>
-                            <div class="data">
-                                <label for="pdv">PDV:</label>
-                                <input type="text" id="pdv" name="pdv"><br>
-                            </div>
-                            <div class="data">
-                                <label for="iznos">Iznos:</label>
-                                <input type="text" id="iznos" name="iznos"><br>
-                            </div>
-                            <div class="data">
-                                <label for="IBANprimatelja">IBAN primatelja:</label>
-                                <input type="text" id="IBANprimatelja" name="IBANprimatelja"><br>
-                            </div> 
+                        <div class="data">
+                            <label for="nazKupca">Naziv kupca:</label>
+                            <input v-model="document.naziv_kupca" type="text" id="nazKupca" name="nazKupca"><br><br>
                         </div>
-        
+                        <div class="data">
+                            <label for="brojRacuna">Broj računa:</label>
+                            <input v-model="document.broj_racuna" type="text" id="brojRacuna" name="brojRacuna"><br><br>
+                        </div>
+                        <div class="data">
+                            <label for="datIzdavanja">Datum izdavanja:</label>
+                            <input v-model="document.datum_izdavanja" type="text" id="datIzdavanja" name="datIzdavanja"><br>
+                        </div>
+                        <div class="data">
+                            <label for="mjestoIzdavanja">Mjesto izdavanja:</label>
+                            <input v-model="document.mjesto_izdavanja" type="text" id="mjestoIzdavanja" name="mjestoIzdavanja"><br>
+                        </div>
+                        <div class="data">
+                            <label for="vrstaUsluge" >Vrsta usluge:</label>
+                            <input v-model="document.vrsta_usluge" type="text" id="vrstaUsluge" name="vrstaUsluge"><br>
+                        </div>
+                        <div class="data">
+                            <label for="Neto iznos">Neto iznos:</label>
+                            <input v-model="document.neto" type="text" id="netoIznos" name="netoIznos"><br>
+                        </div>
+                        <div class="data">
+                            <label for="pozNaBroj">Poziv na broj:</label>
+                            <input v-model="document.poziv_na_broj" type="text" id="pozNaBroj" name="pozNaBroj"><br>
+                        </div>
+                        <div class="data">
+                            <label for="IBANplatitelja">IBAN platitelja:</label>
+                            <input v-model="document.iban_platitelja" type="text" id="IBANplatitelja" name="IBANplatitelja"><br>
+                        </div>
+                    </div>
+                    <div class="box two archive">
+                          <div class="data">
+                            <label for="OIBdobavljaca">OIB dobavljača:</label>
+                            <input v-model="document.oib_dobavljaca" type="text" id="OIBdobavljaca" name="OIBdobavljaca"><br>
+                        </div>
+                        <div class="data">
+                            <label for="OIBkupca">OIB kupca:</label>
+                            <input v-model="document.oib_kupca" type="text" id="OIBkupca" name="OIBkupca"><br><br><br><br>
+                        </div>
+                        <div class="data datumDospijeca">
+                            <label for="datDospijeca">Datum dospijeća:</label>
+                            <input v-model="document.datum_dospijeca" type="text" id="datDospijeca" name="datDospijeca"><br><br><br><br>
+                        </div>
+                        <div class="data">
+                            <label for="pdv">PDV:</label>
+                            <input v-model="document.pdv" type="text" id="pdv" name="pdv"><br>
+                        </div>
+                        <div class="data">
+                            <label for="iznos">Iznos:</label>
+                            <input v-model="document.iznos" type="text" id="iznos" name="iznos"><br>
+                        </div>
+                        <div class="data">
+                            <label for="IBANprimatelja">IBAN primatelja:</label>
+                            <input v-model="document.iban_primatelja" type="text" id="IBANprimatelja" name="IBANprimatelja"><br>
+                        </div> 
+                    </div>
                 </div>
+
                 <div class="row addButtonDiv">
-                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button>
+                    <button type="submit" class="btn btn-primary my-2 my-sm-0" id="addButton" > Spremi </button>
                     <button type="button" @click="go_back()" class="btn btn-primary my-2 my-sm-0" id="backButton" > Odustani </button>
                 </div> 
             </form>
@@ -127,13 +126,18 @@
 <!-- popraviti :  label value,mobile responsive, footer?, hovere na sve-->
 <script>
 import store from "@/store.js";
+import { app } from "@/services";
+import { Auth } from "@/services";
 
 export default {
   name: 'Home',
   data(){
     return {
-      document_id : this.$route.params.id,
-      proba: 'valda se tu dejva preko v-modela ko te, valda nejson kako glupost naridu haha'
+      store,
+      id_dokumenta : this.$route.params.id,
+      document: {},
+
+      user: Auth.getUser(),
     }
   },
 
@@ -141,27 +145,43 @@ export default {
     go_back(){
       return this.$router.go(-1);
     },
+
+    async update_doc(){
+      let res = await app.update_document(this.store.currentArchiveData._id, this.document)
+
+      if(res){
+        let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+        localStorage.setItem('userArchives',JSON.stringify(archives))
+
+        this.store.updateCurrentUserArchive(archives)
+        this.$router.push({ name: 'Home' })
+      }
+    },
+
+    async delete_doc(){
+      let res = await app.delete_document(this.store.currentArchiveData._id, this.document)
+
+      if(res){
+        let archives = await app.getArchives(this.user.email,this.user.archive_ids)
+        localStorage.setItem('userArchives',JSON.stringify(archives))
+
+        this.store.updateCurrentUserArchive(archives)
+        this.$router.push({ name: 'Home' })
+      }
+    }
   },
 
   mounted(){
-    /*
     let archives = JSON.parse(localStorage.getItem('userArchives'))
     this.store.updateCurrentUserArchive(archives)
 
     let sub_arcs = this.store.currentArchiveData.subarchives
-    docs = sub_arcs.filter(sub_arc => sub_arc.documents.filter(doc =>))
 
-    for(let i = 0; i < sub_arc.length; i++){
-
-      for(let j = 0; j < sub_arc[i].documents.length; j++){
-        if(this.document_id == sub_arc[i].documents[j].id_dokumenta){
-          this.current_document = sub_arc[i].documents[j]
-          break;
-        }
-      }
-
-    }
-  */
+    let doc = sub_arcs.map(sub_arc => {
+      return sub_arc.documents.filter(doc => doc.id_dokumenta == this.id_dokumenta)[0]
+    })[1]
+    
+    if(doc) this.document = doc
   }
 }
 </script>
@@ -371,7 +391,6 @@ background-color: #f6f6f2;
   width:150px;
   margin: 10px;
 }
-
 
 @keyframes glow {
   80%, 100% {

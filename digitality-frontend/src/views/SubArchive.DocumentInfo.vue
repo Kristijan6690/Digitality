@@ -39,8 +39,8 @@
                                 <input type="text" v-model="this.current_document.vrsta_usluge" id="vrstaUsluge" name="vrstaUsluge" disabled ><br>
                             </div>
                             <div class="data">
-                                <label for="kolicina">Neto iznos:</label>
-                                <input type="text" v-model="this.current_document.neto_iznos" id="kolicina" name="kolicina" disabled ><br>
+                                <label for="netoIznos">Neto iznos:</label>
+                                <input type="text" v-model="this.current_document.neto" id="netoIznos" name="netoIznos" disabled ><br>
                             </div>
                             <div class="data">
                                 <label for="pozNaBroj">Poziv na broj:</label>
@@ -80,7 +80,9 @@
         
                 </div>
                 <div class="row addButtonDiv">
-                    <router-link v-if="this.check_if_owner_of_archive" to="/editdocument"><button type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button></router-link>
+                  <router-link v-bind:to="'/editdocument/' + this.current_document.id_dokumenta">
+                    <button type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button>
+                  </router-link>
                 </div> 
             </form>
 
@@ -156,8 +158,8 @@ export default {
     }
   },
   mounted(){
-    let archives = JSON.parse(localStorage.getItem('userArchives'))
-    this.store.updateCurrentUserArchive(archives)
+    let temp = JSON.parse(localStorage.getItem('userArchives'))
+    this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
     for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
       for(let j = 0; j < this.store.currentArchiveData.subarchives[i].documents.length; j++){
         if(this.document_id == this.store.currentArchiveData.subarchives[i].documents[j].id_dokumenta){
