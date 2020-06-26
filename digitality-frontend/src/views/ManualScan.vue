@@ -191,7 +191,7 @@ export default {
       await app.add_document_to_database(this.user.personal_archive_id,this.scan_doc_data)
       let archives = await app.getArchives(this.user.email,this.user.archive_ids)
       localStorage.setItem('userArchives',JSON.stringify(archives))
-      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+      this.store.updateCurrentUserArchive(archives)
       if(localStorage.getItem('scan_doc_data')) localStorage.removeItem('scan_doc_data')
       this.$router.push({ name: 'Home' })
     },

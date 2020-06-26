@@ -139,7 +139,7 @@
                   <!-- maknuti submit iz buttona? -->
                   <button type="submit" v-on:click="go_back()" class="btn btn-pr imary my-2 my-sm-0" id="backButton">Natrag</button>             
                   <div style="width: 100%;" id="headlineDiv"><h1 id="headline">{{this.naziv}}</h1></div>
-                  <button type="button" class="btn btn-primary my-2 my-sm-0" id="deleteButton"  data-toggle="modal" data-target="#delete_confirmation">Izbriši</button>
+                  <button v-if="this.check_if_owner_of_archive" type="button" class="btn btn-primary my-2 my-sm-0" id="deleteButton"  data-toggle="modal" data-target="#delete_confirmation">Izbriši</button>
             </div>         
         </div>
 
@@ -331,7 +331,7 @@ export default {
       }
       let archives = await app.getArchives(this.user.email,this.user.archive_ids)
       localStorage.setItem('userArchives',JSON.stringify(archives))
-      this.store.currentArchiveData = this.store.get_users_arhive(archives,this.user.archive_ids)
+      this.store.updateCurrentUserArchive(archives)
       this.store.documentData = ''
       this.$router.push({ name: 'Home' })
     },
@@ -369,11 +369,18 @@ export default {
     },
   },
 
+  computed:{
+    check_if_owner_of_archive(){
+      if(this.store.currentArchiveData._id == this.user.personal_archive_id) return true
+      else return false
+    }
+  },
+
   async mounted() {
 
     if(this.store.currentArchiveData == ''){
-      let temp = JSON.parse(localStorage.getItem('userArchives'))
-      this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
+      let archives = JSON.parse(localStorage.getItem('userArchives'))
+      this.store.updateCurrentUserArchive(archives)
     }
 
     //Ispis dokumenata podarhive

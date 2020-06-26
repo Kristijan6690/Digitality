@@ -80,7 +80,7 @@
         
                 </div>
                 <div class="row addButtonDiv">
-                    <router-link to="/editdocument"><button type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button></router-link>
+                    <router-link v-if="this.check_if_owner_of_archive" to="/editdocument"><button type="button" class="btn btn-primary my-2 my-sm-0" id="addButton" > Uredi </button></router-link>
                 </div> 
             </form>
 
@@ -151,9 +151,16 @@ export default {
     }
   },
 
+  computed:{
+    check_if_owner_of_archive(){
+      if(this.store.currentArchiveData._id == this.user.personal_archive_id) return true
+      else return false
+    }
+  },
+
   mounted(){
-    let temp = JSON.parse(localStorage.getItem('userArchives'))
-    this.store.currentArchiveData = this.store.get_users_arhive(temp,this.user.archive_ids)
+    let archives = JSON.parse(localStorage.getItem('userArchives'))
+    this.store.updateCurrentUserArchive(archives)
     for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
       for(let j = 0; j < this.store.currentArchiveData.subarchives[i].documents.length; j++){
         if(this.document_id == this.store.currentArchiveData.subarchives[i].documents[j].id_dokumenta){

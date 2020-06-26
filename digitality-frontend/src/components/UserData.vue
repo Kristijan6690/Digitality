@@ -24,7 +24,6 @@ export default {
       //let email_list = this.user.email_list;
 
       let result = await app.delete_shared_archive(this.info)
-      
       this.user.email_list = result
       localStorage.setItem("user",JSON.stringify(this.user))
       location.reload();

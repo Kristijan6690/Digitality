@@ -57,6 +57,7 @@ let Auth = {
         localStorage.removeItem('user');
         localStorage.removeItem('userArchives');
         localStorage.removeItem('scan_doc_data');
+        localStorage.removeItem('currentUserArchive');
     },
 
     getToken() {
