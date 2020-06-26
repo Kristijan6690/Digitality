@@ -91,14 +91,26 @@ def delete_archive(arc_id):
     filter = {'_id': arc_id}
 
     try:
-        collection.delete_one(filter)   
+        collection.delete_one(filter)
+        return True    
     except:
         print("delete_archive() - failed to delete archive!")
         return False
+     
+def change_arc_name(arc_id, new_name):
+    collection = db["archives"]
     
-    return True     
+    try:
+        collection.update_one(
+            {'_id': arc_id},
+            {'$set': {'name': new_name} }
+        )
+        return True
+    except:
+        print("change_arc_name() - failed to delete archive!")
+        return False
     
-
+    
 # SUBARCHIVE ########################################################
 def get_subarchive(arc, subarchive_name):
     for index, subarchive in enumerate(arc['subarchives']):

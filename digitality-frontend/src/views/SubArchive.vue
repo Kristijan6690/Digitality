@@ -6,48 +6,52 @@
 
             <div class="col archive-options">       
                   <!-- settings dropdown -->
-                    <div class="btn-group" >
-                      <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                        <div id="settingsIcon" ><i class="fas fa-cog fa-lg"></i></div>
-                      </button>
-
-                      <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
-                        <div class="dropdownHeader" > 
-                            <h2 id="dropdownHeaderHeadline"> Postavke </h2> 
-                        </div>
-                        <div id="archiveName" >
-                            <div class="editIcon">
-                              <i class="far fa-edit"></i>
-                            </div>
-                            <div class="changeName" >
-                              <input v-model="naziv_arhive" id="changeNameHeader" style="color:#2c3e50;"/> 
-                            </div>
-                        </div>
-                        <div class="dropdownBody body-settings" >                       
-                            <div id="pristupNaslov">
-                              <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
-                            </div>
-                            <div>  
-
-                              <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.email_list" />
-
-                              <div class="userData "  >
-                                  <div class="personIcon"><i class="far fa-user"></i> </div>
-                                  <input v-model="shared_email" class="mailOsobe addUserName"  /> 
-                                  <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
-                              </div>
-                            
-                            </div>
+                  <div class="btn-group" >
+                      <!--
+                        <button type="button" class="btn btn-secondary settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                          <div id="settingsIcon" ><i class="fas fa-cog fa-lg"></i></div>
+                        </button>
+                        
+                        <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
+                          <div class="dropdownHeader" > 
+                              <h2 id="dropdownHeaderHeadline"> Postavke </h2> 
                           </div>
-                        <div class="dropdownFooter addButtonDiv">
-                          <button v-if="this.check_if_owner_of_archive" type="submit" @click="changeArchiveName()" class="btn btn-primary my-2 my-sm-0" id="saveButtonSettings" > Spremi</button>
-                          <button @click="closeShareDropDown()" type="submit" class="btn btn-primary my-2 my-sm-0" id="closeShareDropdownButton" > Zatvori</button>
-                        </div>
-                    </div>
+                          <div id="archiveName" >
+                              <div class="editIcon">
+                                <i class="far fa-edit"></i>
+                              </div>
+                              <div class="changeName" >
+                                <input v-model="naziv_arhive" id="changeNameHeader" style="color:#2c3e50;"/> 
+                              </div>
+                          </div>
+                        
+                          <div class="dropdownBody body-settings" >                       
+                              <div id="pristupNaslov">
+                                <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
+                              </div>
+                              <div>  
+
+                                <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.email_list" />
+
+                                <div class="userData "  >
+                                    <div class="personIcon"><i class="far fa-user"></i> </div>
+                                    <input v-model="shared_email" class="mailOsobe addUserName"  /> 
+                                    <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
+                                </div>
+                              
+                              </div>
+                            </div>
+                          
+                          <div class="dropdownFooter addButtonDiv">
+                            <button v-if="this.check_if_owner_of_archive" type="submit" @click="changeArchiveName()" class="btn btn-primary my-2 my-sm-0" id="saveButtonSettings" > Spremi</button>
+                            <button @click="closeShareDropDown()" type="submit" class="btn btn-primary my-2 my-sm-0" id="closeShareDropdownButton" > Zatvori</button>
+                          </div>
+                      </div>
+                    -->
                   </div>
 
-                    
-                  <!-- choose Archive (Dropdown umjesto selecta zbog veće mogućnosti customizacije -- prebaciti css u css-->                    
+                  
+                  <!-- choose Archive (Dropdown umjesto selecta zbog veće mogućnosti customizacije -- prebaciti css u css--                  
                   <div class="chooseArchive">
                       <i class="far fa-file fa-lg" ></i>
                       <select id="archiveSelector">
@@ -57,6 +61,7 @@
                           <option value="Archive_4">Ostalo</option>
                         </select>
                   </div>
+                  -->
                    <!-- filter i filter dropdown -->
                       <div class="btn-group" >
                         <button type="button" class="btn btn-secondary filter glowEffect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

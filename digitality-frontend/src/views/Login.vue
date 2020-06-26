@@ -2,6 +2,7 @@
   <div class="login">
     <h1 class="logo">Digitality</h1>
     <h3 style="color: #00a2ff;"> Prijava </h3>
+    
       <div class="container">
         <div class="row">
           <div class="col-sm"></div>
@@ -19,6 +20,7 @@
                       <i class="fas fa-eye" id="password_eye" v-on:click="show_password()"></i>
 
                   </div>
+                  <h6 v-if="login_fail" style="color:red; font-size:12px">Neuspjela prijava, provjerite unesene podatke.</h6>
                   <small class="logReg">
                     <span>
                       Nemate korisnički račun?
@@ -28,6 +30,7 @@
                       !
                     </span>
                   </small>
+
                   <button type="submit" class="btn btn-primary">Prijava</button>
                 </form>
 
@@ -47,7 +50,9 @@ export default {
       return{
         email: "",
         password: "",
-        store
+        store,
+
+        login_fail: false
       }
     },
   methods: {
@@ -56,6 +61,9 @@ export default {
 
         if (success == true) {
           this.$router.push({ name: 'Home'});
+        }
+        else{
+          this.login_fail = true;
         }
       },
       

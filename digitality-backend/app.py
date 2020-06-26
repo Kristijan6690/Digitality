@@ -285,9 +285,9 @@ def add_doc_to_database(cur_user):
 @token_required
 def change_archive_name(cur_user):
     doc = request.get_json()
-    mongo.db.archives.update_one({'_id': doc['archive_id']},{'$set':{'name': doc['archive_name']}})
-
-    return "Uspijeh"
+    
+    res = mongodb.change_arc_name(doc['archive_id'], doc['archive_name'])
+    return jsonify(res)
 
 
 @app.route('/getCompanyData', methods=['POST'])
@@ -319,6 +319,19 @@ def delete_document(cur_user):
     res = mongodb.delete_document(archive_id, document)
     
     return jsonify(res) 
+
+
+@app.route('/delete_user', methods=['POST'])
+@token_required
+def delete_user(cur_user):
+    sent_password = request.get_json()['sent_password']
+    saved_password = mongodb.get_user(cur_user['email'])['password']
+    
+    if(bcrypt.check_password_hash(saved_password, sent_password)):
+        res = mongodb.delete_user(cur_user['email'])
+        return jsonify(res)
+    
+    return jsonify(False)
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

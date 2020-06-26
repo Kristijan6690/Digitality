@@ -9,18 +9,20 @@
                     <div id="settingsIcon" ><i class="fas fa-cog fa-lg"></i></div>
                   </button>
 
-                  <div class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
+                  <div v-if="this.check_if_owner_of_archive" class="dropdown-menu dropdown-menu-left menu-settings" @click.stop=''>
                     <div class="dropdownHeader" > 
                         <h2 id="dropdownHeaderHeadline"> Postavke </h2> 
                     </div>
+
                     <div id="archiveName" >
                         <div class="editIcon">
                           <i class="far fa-edit"></i>
                         </div>
                         <div class="changeName" >
-                          <input v-model="store.currentArchiveData.name" id="changeNameHeader" style="color:#2c3e50;"/> 
+                          <input v-model="store.currentArchiveData.name" id="changeNameHeader" style="color:#2c3e50;"/>
                         </div>
                     </div>
+
                     <div class="dropdownBody body-settings" >                       
                         <div id="pristupNaslov">
                           <h6 id="pristupNaslovHeader"><b>Osobe sa pristupom</b></h6>
@@ -141,10 +143,12 @@
         <div class="col archive">
           <SubArchiveCard v-bind:key="card.id" v-bind:info="card" v-for="card in store.currentArchiveData.subarchives" />
 
+          <!--
           <div v-if="this.check_if_owner_of_archive" class="subArchivePlus" data-toggle="modal" data-target="#createSubArchiveModal" style="border:none;">
             <div class="folder"><i class="fas fa-folder-plus fa-7x" ></i></div>
             <div class="folderName">Dodaj podarhivu</div>
           </div>
+          -->
         </div>
 
         <!-- Modal za kreiranje podarhive -->

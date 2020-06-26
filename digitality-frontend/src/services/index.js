@@ -185,7 +185,7 @@ let app = {
         })
     },
 
-    async changeArchiveName(id_trenutne_arhive,naziv_trenutne_arhive){
+    async changeArchiveName(id_trenutne_arhive, naziv_trenutne_arhive){
         await Service.post('/changeArchiveName',{
             archive_id: id_trenutne_arhive,
             archive_name: naziv_trenutne_arhive
@@ -211,6 +211,11 @@ let app = {
             'document': document
         })
         return response.data        
+    },
+
+    async delete_user(sent_password){
+        let response = await Service.post('/delete_user', {'sent_password': sent_password})
+        return response.data
     }
 };
 
