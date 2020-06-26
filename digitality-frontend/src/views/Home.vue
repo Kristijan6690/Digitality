@@ -312,10 +312,6 @@ export default {
       $('#closeShareDropdownButton').trigger("click");
     },
 
-    closeButtonArchive(){
-      $('#closeButtonArchive').trigger("click");
-    },
-
     async create_subArchive() {
       let flag = false
 

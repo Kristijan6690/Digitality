@@ -41,7 +41,7 @@
                           </div>
                         <div class="dropdownFooter addButtonDiv">
                           <!-- Closesortdropdown daje error -->
-                          <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
+                          <button @click="closeShareDropDown()" type="submit" class="btn btn-primary my-2 my-sm-0" id="closeShareDropdownButton" > Zatvori</button>
                         </div>
                     </div>
                   </div>
@@ -348,7 +348,10 @@ export default {
       if(success) $("#adding_user_success_confirmation").modal()
 
       else $("#unsuccess_confirmation_adding_user").modal()
+    },
 
+    closeShareDropDown(){
+      $('#closeShareDropdownButton').trigger("click");
     },
 
     async share_arc() {
