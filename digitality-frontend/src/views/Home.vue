@@ -30,9 +30,9 @@
                           <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.email_list" />
 
                           <div class="userData "  >
-                                <div class="personIcon"><i class="far fa-user"></i> </div>
-                                <input v-model="shared_email" class="mailOsobe addUserName"  /> 
-                                <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
+                            <div class="personIcon"><i class="far fa-user"></i> </div>
+                            <input v-model="shared_email" class="mailOsobe addUserName"  /> 
+                            <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
                           </div>
                         
                         </div>
@@ -272,9 +272,6 @@ export default {
       createSubArchiveName: '',
       createArchiveName: '',
       shared_email: '',
-      oib: '',
-      iban: '',
-      postal_code: '',
       userArchiveList:  JSON.parse(localStorage.getItem('userArchives')),
 
       current_archive: null

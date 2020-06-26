@@ -21,12 +21,14 @@ export default {
 
   methods:{
     async removeUserAccess(){
-      //let email_list = this.user.email_list;
-
       let result = await app.delete_shared_archive(this.info)
+      console.log(this.info, result)
+      if(!result) return 
+
+      let email_list = this.user.email_list;
+      this.user.email_list = email_list.filter(email => email != this.info)
       
-      this.user.email_list = result
-      localStorage.setItem("user",JSON.stringify(this.user))
+      localStorage.setItem("user", JSON.stringify(this.user))
       location.reload();
     }
   }
