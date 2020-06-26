@@ -41,9 +41,11 @@ let Auth = {
         
         if(response.data){
             let user = response.data;
-            let archives = await app.getArchives(user.email,user.archive_ids)
+            let archives = await app.getArchives(user.email, user.archive_ids)
+            
             localStorage.setItem('userArchives',JSON.stringify(archives))
             localStorage.setItem('user', JSON.stringify(user));
+            
             return true
         }
         console.log("Failed to login!")
@@ -152,11 +154,8 @@ let app = {
         return response.data;
     },
 
-    async delete_shared_archive(eposta_korisnika,eposta_share){
-        let response = await Service.post('/archives/shareDelete', {
-            user_email: eposta_korisnika,
-            shared_email: eposta_share
-        })
+    async delete_shared_archive(eposta_share){
+        let response = await Service.patch('/archives/shareDelete', {'foreign_email': eposta_share})
         return response.data
     },
 

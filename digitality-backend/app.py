@@ -151,8 +151,6 @@ def searchArchives(cur_user):
     regex = re.compile('^(%s)' % searchTerm)
     subarchives = [sub_arc for sub_arc in cur_arc['subarchives'] if regex.match(sub_arc['name'].lower()) ] 
     
-    print(subarchives)
-    
     for archives in result:
         if archives['_id'] == currentArchive_id:
             archives['subarchives'] = subarchives
@@ -236,34 +234,24 @@ def sortArchives(cur_user):
 @token_required
 def share_archive(cur_user):
     new_email = request.get_json()['email']
-
+    
     if new_email in cur_user['email_list']: return jsonify(False)
 
     new_user = mongodb.get_user(new_email)
     if not new_user: return jsonify(False)
     
-    mongo.db.users.update_one(
-        {'email': new_email},
-        {'$push': {'archive_ids': cur_user['personal_archive_id']} }
-    )
-
-    mongo.db.users.update_one(
-        {'email': cur_user['email']},
-        {'$push': {'email_list': new_user['email']} }
-    ) 
-
-    return jsonify(new_user['_id'], new_user['email'])
+    res = mongodb.share_archive(cur_user, new_user)
+    
+    return jsonify(res)
 
 
-@app.route('/archives/shareDelete', methods=['POST'])
+@app.route('/archives/shareDelete', methods=['PATCH'])
 @token_required
 def delete_shared_archive(cur_user):
-
-    doc = request.get_json()
-    share_user = mongo.db.users.find_one({'email': doc['shared_email']})
-    mongo.db.users.update({'email': doc['user_email']},{'$pull':{'archive_ids': share_user['personal_archive_id'],'email_list': share_user['email']}})
-    owner = mongo.db.users.find_one({'email': doc['user_email']})
-    return jsonify(owner['archive_ids'], owner['email_list'])
+    foreign_email = request.get_json()['foreign_email']
+    
+    res = mongodb.remove_sharing(cur_user, foreign_email)
+    return jsonify(res)
 
 
 @app.route('/addAlias', methods=['PUT'])
@@ -305,9 +293,7 @@ def change_archive_name(cur_user):
 @app.route('/getCompanyData', methods=['POST'])
 def get_company_data():
     oib = request.get_json()
-    print(oib)
     companyData = mongodb.get_company(oib)
-    print(companyData)
 
     return jsonify(companyData)
 

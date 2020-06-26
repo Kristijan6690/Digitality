@@ -240,7 +240,7 @@ def delete_user(email):
     
     return True
 
-def add_alias(alias, email): #<----------------------------------------------
+def add_alias(alias, email):
     collection = db["users"]
     
     try:
@@ -267,7 +267,45 @@ def delete_alias(alias_oib, email):
         return False
     
     return True
+
+def share_archive(cur_user, new_user):
+    collection = db["users"]
+    
+    try:
+        collection.update_one(
+            {'email': new_user['email']},
+            {'$push': {'archive_ids': cur_user['personal_archive_id']} }
+        )
+
+        collection.update_one(
+            {'email': cur_user['email']},
+            {'$push': {'email_list': new_user['email']} }
+        )
+        return new_user['email']
+    except:
+        print("share_archive() - failed to update records!")
+        return False
+    
+    
+def remove_sharing(cur_user, foreign_email):
+    collection = db["users"]
+    
+    try:
+        collection.update_one(
+            {'email': foreign_email},
+            {'$pull': {'archive_ids': cur_user['personal_archive_id']} }
+        )
+
+        collection.update_one(
+            {'email': cur_user['email']},
+            {'$pull': {'email_list': foreign_email} }
+        )
         
+        return cur_user['email_list'].remove(foreign_email)
+    except:
+        print("remove_sharing() - failed to update records!")
+        return False
+
 
 # TESTING ###########################################################
 def test_add_new_doc(test_archive_id):
@@ -360,9 +398,7 @@ def test_delete_user(test_email):
     else:
         print("test_delete_user - fail")
         
-def test_update_user(): #<----------------------------------------------
-
-
+def test_update_user(): 
     res = update_user(user)
     if res:
         print("test_update_user - success")
@@ -399,10 +435,26 @@ def test_delete_alias(test_email):
     else:
         print("test_delete_alias - fail")
         
-
+def test_share_archive():
+    cur_user = {
+        'email': 'e@mail.com',
+        'personal_archive_id': '5ef4ba52f958cb0b5cf5b789'
+    }
+    new_user = {'email': 'e@mail2.com'}
+    
+    res = share_archive(cur_user, new_user)
+    
+    if res:
+        print("test_share_archive - success")
+    else:
+        print("test_share_archive - fail")
+    
+    
 if __name__ == "__main__":
     connect_to_db()
     
+    test_share_archive()
+    """
     test_archive_id = 1
     id_dokumenta = 3
     test_email = "e@mail2.com"
@@ -421,4 +473,4 @@ if __name__ == "__main__":
     
     test_delete_alias(test_email)
     test_delete_user(test_email)
-    
+    """
