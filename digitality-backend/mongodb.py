@@ -301,7 +301,7 @@ def remove_sharing(cur_user, foreign_email):
             {'$pull': {'email_list': foreign_email} }
         )
         
-        return cur_user['email_list'].remove(foreign_email)
+        return True
     except:
         print("remove_sharing() - failed to update records!")
         return False
