@@ -35,7 +35,9 @@ def get_default_arc():
         "photo":"",
         
         "vrsta_usluge":"Struja",
-        "iznos":100
+        "iznos":125,
+        "pdv":25,
+        "neto":100
     }
     
     subarchive = {

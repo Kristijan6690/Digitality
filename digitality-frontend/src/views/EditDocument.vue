@@ -179,9 +179,9 @@ export default {
 
     let doc = sub_arcs.map(sub_arc => {
       return sub_arc.documents.filter(doc => doc.id_dokumenta == this.id_dokumenta)[0]
-    })[1]
-    
-    if(doc) this.document = doc
+    })
+
+    if(doc) this.document = doc.filter(element => element)[0]
   }
 }
 </script>

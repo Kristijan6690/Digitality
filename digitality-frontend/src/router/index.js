@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Croppa from 'vue-croppa'
 import Notifications from 'vue-notification'
 import Loading from 'vue-loading-overlay';
+import { Auth } from '@/services'
 
 Vue.use(Loading, {
   color: '#00A2FF'
@@ -82,9 +83,9 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach( (to,from,next) => {
 
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+router.beforeEach( (to,from,next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)){
     if(localStorage.getItem('user')) {
       next();
     }
@@ -96,5 +97,4 @@ router.beforeEach( (to,from,next) => {
     next();
   }
 });
-
 export default router
