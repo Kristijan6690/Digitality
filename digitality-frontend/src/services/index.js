@@ -28,12 +28,14 @@ Service.interceptors.response.use(
 
 let Auth = {
     async register(ime, prezime, eposta, lozinka){
-        await Service.post('/register',{
+        let response = await Service.post('/register',{
             name: ime,
             surname: prezime,
             email: eposta,
             password: lozinka
         })
+
+        return response.data;
     },
 
     async login(eposta, lozinka){

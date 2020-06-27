@@ -52,7 +52,8 @@ export default {
         password: "",
         store,
 
-        login_fail: false
+        login_fail: false,
+        error_message: null
       }
     },
   methods: {

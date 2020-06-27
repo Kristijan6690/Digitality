@@ -76,7 +76,7 @@
                 required
               />
             </div>
-
+            <h6 v-if="registration_failed" style="color:red; font-size:12px">Neuspjela registracija, email se već koristi.</h6>
             <small class="logReg">
               Imate korisnički račun?
               <router-link to="login" style="padding-left:3px;">Prijavite se</router-link>!
@@ -102,19 +102,26 @@ export default {
       surname: "",
       email: "",
       password: "",
-      confimpassword: ""
+      confimpassword: "",
+
+      registration_failed: null
     };
   },
 
   methods: {
 
     async registration() {
-      if (this.confimpassword == this.password) {
+      if(this.confimpassword == this.password){
+        let res = await Auth.register(this.name, this.surname, this.email, this.password);
 
-        await Auth.register(this.name, this.surname, this.email, this.password); // moguce jos nadograditi
-        $('#successAlert').show();
-        this.name = '', this.surname = '', this.email = '', this.password = '', this.confimpassword = '';
-        //this.$router.push({ name: "Login" });
+        if(res){
+          await Auth.login(this.email, this.password)
+
+          this.name = '', this.surname = '', this.email = '', this.password = '', this.confimpassword = '';
+          this.$router.push({ name: 'Home'});
+        }
+        else
+          this.registration_failed = true;
       } 
       else 
         $('#warningAlert').show();
@@ -123,16 +130,6 @@ export default {
     closeAlert(){
       $('.alert').hide();
     }
-   /*
-    check_password() {
-        let password = document.getElementById("password");
-        let retypePassword = document.getElementById("retypePassword");
-
-        if (password != retypePassword){
-          console.log('netocna lozinka')
-        } 
-      }
-    */
   },
 
   mounted(){
