@@ -38,9 +38,10 @@
         </div>
       </form>
       
-      {{user.email}}
-      <button data-toggle="modal" data-target="#password_modal">Obrišite Korisnički račun!</button>
-
+      <div class="row" style="padding-top:50px; display:inline-block; text-align:center; width:100%;"> 
+        <div>Moj korisnički račun: <span style="color:black"> {{user.email}} </span></div>
+        <button data-toggle="modal" data-target="#password_modal" style="color:#FF6347; border:none; display:inline-block;">Obriši Korisnički račun!</button>      
+      </div>
       <!-- Modal -->
       <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

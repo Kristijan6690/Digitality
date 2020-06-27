@@ -5,9 +5,10 @@
                 <!-- mjesto za header ako ce ici -->
             </div>
             <div class="row">
-                 <div class="col heading">        
+                 <div class="col heading">   
+                    <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>     
                     <div  id="headlineDiv" ><h1 id="headline">Univerzalni nalog</h1></div>
-                    <button type="button" class="glowEffect" data-toggle="modal" data-target="#helpModal" style="border:none;"><i class="fas fa-info-circle fa-2x" ></i></button>
+                    <button  @click="delete_doc" type="button" class="btn btn-primary my-2 my-sm-0" id="deleteButton"  data-toggle="modal" data-target="#delete_confirmation">Izbriši</button>
                 </div>         
             </div>
             <form v-on:submit.prevent="update_doc" action="/action_page.php">
@@ -370,7 +371,6 @@ a{
 
 #headlineDiv{
   width: 100%; 
-  padding-left:44px;
   text-align:center; 
 }
 
@@ -411,6 +411,14 @@ background-color: #f6f6f2;
   margin:10px;
   background-color: #888888;
   border-color: #888888;
+}
+
+#deleteButton{
+   border-radius: 5px; 
+   float:right; 
+   background-color:#FF0000; 
+   border:0px;
+   font-size: 15px;
 }
 
 
