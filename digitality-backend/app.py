@@ -7,12 +7,12 @@ from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from bson import ObjectId
 
-import datetime,jwt,os,scan_engine,re,operator
+import datetime, jwt, os, json, re, operator
 import default_data as dflt
 import mongodb as mongodb
+import scan_engine
 
 mongodb.connect_to_db()
-mongodb.index_email()
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://Kristijan_10:Messi123@digitality-4hkuh.mongodb.net/digitality_production?retryWrites=true&w=majority'
@@ -37,13 +37,11 @@ def register():
         'password': bcrypt.generate_password_hash(doc['password'], 8),
         'personal_archive_id': None,
         'archive_ids': None,        
-        'alias_list': [],
-        'email_list':[]
+        'alias_list': []
     }
     
     res = mongodb.register_user(user)
-    
-    return res
+    return jsonify(res)
 
 
 @app.route('/login', methods=['POST'])
@@ -60,6 +58,9 @@ def login():
         user['exp'] = datetime.datetime.now() + datetime.timedelta(days=7)
         user['token'] = jwt.encode(user, os.getenv("JWT_SECRET"), algorithm='HS256').decode("utf-8")
     
+    with open('current_user.json', 'w') as fp:
+        json.dump(user, fp)
+        
     return jsonify(user)
 
 
@@ -118,30 +119,18 @@ def searchArchives():
         return jsonify(result)  
 
 
-@app.route('/archives/createSubarchive', methods=['POST'])
-def createSubarchive():
-    archive_name = request.get_json()['archive_name'].lower()
-    personal_archive_id = request.get_json()['personal_archive_id']
-    subarchive_id = str(ObjectId())
-    
-    mongo.db.archives.update({'_id': personal_archive_id},{'$push':{
-        'subarchives': {
-            'subarchive_id': subarchive_id,
-            'name': archive_name,
-            'last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-            'documents': []
-        }}})
-        
-    return "Dodano"
-
-
 @app.route('/archive/deleteSubarchive', methods=['POST'])
 def deleteSubarchive():
-
     doc = request.get_json()
-    mongo.db.archives.update({'_id': doc['personal_archive_id']},{'$pull':{'subarchives':{'subarchive_id':doc['subarchive_id']}}})
     
-    return "Izbrisano"
+    with open('current_user.json', 'r') as fp:
+        user = json.load(fp)
+        
+    if user['personal_archive_id'] == doc['personal_archive_id']:
+        res = mongodb.delete_subarchive(doc['personal_archive_id'], doc['subarchive_id'])
+        return jsonify(res)
+    else:
+        return jsonify(False)
 
 
 @app.route('/archive/UpdateExaminationDate', methods=['POST'])
@@ -152,7 +141,6 @@ def update_examination_date():
         if(archive['_id'] == doc['currentArchive_id']):
             mongo.db.archives.update({'subarchives.subarchive_id':doc['subarchive_id']},{'$set':{'subarchives.$.last_used': datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}})
             return "Dodano"
-
 
 @app.route('/archives/SortArchives', methods=['POST'])
 def sortArchives():
@@ -187,7 +175,6 @@ def sortArchives():
 
         return jsonify(result)
 
-
 @app.route('/archives/share', methods=['POST'])
 def share_archive():
 
@@ -212,7 +199,6 @@ def share_archive():
 
     else: return jsonify(False) 
 
-
 @app.route('/archives/shareDelete', methods=['POST'])
 def delete_shared_archive():
 
@@ -225,11 +211,17 @@ def delete_shared_archive():
 
 @app.route('/addAlias', methods=['POST'])
 def add_alias():
+    new_alias = request.get_json()
+    res = mongodb.add_alias(new_alias)
+    
+    return jsonify(res)
 
-    doc = request.get_json()
-    alias_data = {'name': doc['name'], 'surname': doc['surname'], 'oib': doc['oib'], 'iban': doc['iban'], 'postal_code': doc['postal_code']}
-    mongo.db.users.update({'email': doc['user_email']},{'$push':{'alias_list': alias_data}})
-    return "Updated"
+@app.route('/deleteAlias', methods=['POST'])
+def delete_alias():
+    alias = request.get_json()
+    res = mongodb.delete_alias(alias['oib'])
+
+    return jsonify(res)
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

@@ -29,16 +29,20 @@
                             </div>
                             <div>  
 
-                              <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.email_list" />
+                              <userData v-bind:key="card.id" v-bind:info="card" v-for="card in user.alias_list" />
 
                               <div class="userData "  >
                                   <div class="personIcon"><i class="far fa-user"></i> </div>
-                                  <input v-model="shared_email" class="mailOsobe addUserName"  /> 
-                                  <button v-on:click ="share_arc()" class="opcijaPopis addUserButton">dodaj</button>  
+                                  <input v-model="alias_email" class="mailOsobe addUserName"  /> 
+                                  <button v-on:click ="add_access()" class="opcijaPopis addUserButton">dodaj</button>  
                               </div>
                             
                             </div>
                           </div>
+                        <div class="dropdownFooter addButtonDiv">
+                          <!-- Closesortdropdown daje error -->
+                          <button type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonSettings" > Zatvori</button>
+                        </div>
                     </div>
                   </div>
 
@@ -68,58 +72,58 @@
                               <div class="filterOptions custom-control custom-checkbox " >
                                 <input type="radio" class="custom-control-input" id="datDodavanjaVeciOd" name="selectedFilter" checked>
                                 <label for="datDodavanjaVeciOd" class="custom-control-label">Datum dodavanja veći od:</label>
-                                <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanjaVeciOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_dodavanja__greater" type="text" id="datDodavanjaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox " >
                                 <input type="radio" class="custom-control-input" id="datDodavanjaManjiOd" name="selectedFilter">
                                 <label for="datDodavanjaManjiOd" class="custom-control-label">Datum dodavanja manji od:</label>
-                                <input v-model ="store.filter.datum_dodavanja" type="text" id="datDodavanjaManjiOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_dodavanja__lesser" type="text" id="datDodavanjaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="datIzdavanjaVeciOd" name="selectedFilter">
                                 <label for="datIzdavanjaVeciOd" class="custom-control-label">Datum izdavanja veći od:</label>
-                                <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanjaVeciOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_izdavanja__greater" type="text" id="datIzdavanjaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="datIzdavanjaManjiOd" name="selectedFilter">
                                 <label for="datIzdavanjaManjiOd" class="custom-control-label">Datum izdavanja manji od:</label>
-                                <input v-model ="store.filter.datum_izdavanja" type="text" id="datIzdavanjaManjiOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_izdavanja__lesser" type="text" id="datIzdavanjaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="datDospijecaVeciOd" name="selectedFilter">
                                 <label for="datDospijecaVeciOd" class="custom-control-label">Datum dospijeća veći od:</label>
-                                <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijecaVeciOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_dospijeca__greater" type="text" id="datDospijecaVeciOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="datDospijecaManjiOd" name="selectedFilter">
                                 <label for="datDospijecaManjiOd" class="custom-control-label">Datum dospijeća manji od:</label>
-                                <input v-model ="store.filter.datum_dospijeća" type="text" id="datDospijecaManjiOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.datum_dospijeca__lesser" type="text" id="datDospijecaManjiOd" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="nazDobavljaca" name="selectedFilter">
                                 <label for="nazDobavljaca" class="custom-control-label" >Naziv dobavljača:</label>
-                                <input v-model ="store.filter.naziv_dobavljača" type="text" id="nazDobavljaca" name="selectedFilter"><br>
+                                <input v-model ="filter_params.naziv_dobavljaca__is" type="text" id="nazDobavljaca" name="selectedFilter"><br>
                               </div>
                               <div class="filterOptions custom-control custom-checkbox">
                                 <input type="radio" class="custom-control-input" id="vrstaUsluge" name="selectedFilter">
                                 <label for="vrstaUsluge" class="custom-control-label">Vrsta usluge:</label>
-                                <input v-model ="store.filter.vrsta_usluge" type="text" id="vrstaUsluge" name="selectedFilter"><br>
+                                <input v-model ="filter_params.vrsta_usluge__is" type="text" id="vrstaUsluge" name="selectedFilter"><br>
                               </div>
                                <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="iznosVeciOd" name="selectedFilter">
                                 <label for="iznosVeciOd" class="custom-control-label">Iznos veći od:</label>
-                                <input v-model ="store.filter.iznos" type="text" id="iznosVeciOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.iznos__greater" type="number" id="iznosVeciOd" name="selectedFilter"><br>
                               </div>                    
                               <div class="filterOptions custom-control custom-checkbox ">
                                 <input type="radio" class="custom-control-input" id="iznosManjiOd" name="selectedFilter">
                                 <label for="iznosManjiOd" class="custom-control-label">Iznos manji od:</label>
-                                <input v-model ="store.filter.iznos" type="text" id="iznosManjiOd" name="selectedFilter"><br>
+                                <input v-model ="filter_params.iznos__lesser" type="number" id="iznosManjiOd" name="selectedFilter"><br>
                               </div>
                             
                           </div>
                           <div class="addButtonDiv">
-                                <button v-on:click = "filter_data()" type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
-                                <button v-on:click = "filter_delete()" type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
+                                <button v-on:click = "filter_documents" type="submit" class="btn btn-primary my-2 my-sm-0" id="addButtonFilter"> Traži </button>
+                                <button v-on:click = "clear_filter" type="submit" class="btn btn-primary my-2 my-sm-0" id="removeButtonFilter"> Očisti filter</button>
                           </div>
                       </div>
                     </div>
@@ -163,43 +167,12 @@
                     <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
                         Uspješno izbrisano
                         <hr/>
-                        <div v-on:click="delete_archive()" data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
+                        <div v-on:click="delete_archive" data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
                     </div>
                 
                   </div>
               </div>
             </div>
-
-             <!-- success confirmation -->
-            <div class="modal fade" id="success_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document" >
-                
-                <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-                    <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                        Arhiva uspješno kreirana
-                        <hr/>
-                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-                    </div>
-                </div>
-
-              </div>
-            </div>
-
-            <!-- error confirmation during adding user to archive -->
-            <div class="modal fade" id="unsuccess_confirmation_adding_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document" >
-                
-                <div class="modal-content" style="solid; text-align: center; border-radius: 7.5px; ">
-                    <div class="modal-body" style="font-size: 30px; color:#00A2FF;">
-                        Došlo je do pogreške. Provjerite da li ste unijeli ispravan mail.
-                        <hr/>
-                        <div data-dismiss="modal" style="font-size:20px; color:#707070">Ok</div>
-                    </div>
-                  </div>
-
-              </div>
-            </div>
-
         <div class="row">
             <div class="col archive">
               <Document v-bind:key="card.id" v-bind:info="card" v-for="card in documentData" /> 
@@ -245,9 +218,12 @@ export default {
       documentData: '',
       naziv: this.$route.params.naziv_arhive,  //naziv_arhive -> varijabla u /router/index.js
       searchTerm: '',
+      tempDoc: '',
       naziv_arhive: 'Moja_arhiva',
-      shared_email: '',
       store,
+
+      alias_email: null, //da ne baca error
+      filter_params: {}
     }
   },
 
@@ -268,18 +244,32 @@ export default {
       return this.$router.go(-1);
     },
 
-    filter_delete(){
-      let varijable_filtera = Object.keys(this.store.filter)
+    clear_filter(){
+      this.filter_params = {}
+      this.extract_documents()
+    },
+    filter_documents(){
+      this.extract_documents()
+      let filtered_docs = this.documentData
+      
+      for(let i = 0; i < Object.keys(this.filter_params).length; i++){
+        let key_ = Object.keys(this.filter_params)[i]
+        let value = this.filter_params[key_]
+        
+        let [key, comparison] = key_.split("__")
 
-      for(let i = 0; i < varijable_filtera.length; i++) {
-        if(this.store.filter[varijable_filtera[i]] != '') {
-          this.store.filter[varijable_filtera[i]] = ''
+        if(comparison == 'is'){
+          filtered_docs = filtered_docs.filter((doc) => doc[key] == value)
+        }
+        else if(comparison == 'greater'){
+          filtered_docs = filtered_docs.filter((doc) => doc[key] > value)
+        }
+        else if(comparison == 'lesser'){
+          filtered_docs = filtered_docs.filter((doc) => doc[key] < value)
         }
       }
-    },
 
-    filter_data(){
-
+      this.documentData = filtered_docs
     },
 
     async searchDocuments(pretraga){
@@ -313,29 +303,13 @@ export default {
       this.$router.push({ name: 'Home' })
     },
 
-    addingUserConfirmation(success){
-      if(success) $("#success_confirmation_adding_user").modal()
+    extract_documents(){
+      let subarchives = this.store.currentArchiveData.subarchives
 
-      else $("#unsuccess_confirmation_adding_user").modal()
-
-    },
-
-    async share_arc() {
-      if(this.shared_email != ''){
-        let success = false
-        let result = await app.share_archive(this.user.email,this.shared_email)
-        if(result){
-          this.user.archive_ids.push(result[0])
-          this.user.email_list.push(result[1])
-          localStorage.setItem("user",JSON.stringify(this.user))
-          let archives = await app.getArchives(this.user.email,this.user.archive_ids)
-          localStorage.setItem('userArchives',JSON.stringify(archives))
-          success = true
-        }
-        this.shared_email = ''
-        this.addingUserConfirmation(success);
-      }
-    },
+      subarchives.forEach((subarc) => {
+        if(subarc.name == this.naziv) this.documentData = subarc.documents
+      }) 
+    }
   },
 
   async mounted() {
@@ -346,11 +320,7 @@ export default {
     }
 
     //Ispis dokumenata podarhive
-    for(let i = 0; i < this.store.currentArchiveData.subarchives.length; i++){
-      if(this.store.currentArchiveData.subarchives[i].name == this.naziv){
-        this.documentData = this.store.currentArchiveData.subarchives[i].documents
-      }
-    }
+    this.extract_documents()
     if(this.documentData == '') console.log("Korisnik nema dokumenta")
     
     //Update examination date
@@ -653,10 +623,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   height: 30px;
-  background:white; 
-  border-left:none; 
-  border-top:none; 
-  border-right:none;
 }
 
 .opcijaPopis{
@@ -664,8 +630,6 @@ export default {
   color:#FF0000; 
   width: 75px;
   text-align: center;
-  border:none;
-  background:white;
 }
 
 #addButtonSettings{

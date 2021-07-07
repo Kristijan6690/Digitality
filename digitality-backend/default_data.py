@@ -23,7 +23,7 @@ def get_default_arc():
         
         "id_dokumenta": str(ObjectId()),
         
-        "naziv_dobavljaca": "Company C",
+        "naziv_dobavljaca": "primjer",
         "oib_dobavljaca": "16942983514",
         "iban_primatelja": "HR012329671212",
         
@@ -40,7 +40,7 @@ def get_default_arc():
         "poziv_na_broj":"user_input",
         
         "vrsta_usluge":"Struja",
-        "iznos":"100kn"
+        "iznos":100
     }
     
     subarchive = {
